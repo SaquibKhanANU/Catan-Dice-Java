@@ -15,6 +15,8 @@ Saquib Khan:
 
 John Larkin: 
 
+Areer Siddiqi:
+
 ## Week 6
 
 ...
