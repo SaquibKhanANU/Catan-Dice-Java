@@ -3,9 +3,12 @@
 #
 
 members:
-  - name:
-    uid:
-  - name:
-    uid:
-  - name:
-    uid:
+  - name: Saquib Khan
+    uid: u7108513
+    contact: u7108513@anu.edu.au
+  - name: John Larkin
+    uid: u6717250
+    contact: u6717250@anu.edu.au
+  - name: Adeer Siddiqi
+    uid: u7104110
+    contact: u7104110@anu.edu.au
