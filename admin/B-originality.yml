@@ -42,8 +42,8 @@ code:
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external assets)
 assets:
-  - comment:
-    url:
+  - comment: Image for reference
+    url: https://i.stack.imgur.com/OaYIv.png
     licence:
 
 
@@ -52,7 +52,7 @@ assets:
 signatures:
   - name: Saquib Khan
     uid: u7108513
-  - name:
-    uid:
+  - name: John Larkin
+    uid: u6717250
   - name:
     uid:
