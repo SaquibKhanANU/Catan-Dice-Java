@@ -7,15 +7,15 @@ Use the entries below as an example.
 
 ## Week 4
 
-Everyone: create application skeleton - meeting TBD
+Everyone: create application skeleton - meeting 18/08/22 3:00 PM
 
 ## Week 5
 
-Saquib Khan:
+Saquib Khan: Task 3 5 7 
 
-John Larkin: 
+John Larkin: Tasks 4 6 8
 
-Areer Siddiqi:
+Adeer Siddiqi: Unknown
 
 ## Week 6
 
