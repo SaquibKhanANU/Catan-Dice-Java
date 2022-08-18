@@ -11,7 +11,7 @@ Everyone: create application skeleton - meeting 18/08/22 3:00 PM
 
 ## Week 5
 
-Saquib Khan: Task 3 5 7
+Saquib Khan: Task 3 5 7 
 
 John Larkin: Tasks 4 6 8
 
