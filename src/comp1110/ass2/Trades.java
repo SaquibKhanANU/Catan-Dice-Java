@@ -1,27 +1,49 @@
 package comp1110.ass2;
 
 public class Trades {
-
-    // get.Resources
-
-    /**
-     * Is the trade valid
-     */
-    public void isTradeValid(){}
+    private ResourceType resources;
+    public StructureType structures;
 
     /**
-     * Using gold to trade for any resource
+     * get the current amount of gold available.
      */
-    public void useGold(){}
+    public void getGold() {
+    }
 
     /**
-     * Use the knight to trade for a particular resource
+     * set the gold to a new amount of gold available.
      */
-    public void useKnight(){}
+    public void setGold() {
+    }
 
     /**
-     * Complete the trade and change the avaliable resources
+     * Is the trade valid, (NOTE: maybe already in CatanDice)
      */
-    public void doTrade(){}
+    public void isTradeValid() {
+    }
 
+    /**
+     * Complete the trade and change the available resources to
+     * the traded resources. (NOTE: use setGold or could merge)
+     */
+    public void doTrade() {
+    }
+
+    // Note: knights are labeled 1 - 5.
+    /**
+     * Build the knight, so it can be used to swap resources,
+     * make sure the knights are built in ascending order
+     */
+    public void buildKnight() {
+    }
+
+    /**
+     * Use the knight to trade for a particular resource,
+     * can not use this knights resource again to swap.
+     * if Knight 6 wildcard, Resource swap is players choice.
+     */
+    public void useKnight() {
+    }
 }
+
+

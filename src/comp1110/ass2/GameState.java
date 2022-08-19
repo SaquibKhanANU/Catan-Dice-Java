@@ -32,8 +32,20 @@ public class GameState {
          */
         public void whoseTurn(){}
 
+        /**
+         * Can re roll the dice or not
+         */
+        public void canReRoll(){}
+
+        /**
+         * if player built that round
+         */
+        public void didBuild(){
 
         }
+}
+
+
 
 /**
  * Player input
