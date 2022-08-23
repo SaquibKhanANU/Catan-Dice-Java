@@ -15,8 +15,6 @@ Saquib Khan: Task 3 5 7
 
 John Larkin: Tasks 4 6 8
 
-Adeer Siddiqi: Unknown
-
 ## Week 6
 
 ...
