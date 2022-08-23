@@ -13,7 +13,8 @@ public class CatanDice {
      *         a board state, false otherwise.
      */
     public static boolean isBoardStateWellFormed(String board_state) {
-	 return false; // FIXME: Task #3
+        return false;
+        // FIXME: Task #3
     }
 
     /**
