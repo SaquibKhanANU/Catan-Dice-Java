@@ -96,11 +96,6 @@ public class CatanDice {
         return false;
     }
 
-    public static void main(String[] args) {
-
-        System.out.println(isActionWellFormed("swap 3"));
-    }
-// build R0 gives true, bild J5 gives false
     /**
      * Roll the specified number of dice and add the result to the
      * resource state.
