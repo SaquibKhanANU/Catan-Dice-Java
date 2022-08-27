@@ -31,9 +31,16 @@ collaboration:
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external code)
 code:
-  - comment:
-    url:
+  - comment: Referencing for Task 4
+    url: https://stackoverflow.com/questions/5150234/how-to-use-charsequence
     licence:
+
+  - comment: Java documentation
+      url: https://docs.oracle.com/javase/7/docs/api/index.html
+      licence
+  - comment: ASCII conversions
+      url: https://en.wikipedia.org/wiki/ASCII
+      licence:
 
 # Use this to list any assets (artwork, sound, etc) that you used.
 # Provide a comment explaining your use of that asset and the URL

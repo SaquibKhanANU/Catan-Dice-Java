@@ -1,5 +1,7 @@
 package comp1110.ass2;
 
+
+
 public class CatanDice {
 
     /**
@@ -24,10 +26,81 @@ public class CatanDice {
      * @return true iff the string is a well-formed representation of
      *         a board state, false otherwise.
      */
-    public static boolean isActionWellFormed(String action) {
-	 return false; // FIXME: Task #4
+    public static boolean isActionWellFormed(String action) { // Task #4
+        // The strings to check. Strings contains a space at the end.
+        String build = "build ";
+        String trade = "trade ";
+        String swap = "swap ";
+        // Check if it contains the specific string
+        Boolean contains_build = action.indexOf(build) == 0;
+        Boolean contains_trade = action.indexOf(trade) == 0;
+        Boolean contains_swap = action.indexOf(swap) == 0;
+        if (contains_build && action.length() < 10){
+            int type = (int) action.charAt(6);
+            // Check that type is R,S,C,J or K.
+            // If the letter is R (a road) followed by a single digit
+            if(type == 82 && action.length() == 8){
+                int num = (int) action.charAt(7);
+                return (47 < num && num < 54);
+            }
+            // If the letter is R (a road) followed by two digits
+            if(type == 82 && action.length() == 9){
+                int num_1 = (int) action.charAt(7);
+                int num_2 = (int) action.charAt(8);
+                return (num_1 == 49 && 47 < num_2 && num_2 < 54);
+            }
+            // If the letter is S (a settlement)
+            if(type == 83 && action.length()==8){
+                int num = (int) action.charAt(7);
+                return(num == 51 ||num == 52 ||num == 53 ||num == 55 ||num == 57 ); //S3,S4,S5,S7,S9
+            } else if(type == 83 && action.length() == 9){ //S11
+                int num_1 = (int) action.charAt(7);
+                int num_2 = (int) action.charAt(8);
+                return (num_1 == 49 && num_2 == 49);
+            }
+            // If the letter is C (a city)
+            if(type == 67 && action.length() == 8){ //C7
+                int num_1 = (int) action.charAt(7);
+                return (num_1 == 55);
+            } else if(type == 67 && action.length() == 9){ // Two digits after C
+                int num_1 = (int) action.charAt(7);
+                int num_2 = (int) action.charAt(8);
+                if (num_1 ==49 && num_2 ==50 ){return true;} //C12
+                if (num_1 ==50 && num_2 == 48 ){return true;} // C20
+                if (num_1 ==51 && num_2 == 48 ){return true;} // C30
+            }
+            // If the letter is J or K (a knight)
+            if(type == 74 || type == 85){
+                int num = (int) action.charAt(7);
+                return (48 < num && num < 55);
+            }
+        }
+        // Check if it contains trade and is the correct length
+        if (contains_trade && action.length() == 7){
+            int num = (int) action.charAt(6);
+            // Check if it contains the correct integers. In ASCII format
+            if (47 < num && num < 54){
+                return true;}
+        }
+        // Check if it contains swap and is the correct length
+        if (contains_swap && action.length() == 8){
+            int space_2 = (int) action.charAt(6);
+            // Check if contains the second space
+            if (space_2 == 32){
+                int num_1 = (int) action.charAt(5);
+                int num_2 = (int) action.charAt(7);
+                // Check if numbers are between 0-5. Allows for num_1 = num_2. In ASCII format.
+                if (47 < num_1 && num_1 < 54 && 47 < num_2 && num_2 < 54){return true;}
+            }
+        }
+        return false;
     }
 
+    public static void main(String[] args) {
+
+        System.out.println(isActionWellFormed("swap 3"));
+    }
+// build R0 gives true, bild J5 gives false
     /**
      * Roll the specified number of dice and add the result to the
      * resource state.
