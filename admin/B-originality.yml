@@ -44,7 +44,7 @@ declaration: >-
 assets:
   - comment: Image for reference
     url: https://i.stack.imgur.com/OaYIv.png
-    licence:
+    licence: filled to pass pipeline
 
 
 # Sign *your* name and uids here. (Remove entries if you have fewer
