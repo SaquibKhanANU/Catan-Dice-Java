@@ -87,7 +87,7 @@ public class CatanDice {
      *         a board state, false otherwise.
      */
     public static boolean isActionWellFormed(String action) { // Task #4
-        // The strings to check. Strings contains a space at the end.
+        // The strings to check. Strings contain a space at the end.
         String build = "build ";
         String trade = "trade ";
         String swap = "swap ";

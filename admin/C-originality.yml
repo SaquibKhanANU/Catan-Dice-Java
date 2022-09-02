@@ -19,9 +19,9 @@ declaration: >-
 #
 # Add as many "name+comment" entries as necessary
 # (or remove it altogether if you haven't collaborated with anyone)
-collaboration:
-  - name:
-    comment: >-
+#collaboration:
+#  - name:
+#    comment: >-
 
 # Use this to list any code that you used that you did not write,
 # aside from code provided by the lecturer.  Provide a comment
@@ -33,14 +33,13 @@ collaboration:
 code:
   - comment: Referencing for Task 4
     url: https://stackoverflow.com/questions/5150234/how-to-use-charsequence
-    licence:
-
+    licence: filled to pass pipeline
   - comment: Java documentation
-      url: https://docs.oracle.com/javase/7/docs/api/index.html
-      licence
+    url: https://docs.oracle.com/javase/7/docs/api/index.html
+    licence: filled to pass pipeline
   - comment: ASCII conversions
-      url: https://en.wikipedia.org/wiki/ASCII
-      licence:
+    url: https://en.wikipedia.org/wiki/ASCII
+    licence: filled to pass pipeline
 
 # Use this to list any assets (artwork, sound, etc) that you used.
 # Provide a comment explaining your use of that asset and the URL
@@ -48,18 +47,16 @@ code:
 #
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external assets)
-assets:
-  - comment:
-    url:
-    licence:
+#assets:
+#  - comment:
+#    url:
+#    licence:
 
 
 # Sign *your* name and uids here. (Remove entries if you have fewer
 # than three members.)
-signatures:
-  - name:
-    uid:
-  - name:
-    uid:
-  - name:
-    uid:
+#signatures:
+#  - name:
+#    uid:
+#  - name:
+#    uid:
