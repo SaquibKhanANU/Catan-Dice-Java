@@ -1,5 +1,9 @@
-package comp1110.ass2;
+package comp1110.ass2.Draft;
 
+import comp1110.ass2.CatanEnum.StructureType;
+import comp1110.ass2.Draft.Resources;
+
+// DRAFT WILL DELETE LATER
 public class Structures {
     // Resource costs associated with structure
     private int cost;
@@ -22,7 +26,7 @@ public class Structures {
     /**
      * int points, string resources, boolean filled
      */
-    public Structures(){
+    public Structures(StructureType type, Resources resource){
 
     };
 

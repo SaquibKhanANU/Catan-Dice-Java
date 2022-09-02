@@ -1,6 +1,6 @@
-package comp1110.ass2;
+package comp1110.ass2.CatanGame;
 
-
+import java.util.Arrays;
 
 public class CatanDice {
 
@@ -15,9 +15,69 @@ public class CatanDice {
      *         a board state, false otherwise.
      */
     public static boolean isBoardStateWellFormed(String board_state) {
-        return false;
-        // FIXME: Task #3
+        String[] boardStateArr = board_state.split(",");
+        int[] citiesPoints = {7, 12, 20, 30};
+        int[] knightsPoints = {1, 2, 3, 4, 5, 6};
+        int[] settlementsPoints = {3, 4, 5, 7, 9, 11};
+        Boolean[] bucket = new Boolean[boardStateArr.length];
+
+        if (board_state == "") {
+            return true;
+        } else {
+            for (int i = 0; i < boardStateArr.length; i++) {
+                String structureLetter = boardStateArr[i].replaceAll("[0-9]", "");
+                int structureInt = Integer.parseInt(0 + boardStateArr[i].replaceAll("[^0-9]", ""));
+                Boolean real = boardStateArr[i].equals(structureLetter + "" + structureInt);
+                if (real.equals(true)) {
+                    if (structureLetter.equals("R")) {
+                        if (structureInt >= 0 && structureInt <= 15) {
+                            bucket[i] = true;
+                            System.out.println(structureLetter);
+                        } else {
+                            bucket[i] = false;
+                        }
+                    } else if (structureLetter.equals("C")) {
+                        if (Arrays.stream(citiesPoints).anyMatch(a -> a == structureInt)) {
+                            bucket[i] = true;
+                            System.out.println(structureLetter);
+                        } else {
+                            bucket[i] = false;
+                        }
+                    } else if (structureLetter.equals("S"))
+                        if (Arrays.stream(settlementsPoints).anyMatch(a -> a == structureInt)) {
+                            bucket[i] = true;
+                            System.out.println(structureLetter);
+                        } else {
+                            bucket[i] = false;
+                        }
+                    else if (structureLetter.equals("J")) {
+                        if (Arrays.stream(knightsPoints).anyMatch(a -> a == structureInt)) {
+                            bucket[i] = true;
+                            System.out.println(structureLetter);
+                        } else {
+                            bucket[i] = false;
+                        }
+                    } else if (structureLetter.equals("K")) {
+                        if (Arrays.stream(knightsPoints).anyMatch(a -> a == structureInt)) {
+                            bucket[i] = true;
+                            System.out.println(structureLetter);
+                        } else {
+                            bucket[i] = false;
+                        }
+                    } else {
+                        bucket[i] = false;
+                    }
+                }
+                else {
+                    bucket[i] = false;
+                }
+            }
+            return  !(Arrays.asList(bucket).contains(false));
+            // FIXME: Task #3
+        }
     }
+
+
 
     /**
      * Check if the string encoding of a player action is well formed.
@@ -128,9 +188,8 @@ public class CatanDice {
      * @return true iff the structure is a possible next build, false
      *         otherwise.
      */
-    public static boolean checkBuildConstraints(String structure,
-						String board_state) {
-	 return false; // FIXME: Task #8
+    public static boolean checkBuildConstraints(String structure, String board_state) {
+        return false; // FIXME: Task #8
     }
 
     /**
@@ -143,10 +202,36 @@ public class CatanDice {
      * @return true iff the structure can be built with the available
      *         resources, false otherwise.
      */
-    public static boolean checkResources(String structure,
-					 int[] resource_state) {
-	 return false; // FIXME: Task #7
+    public static boolean checkResources(String structure, int[] resource_state) {
+        char structureChar = structure.charAt(0);
+
+        if (structureChar == 'C') {
+            if (resource_state[0] >= 3 && resource_state[1] >= 2) {
+                return true;
+            }
+        } else if (structureChar == 'S') {
+            if (resource_state[1] >= 1 && resource_state[2] >= 1 && resource_state[3] >= 1 && resource_state[4] >= 1) {
+                return true;
+            }
+        } else if (structureChar == 'R') {
+            if (resource_state[3] >= 1 && resource_state[4] >= 1) {
+                return true;
+            }
+        } else if (structureChar == 'K') {
+            if (resource_state[0] >= 1 && resource_state[1] >= 1 && resource_state[2] >= 1) {
+                return true;
+            }
+        }
+        else if (structureChar == 'J') {
+            if (resource_state[0] >= 1 && resource_state[1] >= 1 && resource_state[2] >= 1) {
+                return true;
+            }
+        } else {
+            return false;
+        }
+        return false; // FIXME: Task #7
     }
+
 
     /**
      * Check if the available resources are sufficient to build the

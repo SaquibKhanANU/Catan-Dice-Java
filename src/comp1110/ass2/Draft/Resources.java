@@ -1,5 +1,7 @@
-package comp1110.ass2;
+package comp1110.ass2.Draft;
 
+import comp1110.ass2.CatanEnum.ResourceType;
+// DRAFT WILL DELETE LATER
 public class Resources {
     // Is resource available
     private boolean available;

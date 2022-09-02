@@ -1,5 +1,8 @@
-package comp1110.ass2;
+package comp1110.ass2.Draft;
 
+import comp1110.ass2.CatanEnum.ResourceType;
+import comp1110.ass2.CatanEnum.StructureType;
+ // DRAFT WILL DELETE LATER
 public class Trades {
     private ResourceType resources;
     public StructureType structures;
