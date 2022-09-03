@@ -53,8 +53,8 @@ code:
 #    licence:
 
 
- Sign *your* name and uids here. (Remove entries if you have fewer
- than three members.)
+# Sign *your* name and uids here. (Remove entries if you have fewer
+# than three members.
 signatures:
   - name: Saquib Khan
     uid: u7108513
