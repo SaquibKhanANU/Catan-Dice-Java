@@ -1,6 +1,8 @@
 package comp1110.ass2;
 
 import java.util.*;
+
+import comp1110.ass2.CatanGame.CatanDice;
 import org.junit.jupiter.api.Test;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;

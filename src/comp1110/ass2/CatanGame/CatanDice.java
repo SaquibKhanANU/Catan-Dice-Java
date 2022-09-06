@@ -1,6 +1,7 @@
 package comp1110.ass2.CatanGame;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class CatanDice {
 
@@ -172,8 +173,19 @@ public class CatanDice {
      * This method does not return any value. It should update the given
      * resource_state.
      */
+
+    // Create the DICE. 0 = Ore, 1 = Grain, 2 = Wool, 3 = Timber, 4 = Bricks, 5 = Gold.
+    static final int[] DICE = {0,1,2,3,4,5};
+
     public static void rollDice(int n_dice, int[] resource_state) {
-	// FIXME: Task #6
+        // For each of the n_dice dice, do the following
+	for (int i = 0; i < n_dice; i ++){
+        var rand = new Random();
+        int roll_value = rand.nextInt(DICE.length);
+        int resource_count = resource_state[roll_value];
+        resource_count++; // Increment the number of that resource by 1
+        resource_state[roll_value] = resource_count; // Store the value back into the resource_state array
+    }
     }
 
     /**
