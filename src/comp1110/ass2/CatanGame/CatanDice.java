@@ -1,7 +1,10 @@
 package comp1110.ass2.CatanGame;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
+
+import static java.util.Arrays.asList;
 
 public class CatanDice {
 
@@ -73,7 +76,7 @@ public class CatanDice {
                     bucket[i] = false;
                 }
             }
-            return  !(Arrays.asList(bucket).contains(false));
+            return  !(asList(bucket).contains(false));
             // FIXME: Task #3
         }
     }
@@ -200,9 +203,54 @@ public class CatanDice {
      * @return true iff the structure is a possible next build, false
      *         otherwise.
      */
+
+    // public static String[] STRUCTURE_MAP = {"S3", "R0","R1", "","R2"};
     public static boolean checkBuildConstraints(String structure, String board_state) {
-        return false; // FIXME: Task #8
+        String[] boardStateArray = board_state.split(",");
+        List<String> boardStateList = asList(boardStateArray);
+        // look at what structure is to be built,
+        if (boardStateList.contains(structure)){return false;}
+        // structure has not already been built
+        String structure_type = structure.substring(0,1);
+        int structure_int = Integer.parseInt(structure.substring(1));
+        // structure is a road
+        if (structure_type.equals("R")){
+          if (structure_int == 0){return true;}
+          if (structure_int == 2 || structure_int ==5){
+              return boardStateList.contains("R" + (structure_int-2));
+          }
+          if (structure_int == 12){
+              return boardStateList.contains("R" + (structure_int-5));
+          }
+          else {return boardStateList.contains("R" + (structure_int-1));}
+        }
+        // structure is a settlement
+        if (structure_type.equals("S")){
+            if (structure_int == 3){return true;}
+            if (structure_int ==4 ){return boardStateList.contains("R" + 2);}
+            else {return boardStateList.contains("R" + structure_int);}
+        };
+        // structure is a city
+        if (structure_type.equals("C")){
+            if (structure_int == 7){return boardStateList.contains("R" + 1);}
+            if (structure_int == 12){return boardStateList.contains("R" + 4);}
+            if (structure_int == 20){return boardStateList.contains("R" + 13);}
+            if (structure_int == 30){return boardStateList.contains("R" + 15);}
+        };
+        // structure is a joker
+        if (structure_type.equals("J")){
+            if (structure_int == 1){return true;}
+            Boolean value = boardStateList.contains("J" + (structure_int-1)) || boardStateList.contains("K" + (structure_int-1));
+            return value;
+        };
+        // structure is a knight
+        if (structure_type.equals("K")){
+            {return boardStateList.contains("J" + (structure_int));}
+        }
+        return false; // Task #8
     }
+
+
 
     /**
      * Check if the available resources are sufficient to build the
