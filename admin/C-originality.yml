@@ -40,6 +40,10 @@ code:
   - comment: ASCII conversions
     url: https://en.wikipedia.org/wiki/ASCII
     licence: filled to pass pipeline
+  - comment: String equals method
+    url: https://www.bing.com/search?q=equals+for+strings+in+java&cvid=bbddb00595ee44efa29c11dbefa430e8&aqs=edge..69i57j0l7j69i60.4210j0j4&FORM=ANAB01&PC=U531
+    licence: filled to pass pipeline
+
 
 # Use this to list any assets (artwork, sound, etc) that you used.
 # Provide a comment explaining your use of that asset and the URL
