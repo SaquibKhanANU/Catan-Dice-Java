@@ -1,9 +1,7 @@
 package comp1110.ass2.CatanStructure;
 
-public abstract class Structure {
 
-    // The list of buildable blocks making up this structure type, e.g. {R1, R2, ... , R15} (MAYBE NOT NEEDED)
-    protected BuildableStructure[] buildable_structures;
+public abstract class Structure {
 
     // The buildable structure of a specific type (VARIABLE)
     protected  BuildableStructure buildable_structure;
