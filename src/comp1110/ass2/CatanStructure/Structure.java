@@ -1,6 +1,5 @@
 package comp1110.ass2.CatanStructure;
 
-
 public abstract class Structure {
 
     // The buildable structure of a specific type (VARIABLE)

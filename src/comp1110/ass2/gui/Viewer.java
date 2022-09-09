@@ -12,11 +12,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import static comp1110.ass2.CatanGame.CatanDice.isBoardStateWellFormed;
-import static comp1110.ass2.gui.Hexagon.*;
-import static comp1110.ass2.gui.StructureShapes.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class Viewer extends Application {
+import static comp1110.ass2.CatanGame.CatanDice.isBoardStateWellFormed;
+
+public class Viewer extends Application  {
 
     private static final int VIEWER_WIDTH = 1200;
     private static final int VIEWER_HEIGHT = 700;
@@ -26,27 +28,25 @@ public class Viewer extends Application {
     private TextField playerTextField;
     private TextField boardTextField;
 
+
     /**
      * Show the state of a (single player's) board in the window.
      *
      * @param board_state The string representation of the board state.
      */
-    void displayState(String board_state) {
-        road.getChildren().clear();
-        if (isBoardStateWellFormed(board_state)) {
-            String[] boardStateArr = board_state.split(",");
-            for (String s : boardStateArr) {
-                RoadShape piece = new RoadShape(s);
-                piece.setFill(Color.BLACK);
-                road.getChildren().add(piece);
-            }
-        } else {
-            RoadShape piece = new RoadShape(100, 100, 0);
-            road.getChildren().add(piece);
-        }
-        // FIXME Task 5: implement the state viewer
-    }
+    void displayState(String board_state) { // STARTING WITH ROADS THEN WILL CHANGE IT FOR OTHER 3 Structures.
+        Board.roads.getChildren().clear();
 
+        String[] boardStateArr = board_state.split(",");
+
+        if (isBoardStateWellFormed(board_state)) {
+            for (String s : boardStateArr) {
+                Board.RoadShape piece = new Board.RoadShape(s);
+                Board.roads.getChildren().add(piece);
+            }
+        }
+            // FIXME Task 5: implement the state viewer
+    }
     /**
      * Create a basic text field for input and a refresh button.
      */
@@ -67,18 +67,17 @@ public class Viewer extends Application {
         controls.getChildren().add(hb);
     }
 
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Board State Viewer");
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
         root.getChildren().add(controls);
-        root.getChildren().add(board);
-        root.getChildren().add(road);
+        root.getChildren().add(Board.hexBoard);
+        root.getChildren().add(Board.roads);
 
         makeControls();
-        Hexagon.makeBoard();
+        Board.Hexagon.makeBoard();
 
         primaryStage.setScene(scene);
         primaryStage.show();

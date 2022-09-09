@@ -7,6 +7,6 @@ public class City extends Structure{
         super(id, coordinate, point, new int[]{1, 1, 1, 1, 1, 1});
         int x = coordinate[0];
         int y = coordinate[1];
-        this.buildable_structure = new BuildableStructure(x, y, StructureType.City);
+        this.buildable_structure = new BuildableStructure(x, y, StructureType.CITY);
     }
 }
