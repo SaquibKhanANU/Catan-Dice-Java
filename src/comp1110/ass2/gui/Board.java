@@ -128,7 +128,7 @@ public class Board {
                 String id = catanRoadBlocks[i].getId();
                 double x = catanRoadBlocks[i].getBuildableStructure().getX() * 96.43;
                 double y = catanRoadBlocks[i].getBuildableStructure().getY() * 73.07;
-                double r = -30;
+                double r = (i % 3 == 0) ? 30 : -30;
 
                 RoadShape road_shape = new RoadShape(x, y, r, id, Color.BLACK);
                 roads.getChildren().add(road_shape);
