@@ -78,6 +78,7 @@ public class Viewer extends Application  {
 
         makeControls();
         Board.Hexagon.makeBoard();
+        Board.RoadShape.makeRoads();
 
         primaryStage.setScene(scene);
         primaryStage.show();
