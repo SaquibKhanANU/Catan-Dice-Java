@@ -1,27 +1,28 @@
 package comp1110.ass2.gui;
 
-import comp1110.ass2.CatanEnum.StructureType;
-import comp1110.ass2.CatanGame.CatanBoard;
+import comp1110.ass2.CatanStructure.CatanCity;
 import comp1110.ass2.CatanStructure.CatanRoad;
+import comp1110.ass2.CatanStructure.CatanSettlement;
 import javafx.scene.Group;
-import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeType;
-import javafx.scene.text.Font;
+import javafx.scene.shape.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
 
 public class Board {
 
     static Group hexBoard = new Group();
     static Group roads = new Group();
+    static Group cities = new Group();
+    static Group settlements = new Group();
+
+    static boolean built;
+
+    static void setBuilt(boolean built) {
+        Board.built = built;
+    }
 
     public static class Hexagon extends Polygon {
 
@@ -102,23 +103,25 @@ public class Board {
         double roadX;
         double roadY;
         double rotation;
-        static boolean built;
-
+        
+        String id;
 
         // WILL REMOVE Color just using it for testing.
         RoadShape(double roadX, double roadY, double rotation, String id) {
+            this.id = id;
             this.roadX = roadX;
             this.roadY = roadY;
             this.rotation = rotation;
-
             setX(roadX);
             setY(roadY);
             setWidth(20);
             setHeight(70);
             if (built) {
-                setFill(Color.BLUE);
+                setFill(Color.SADDLEBROWN);
+            } else if (id.equals("RI")) {
+                setFill(Color.PURPLE);
             } else {
-                setFill(Color.RED);
+                setFill(Color.LIGHTBLUE);
             }
             setRotate(rotation);
             setStroke(Color.BLACK);
@@ -141,8 +144,8 @@ public class Board {
                         this.roadX = x;
                         this.roadY = y;
                     } else {
-                        this.roadX = x + ((i % 13 == 0) ? -30 : 30);
-                        this.roadY = y + 36;
+                        this.roadX = x + ((i % 13 == 0) ? -30 : 40);
+                        this.roadY = y + 34;
                     }
                 } else if (i >= 14) {
                     this.rotation = (i % 3 == 0) ? -30 : 30;
@@ -168,14 +171,113 @@ public class Board {
                 RoadShape road_shape = new RoadShape(id);
                 roads.getChildren().add(road_shape);
             }
-            roads.setTranslateX(260);
-            roads.setTranslateY(140);
-        }
-
-        static void setBuilt(boolean built) {
-            RoadShape.built = built;
         }
     }
+
+    static class CityShape extends Circle {
+        private static final CatanCity[] catanCityBlocks = new CatanCity[]{
+                new CatanCity("C7", new int[]{0,2}, 7),
+                new CatanCity("C12", new int[]{0,5}, 12),
+                new CatanCity("C20", new int[]{6,4}, 20),
+                new CatanCity("C30", new int[]{6,1}, 30)
+        };
+        double cityX;
+        double cityY;
+        double radius;;
+
+        CityShape(double cityX, double cityY, double radius, String id) {
+            this.cityX = cityX;
+            this.cityY = cityY;
+            setCenterX(cityX);
+            setCenterY(cityY);
+            setRadius(25);
+            if (built) {
+                setFill(Color.SADDLEBROWN);
+            } else {
+                setFill(Color.LIGHTBLUE);
+            }
+            setStroke(Color.BLACK);
+            setStrokeWidth(2);
+        }
+
+        CityShape(String id) {
+            for (int i = 0; i < catanCityBlocks.length; i++) {
+                double x = catanCityBlocks[i].getBuildableStructure().getX() * 90 ;
+                double y = catanCityBlocks[i].getBuildableStructure().getY();
+                if (x != 0) {
+                    this.cityY = (y % 2 != 0) ? y * 105 : (y -1) * 105;
+                } else {
+                    this.cityY = (y % 2 == 0) ? y * 105 : (y -1) * 105;
+                }
+                this.cityX = x;
+                if (id.equals(catanCityBlocks[i].getId())) {
+                    CityShape road_shape = new CityShape(cityX, cityY, radius, id);
+                    cities.getChildren().add(road_shape);
+                }
+                cities.setTranslateX(350);
+                cities.setTranslateY(150);
+            }
+        }
+        public static void makeCities() {
+            for (CatanCity catanCityBlock : catanCityBlocks) {
+                String id = catanCityBlock.getId();
+                CityShape city_shape = new CityShape(id);
+                cities.getChildren().add(city_shape);
+            }
+        }
+    }
+
+    static class SettlementShape extends Polygon {
+        private static final CatanSettlement[] catanSettlementBlocks = new CatanSettlement[]{
+                new CatanSettlement("S3",new int[]{2,1}, 3),
+                new CatanSettlement("S4",new int[]{2,4}, 4),
+                new CatanSettlement("S5",new int[]{2,7}, 5),
+                new CatanSettlement("S7",new int[]{4,6}, 7),
+                new CatanSettlement("S9",new int[]{4,3}, 9),
+                new CatanSettlement("S11",new int[]{4,0}, 11)
+        };
+
+        SettlementShape (double x, double y) {
+            double a = 20;
+            double b = 20;
+            getPoints().addAll(0.0, -a,
+                    b, a,
+                    -b, a);
+            setLayoutX(x);
+            setLayoutY(y);
+            if (built) {
+                setFill(Color.SADDLEBROWN);
+            } else {
+                setFill(Color.LIGHTBLUE);
+            }
+            setStroke(Color.BLACK);
+            setStrokeWidth(2);
+        }
+
+        SettlementShape(String id){
+            for (int i = 0; i < catanSettlementBlocks.length; i++) {
+                double x = catanSettlementBlocks[i].getBuildableStructure().getX();
+                double y = catanSettlementBlocks[i].getBuildableStructure().getY();
+                double xs = (i > 2) ? x * 93 : x * 93;
+                double ys = (i > 2) ? y * 70 : y * 70 + 40;
+
+                if (id.equals(catanSettlementBlocks[i].getId())) {
+                    SettlementShape road_shape = new SettlementShape(xs, ys);
+                    settlements.getChildren().add(road_shape);
+                }
+                settlements.setTranslateX(350);
+                settlements.setTranslateY(140);
+            }
+        }
+        public static void makeSettlements() {
+            for (CatanSettlement catanSettlementBlocks : catanSettlementBlocks) {
+                String id = catanSettlementBlocks.getId();
+                SettlementShape settlement_shape = new SettlementShape(id);
+                settlements.getChildren().add(settlement_shape);
+            }
+        }
+    }
+
 }
 
 

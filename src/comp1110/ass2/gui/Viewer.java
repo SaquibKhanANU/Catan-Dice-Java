@@ -39,24 +39,33 @@ public class Viewer extends Application  {
      */
     void displayState(String board_state) { // STARTING WITH ROADS THEN WILL CHANGE IT FOR OTHER 3 Structures.
         Board.roads.getChildren().clear();
+        Board.cities.getChildren().clear();
+        Board.settlements.getChildren().clear();
 
-        String[] roadIds = new String[]{"RI", "R0","R1", "R2","R3", "R4","R5", "R6", "R7", "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15"};
+        String[] roadIds = new String[]{"RI","R0","R1", "R2","R3", "R4","R5", "R6", "R7", "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15",
+                "C7", "C12", "C20", "C30", "S3", "S4", "S5", "S7", "S9", "S11"};
         String[] boardStateArr = board_state.split(",");
         List<String> boardStateArrList = Arrays.asList(boardStateArr);
 
         if (isBoardStateWellFormed(board_state)) {
             for (String s : roadIds) {
-                if (boardStateArrList.contains(s)) {
-                    Board.RoadShape.setBuilt(true);
-                } else {
-                    Board.RoadShape.setBuilt(false);
+                Board.setBuilt(boardStateArrList.contains(s));
+                if (s.charAt(0) == 'R'){
+                    Board.RoadShape piece = new Board.RoadShape(s);
+                    Board.roads.getChildren().add(piece);
+                } else if (s.charAt(0) == 'C') {
+                    Board.CityShape piece = new Board.CityShape(s);
+                    Board.cities.getChildren().add(piece);
+                } else if (s.charAt(0) == 'S') {
+                    Board.SettlementShape piece = new Board.SettlementShape(s);
+                    Board.settlements.getChildren().add(piece);
                 }
-                Board.RoadShape piece = new Board.RoadShape(s);
-                Board.roads.getChildren().add(piece);
             }
         } else {
-            Board.RoadShape.setBuilt(false);
+            Board.setBuilt(false);
             Board.RoadShape.makeRoads();
+            Board.CityShape.makeCities();
+            Board.SettlementShape.makeSettlements();
         }
             // FIXME Task 5: implement the state viewer
     }
@@ -88,11 +97,16 @@ public class Viewer extends Application  {
 
         root.getChildren().add(controls);
         root.getChildren().add(Board.hexBoard);
+        root.getChildren().add(Board.cities);
         root.getChildren().add(Board.roads);
+        root.getChildren().add(Board.settlements);
+
 
         makeControls();
         Board.Hexagon.makeBoard();
         Board.RoadShape.makeRoads();
+        Board.CityShape.makeCities();
+        Board.SettlementShape.makeSettlements();
 
 
         primaryStage.setScene(scene);
