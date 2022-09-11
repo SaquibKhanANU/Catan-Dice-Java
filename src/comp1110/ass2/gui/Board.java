@@ -37,7 +37,7 @@ public class Board {
             setEffect(new DropShadow(10, Color.SADDLEBROWN));
             setStrokeWidth(1);
             setStrokeType(StrokeType.INSIDE);
-            offsetY = calculateApothem();
+            offsetY = calculateApothem() * 0.92;
             offsetX = radius * 1.35;
 
             for (int i = 0; i < 6; i++) {
@@ -46,24 +46,29 @@ public class Board {
                 getPoints().add(Math.sin(angle) * radius / 1.1);
             }
         }
+
         public double getOffsetY() {
             return offsetY;
         }
+
         public double getOffsetX() {
             return offsetX;
         }
+
         private double calculateApothem() {
-            return (Math.tan(radianStep) * radius) / 2.2;
+            double x = (Math.tan(radianStep) * radius) / 2;
+            System.out.println(x + "");
+            return x;
         }
 
         public static void makeBoard() {
             int[] translationY = {2, -2, -1, -1, 1, 1};
             int[] translationX = {0, 0, 1, -1, -1, 1};
-            Color[] hexagonColors = { Color.TAN,  Color.TAN,  Color.TAN, Color.TAN,  Color.TAN,  Color.TAN};
+            Color[] hexagonColors = {Color.TAN, Color.TAN, Color.TAN, Color.TAN, Color.TAN, Color.TAN};
             double HexagonRadius = 135;
             Hexagon hexagon1 = new Hexagon(HexagonRadius, Color.WHITE);
             hexBoard.setTranslateX(600);
-            hexBoard.setTranslateY(350);
+            hexBoard.setTranslateY(360);
             for (int i = 0; i <= 5; i++) {
                 Hexagon hexagon = new Hexagon(HexagonRadius, hexagonColors[i]);
                 hexagon.setTranslateX(hexagon1.getOffsetX() * translationX[i]);
@@ -75,76 +80,102 @@ public class Board {
 
     static class RoadShape extends Rectangle {
 
-        private static CatanRoad[] catanRoadBlocks = new CatanRoad[]{ // WILL MAKE THIS A FOR LOOP IF POSSIBLE
+        private static final CatanRoad[] catanRoadBlocks = new CatanRoad[]{ // WILL MAKE THIS A FOR LOOP IF POSSIBLE
                 new CatanRoad("RI", new int[]{2, 0}, 1),
                 new CatanRoad("R0", new int[]{2, 2}, 1),
-                new CatanRoad("R1", new int[]{0, 2}, 1),
-                new CatanRoad("R2", new int[]{2, 2}, 1),
-                new CatanRoad("R3", new int[]{2, 3}, 1),
-                new CatanRoad("R4", new int[]{0, 4}, 1),
-                new CatanRoad("R5", new int[]{2, 4}, 1),
-                new CatanRoad("R6", new int[]{0, 6}, 1),
-                new CatanRoad("R7", new int[]{4, 4}, 1),
-                new CatanRoad("R8", new int[]{4, 3}, 1),
-                new CatanRoad("R9", new int[]{4, 2}, 1),
-                new CatanRoad("R10", new int[]{4, 0}, 1),
-                new CatanRoad("R11", new int[]{4, 1}, 1),
-                new CatanRoad("R12", new int[]{0, 12}, 1),
-                new CatanRoad("R13", new int[]{0, 3}, 1),
-                new CatanRoad("R14", new int[]{0, 14}, 1),
+                new CatanRoad("R1", new int[]{1, 2}, 1),
+                new CatanRoad("R2", new int[]{2, 3}, 1),
+                new CatanRoad("R3", new int[]{2, 5}, 1),
+                new CatanRoad("R4", new int[]{1, 5}, 1),
+                new CatanRoad("R5", new int[]{2, 6}, 1),
+                new CatanRoad("R6", new int[]{3, 7}, 1),
+                new CatanRoad("R7", new int[]{4, 6}, 1),
+                new CatanRoad("R8", new int[]{4, 5}, 1),
+                new CatanRoad("R9", new int[]{4, 3}, 1),
+                new CatanRoad("R10", new int[]{4, 2}, 1),
+                new CatanRoad("R11", new int[]{4, 0}, 1),
+                new CatanRoad("R12", new int[]{5, 5}, 1),
+                new CatanRoad("R13", new int[]{6, 5}, 1),
+                new CatanRoad("R14", new int[]{6, 3}, 1),
+                new CatanRoad("R15", new int[]{6, 2}, 1)
         };
         double roadX;
         double roadY;
+        double rotation;
+        static boolean built;
+
 
         // WILL REMOVE Color just using it for testing.
-        RoadShape(double roadX, double roadY, double rotation, String id, Color color) {
+        RoadShape(double roadX, double roadY, double rotation, String id) {
             this.roadX = roadX;
             this.roadY = roadY;
+            this.rotation = rotation;
+
             setX(roadX);
             setY(roadY);
             setWidth(20);
             setHeight(70);
+            if (built) {
+                setFill(Color.BLUE);
+            } else {
+                setFill(Color.RED);
+            }
             setRotate(rotation);
-            setFill(color);
             setStroke(Color.BLACK);
             setStrokeWidth(2);
         }
 
         RoadShape(String id) {
-
             for (int i = 0; i < catanRoadBlocks.length; i++) {
-                double x = catanRoadBlocks[i].getBuildableStructure().getX() * 96.43;
-                double y = catanRoadBlocks[i].getBuildableStructure().getY() * 73.5;
-                double r = 0;
+                double x = catanRoadBlocks[i].getBuildableStructure().getX() * 110;
+                double y = catanRoadBlocks[i].getBuildableStructure().getY() * 73.06;
+                if (i >= 8 && i <= 12) {
+                    this.rotation = (i % 2 == 0) ? 30 : -30;
+                    double xOffset = -30;
+                    double yOffset = (i % 2 == 0) ? 36 : -36;
+                    this.roadX = x + xOffset;
+                    this.roadY = y + yOffset;
+                } else if (i == 2 || i == 5 || i == 7 || i == 13) {
+                    this.rotation = -90;
+                    if ( i == 7) {
+                        this.roadX = x;
+                        this.roadY = y;
+                    } else {
+                        this.roadX = x + ((i % 13 == 0) ? -30 : 30);
+                        this.roadY = y + 36;
+                    }
+                } else if (i >= 14) {
+                    this.rotation = (i % 3 == 0) ? -30 : 30;
+                    this.roadX = x - 70;
+                    this.roadY = y;
+                } else {
+                    this.rotation = (i % 3 == 0) ? -30 : 30;
+                    this.roadX = x;
+                    this.roadY = y;
+                }
 
                 if (id.equals(catanRoadBlocks[i].getId())) {
-                    RoadShape road_shape = new RoadShape(x, y, 30, id, Color.RED);
+                    RoadShape road_shape = new RoadShape(roadX, roadY, rotation, id);
                     roads.getChildren().add(road_shape);
                 }
             }
+            roads.setTranslateX(260);
+            roads.setTranslateY(140);
         }
         public static void makeRoads() {
             for (int i = 0; i < catanRoadBlocks.length; i++) {
                 String id = catanRoadBlocks[i].getId();
-                double x = catanRoadBlocks[i].getBuildableStructure().getX() * 96.43;
-                double y = catanRoadBlocks[i].getBuildableStructure().getY() * 73.07;
-                double r = (i % 3 == 0) ? 30 : -30;
-
-                RoadShape road_shape = new RoadShape(x, y, r, id, Color.BLACK);
+                RoadShape road_shape = new RoadShape(id);
                 roads.getChildren().add(road_shape);
             }
-            roads.setTranslateX(300);
+            roads.setTranslateX(260);
             roads.setTranslateY(140);
         }
-    }
 
-    class CityShape extends Circle {
-        CityShape () {
-
-        }
-
-        CityShape (String id) {
-
+        static void setBuilt(boolean built) {
+            RoadShape.built = built;
         }
     }
 }
+
+

@@ -1,5 +1,8 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.CatanEnum.StructureType;
+import comp1110.ass2.CatanStructure.CatanRoad;
+import comp1110.ass2.CatanStructure.Structure;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -28,7 +32,6 @@ public class Viewer extends Application  {
     private TextField playerTextField;
     private TextField boardTextField;
 
-
     /**
      * Show the state of a (single player's) board in the window.
      *
@@ -37,16 +40,27 @@ public class Viewer extends Application  {
     void displayState(String board_state) { // STARTING WITH ROADS THEN WILL CHANGE IT FOR OTHER 3 Structures.
         Board.roads.getChildren().clear();
 
+        String[] roadIds = new String[]{"RI", "R0","R1", "R2","R3", "R4","R5", "R6", "R7", "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15"};
         String[] boardStateArr = board_state.split(",");
+        List<String> boardStateArrList = Arrays.asList(boardStateArr);
 
         if (isBoardStateWellFormed(board_state)) {
-            for (String s : boardStateArr) {
+            for (String s : roadIds) {
+                if (boardStateArrList.contains(s)) {
+                    Board.RoadShape.setBuilt(true);
+                } else {
+                    Board.RoadShape.setBuilt(false);
+                }
                 Board.RoadShape piece = new Board.RoadShape(s);
                 Board.roads.getChildren().add(piece);
             }
+        } else {
+            Board.RoadShape.setBuilt(false);
+            Board.RoadShape.makeRoads();
         }
             // FIXME Task 5: implement the state viewer
     }
+
     /**
      * Create a basic text field for input and a refresh button.
      */
@@ -79,6 +93,7 @@ public class Viewer extends Application  {
         makeControls();
         Board.Hexagon.makeBoard();
         Board.RoadShape.makeRoads();
+
 
         primaryStage.setScene(scene);
         primaryStage.show();
