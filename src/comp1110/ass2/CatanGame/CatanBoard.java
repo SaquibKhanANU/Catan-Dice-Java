@@ -10,25 +10,25 @@ public class CatanBoard {
     public final static int CATAN_HEIGHT = 1;
     public final static int CATAN_WIDTH = 1;
     public CatanPlayer player;
-// TODO: Finish the coordinates here
+// Updated Coordinates on Thursday, 15/09/2022.
     private final Structure[] structureBlocks = new Structure[] {
             new CatanRoad("RI", new int[]{7, 3}, 0),
-            new CatanRoad("R0", new int[]{1, 0}, 1),
-            new CatanRoad("R1", new int[]{2, 0}, 1),
-            new CatanRoad("R2", new int[]{3, 0}, 1),
-            new CatanRoad("R3", new int[]{4, 0}, 1),
-            new CatanRoad("R4", new int[]{5, 0}, 1),
-            new CatanRoad("R5", new int[]{6, 0}, 1),
-            new CatanRoad("R6", new int[]{7, 0}, 1),
-            new CatanRoad("R7", new int[]{8, 0}, 1),
-            new CatanRoad("R8", new int[]{9, 0}, 1),
-            new CatanRoad("R9", new int[]{10, 0}, 1),
-            new CatanRoad("R10", new int[]{11, 0}, 1),
-            new CatanRoad("R11", new int[]{12, 0}, 1),
-            new CatanRoad("R12", new int[]{13, 0}, 1),
-            new CatanRoad("R13", new int[]{14, 0}, 1),
-            new CatanRoad("R14", new int[]{15, 0}, 1),
-            new CatanRoad("R15", new int[]{16, 0}, 1)
+            new CatanRoad("R0", new int[]{7, 5}, 1),
+            new CatanRoad("R1", new int[]{4, 6}, 1),
+            new CatanRoad("R2", new int[]{7, 7}, 1),
+            new CatanRoad("R3", new int[]{7, 9}, 1),
+            new CatanRoad("R4", new int[]{4, 10}, 1),
+            new CatanRoad("R5", new int[]{7, 11}, 1),
+            new CatanRoad("R6", new int[]{10, 12}, 1),
+            new CatanRoad("R7", new int[]{13, 11}, 1),
+            new CatanRoad("R8", new int[]{13, 9}, 1),
+            new CatanRoad("R9", new int[]{13, 7}, 1),
+            new CatanRoad("R10", new int[]{13, 5}, 1),
+            new CatanRoad("R11", new int[]{13, 3}, 1),
+            new CatanRoad("R12", new int[]{16, 10}, 1),
+            new CatanRoad("R13", new int[]{19, 9}, 1),
+            new CatanRoad("R14", new int[]{19, 7}, 1),
+            new CatanRoad("R15", new int[]{19, 5}, 1)
     };
 
     public CatanBoard(CatanPlayer player) {
