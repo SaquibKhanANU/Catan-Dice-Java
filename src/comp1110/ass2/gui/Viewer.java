@@ -14,6 +14,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -37,10 +41,13 @@ public class Viewer extends Application  {
      *
      * @param board_state The string representation of the board state.
      */
+    Group instructions = new Group();
     void displayState(String board_state) { // STARTING WITH ROADS THEN WILL CHANGE IT FOR OTHER 3 Structures.
+        instructions.getChildren().clear();
         Board.roads.getChildren().clear();
         Board.cities.getChildren().clear();
         Board.settlements.getChildren().clear();
+
 
         String[] roadIds = new String[]{"RI","R0","R1", "R2","R3", "R4","R5", "R6", "R7", "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15",
                 "C7", "C12", "C20", "C30", "S3", "S4", "S5", "S7", "S9", "S11"};
@@ -62,13 +69,36 @@ public class Viewer extends Application  {
                 }
             }
         } else {
+            Text text = new Text();
+            text.setText("Invalid board state string");
+            text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            text.setFill(Color.RED);
+            text.setX(520);
+            text.setY(50);
+            instructions.getChildren().add(text);
             Board.setBuilt(false);
             Board.RoadShape.makeRoads();
             Board.CityShape.makeCities();
             Board.SettlementShape.makeSettlements();
         }
-            // FIXME Task 5: implement the state viewer
+
+        // FIXME Task 5: implement the state viewer
     }
+    void instructions() {
+        Text text = new Text();
+        text.setText("INSTRUCTIONS: Type a string containing the following characters: \n" +
+                "R + (1-15), C + (7,12,20,30), S + (3,4,5,7,9,11), K + (1-6)\n" +
+                "e.g. R0,R1,R2,S3,S4 (note: no space between comma)");
+        text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 12));
+        text.setX(50);
+        text.setY(50);
+        root.getChildren().add(text);
+    }
+
+    int points() {
+        return 1;
+    }
+
 
     /**
      * Create a basic text field for input and a refresh button.
@@ -100,6 +130,7 @@ public class Viewer extends Application  {
         root.getChildren().add(Board.cities);
         root.getChildren().add(Board.roads);
         root.getChildren().add(Board.settlements);
+        root.getChildren().add(instructions);
 
 
         makeControls();
@@ -107,6 +138,7 @@ public class Viewer extends Application  {
         Board.RoadShape.makeRoads();
         Board.CityShape.makeCities();
         Board.SettlementShape.makeSettlements();
+        instructions();
 
 
         primaryStage.setScene(scene);
