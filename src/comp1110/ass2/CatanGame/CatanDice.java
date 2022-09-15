@@ -27,7 +27,7 @@ public class CatanDice {
         int[] settlementsPoints = {3, 4, 5, 7, 9, 11};
         Boolean[] bucket = new Boolean[boardStateArr.length];
 
-        if (board_state == "") {
+        if (board_state.equals("")) {
             return true;
         } else {
             for (int i = 0; i < boardStateArr.length; i++) {
@@ -35,43 +35,12 @@ public class CatanDice {
                 int structureInt = Integer.parseInt(0 + boardStateArr[i].replaceAll("[^0-9]", ""));
                 Boolean real = boardStateArr[i].equals(structureLetter + "" + structureInt);
                 if (real.equals(true)) {
-                    if (structureLetter.equals("R")) {
-                        if (structureInt >= 0 && structureInt <= 15) {
-                            bucket[i] = true;
-                            System.out.println(structureLetter);
-                        } else {
-                            bucket[i] = false;
-                        }
-                    } else if (structureLetter.equals("C")) {
-                        if (Arrays.stream(citiesPoints).anyMatch(a -> a == structureInt)) {
-                            bucket[i] = true;
-                            System.out.println(structureLetter);
-                        } else {
-                            bucket[i] = false;
-                        }
-                    } else if (structureLetter.equals("S"))
-                        if (Arrays.stream(settlementsPoints).anyMatch(a -> a == structureInt)) {
-                            bucket[i] = true;
-                            System.out.println(structureLetter);
-                        } else {
-                            bucket[i] = false;
-                        }
-                    else if (structureLetter.equals("J")) {
-                        if (Arrays.stream(knightsPoints).anyMatch(a -> a == structureInt)) {
-                            bucket[i] = true;
-                            System.out.println(structureLetter);
-                        } else {
-                            bucket[i] = false;
-                        }
-                    } else if (structureLetter.equals("K")) {
-                        if (Arrays.stream(knightsPoints).anyMatch(a -> a == structureInt)) {
-                            bucket[i] = true;
-                            System.out.println(structureLetter);
-                        } else {
-                            bucket[i] = false;
-                        }
-                    } else {
-                        bucket[i] = false;
+                    switch (structureLetter) {
+                        case "R" -> bucket[i] = structureInt >= 0 && structureInt <= 15;
+                        case "C" -> bucket[i] = Arrays.stream(citiesPoints).anyMatch(a -> a == structureInt);
+                        case "S" -> bucket[i] = Arrays.stream(settlementsPoints).anyMatch(a -> a == structureInt);
+                        case "J", "K" -> bucket[i] = Arrays.stream(knightsPoints).anyMatch(a -> a == structureInt);
+                        default -> bucket[i] = false;
                     }
                 }
                 else {
@@ -102,61 +71,61 @@ public class CatanDice {
         Boolean contains_trade = action.indexOf(trade) == 0;
         Boolean contains_swap = action.indexOf(swap) == 0;
         if (contains_build && action.length() < 10){
-            int type = (int) action.charAt(6);
+            int type = action.charAt(6);
             // Check that type is R,S,C,J or K.
             // If the letter is R (a road) followed by a single digit
             if(type == 82 && action.length() == 8){
-                int num = (int) action.charAt(7);
+                int num = action.charAt(7);
                 return (47 < num && num < 54);
             }
             // If the letter is R (a road) followed by two digits
             if(type == 82 && action.length() == 9){
-                int num_1 = (int) action.charAt(7);
-                int num_2 = (int) action.charAt(8);
+                int num_1 = action.charAt(7);
+                int num_2 = action.charAt(8);
                 return (num_1 == 49 && 47 < num_2 && num_2 < 54);
             }
             // If the letter is S (a settlement)
             if(type == 83 && action.length()==8){
-                int num = (int) action.charAt(7);
+                int num = action.charAt(7);
                 return(num == 51 ||num == 52 ||num == 53 ||num == 55 ||num == 57 ); //S3,S4,S5,S7,S9
             } else if(type == 83 && action.length() == 9){ //S11
-                int num_1 = (int) action.charAt(7);
-                int num_2 = (int) action.charAt(8);
+                int num_1 = action.charAt(7);
+                int num_2 = action.charAt(8);
                 return (num_1 == 49 && num_2 == 49);
             }
             // If the letter is C (a city)
             if(type == 67 && action.length() == 8){ //C7
-                int num_1 = (int) action.charAt(7);
+                int num_1 = action.charAt(7);
                 return (num_1 == 55);
             } else if(type == 67 && action.length() == 9){ // Two digits after C
-                int num_1 = (int) action.charAt(7);
-                int num_2 = (int) action.charAt(8);
+                int num_1 = action.charAt(7);
+                int num_2 = action.charAt(8);
                 if (num_1 ==49 && num_2 ==50 ){return true;} //C12
                 if (num_1 ==50 && num_2 == 48 ){return true;} // C20
                 if (num_1 ==51 && num_2 == 48 ){return true;} // C30
             }
             // If the letter is J or K (a knight)
             if(type == 74 || type == 85){
-                int num = (int) action.charAt(7);
+                int num = action.charAt(7);
                 return (48 < num && num < 55);
             }
         }
         // Check if it contains trade and is the correct length
         if (contains_trade && action.length() == 7){
-            int num = (int) action.charAt(6);
+            int num = action.charAt(6);
             // Check if it contains the correct integers. In ASCII format
             if (47 < num && num < 54){
                 return true;}
         }
         // Check if it contains swap and is the correct length
         if (contains_swap && action.length() == 8){
-            int space_2 = (int) action.charAt(6);
+            int space_2 = action.charAt(6);
             // Check if contains the second space
             if (space_2 == 32){
-                int num_1 = (int) action.charAt(5);
-                int num_2 = (int) action.charAt(7);
+                int num_1 = action.charAt(5);
+                int num_2 = action.charAt(7);
                 // Check if numbers are between 0-5. Allows for num_1 = num_2. In ASCII format.
-                if (47 < num_1 && num_1 < 54 && 47 < num_2 && num_2 < 54){return true;}
+                return 47 < num_1 && num_1 < 54 && 47 < num_2 && num_2 < 54;
             }
         }
         return false;
@@ -231,20 +200,20 @@ public class CatanDice {
             if (structure_int == 3){return true;}
             if (structure_int ==4 ){return boardStateList.contains("R" + 2);}
             else {return boardStateList.contains("R" + structure_int);}
-        };
+        }
         // structure is a city
         if (structure_type.equals("C")){
             if (structure_int == 7){return boardStateList.contains("R" + 1);}
             if (structure_int == 12){return boardStateList.contains("R" + 4);}
             if (structure_int == 20){return boardStateList.contains("R" + 13);}
             if (structure_int == 30){return boardStateList.contains("R" + 15);}
-        };
+        }
         // structure is a joker
         if (structure_type.equals("J")){
             if (structure_int == 1){return true;}
             Boolean value = boardStateList.contains("J" + (structure_int-1)) || boardStateList.contains("K" + (structure_int-1));
             return value;
-        };
+        }
         // structure is a knight
         if (structure_type.equals("K")){
             {return boardStateList.contains("J" + (structure_int));}
@@ -268,30 +237,17 @@ public class CatanDice {
         char structureChar = structure.charAt(0);
 
         if (structureChar == 'C') {
-            if (resource_state[0] >= 3 && resource_state[1] >= 2) {
-                return true;
-            }
+            return resource_state[0] >= 3 && resource_state[1] >= 2;
         } else if (structureChar == 'S') {
-            if (resource_state[1] >= 1 && resource_state[2] >= 1 && resource_state[3] >= 1 && resource_state[4] >= 1) {
-                return true;
-            }
+            return resource_state[1] >= 1 && resource_state[2] >= 1 && resource_state[3] >= 1 && resource_state[4] >= 1;
         } else if (structureChar == 'R') {
-            if (resource_state[3] >= 1 && resource_state[4] >= 1) {
-                return true;
-            }
-        } else if (structureChar == 'K') {
-            if (resource_state[0] >= 1 && resource_state[1] >= 1 && resource_state[2] >= 1) {
-                return true;
-            }
+            return resource_state[3] >= 1 && resource_state[4] >= 1;
+        } else if (structureChar == 'K' || structureChar == 'J') {
+            return resource_state[0] >= 1 && resource_state[1] >= 1 && resource_state[2] >= 1;
         }
-        else if (structureChar == 'J') {
-            if (resource_state[0] >= 1 && resource_state[1] >= 1 && resource_state[2] >= 1) {
-                return true;
-            }
-        } else {
+        else {
             return false;
-        }
-        return false; // FIXME: Task #7
+        }// FIXME: Task #7
     }
 
 

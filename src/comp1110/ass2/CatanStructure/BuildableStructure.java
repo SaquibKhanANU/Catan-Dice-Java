@@ -46,7 +46,7 @@ public class BuildableStructure {
      *
      * @return structure_type
      */
-    public StructureType getStructure_type(){
+    public StructureType getStructureType(){
         return this.structure_type;
     }
 
@@ -70,7 +70,7 @@ public class BuildableStructure {
      *
      * @param structure_type StructureType
      */
-    public void setStructure_type(StructureType structure_type){
+    public void setStructureType(StructureType structure_type){
         this.structure_type = structure_type;
     }
 
