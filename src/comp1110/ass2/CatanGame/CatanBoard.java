@@ -10,9 +10,9 @@ public class CatanBoard {
     public final static int CATAN_HEIGHT = 1;
     public final static int CATAN_WIDTH = 1;
     public CatanPlayer player;
-
+// TODO: Finish the coordinates here
     private final Structure[] structureBlocks = new Structure[] {
-            new CatanRoad("RI", new int[]{0, 0}, 0),
+            new CatanRoad("RI", new int[]{7, 3}, 0),
             new CatanRoad("R0", new int[]{1, 0}, 1),
             new CatanRoad("R1", new int[]{2, 0}, 1),
             new CatanRoad("R2", new int[]{3, 0}, 1),

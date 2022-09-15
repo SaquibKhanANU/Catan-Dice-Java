@@ -1,8 +1,5 @@
 package comp1110.ass2.gui;
 
-import comp1110.ass2.CatanEnum.StructureType;
-import comp1110.ass2.CatanStructure.CatanRoad;
-import comp1110.ass2.CatanStructure.Structure;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,18 +10,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static comp1110.ass2.CatanGame.CatanDice.isBoardStateWellFormed;
+import static comp1110.ass2.CatanDice.isBoardStateWellFormed;
 
 public class Viewer extends Application  {
 

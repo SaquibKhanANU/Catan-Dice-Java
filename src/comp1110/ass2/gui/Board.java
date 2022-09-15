@@ -82,7 +82,7 @@ public class Board {
     static class RoadShape extends Rectangle {
 
         private static final CatanRoad[] catanRoadBlocks = new CatanRoad[]{ // WILL MAKE THIS A FOR LOOP IF POSSIBLE
-                new CatanRoad("RI", new int[]{2, 0}, 0),
+                new CatanRoad("RI", new int[]{2, 1}, 0),
                 new CatanRoad("R0", new int[]{2, 2}, 1),
                 new CatanRoad("R1", new int[]{1, 2}, 1),
                 new CatanRoad("R2", new int[]{2, 3}, 1),
