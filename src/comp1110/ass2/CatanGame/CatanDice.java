@@ -173,7 +173,7 @@ public class CatanDice {
      *         otherwise.
      */
 
-    // public static String[] STRUCTURE_MAP = {"S3", "R0","R1", "","R2"};
+
     public static boolean checkBuildConstraints(String structure, String board_state) {
         String[] boardStateArray = board_state.split(",");
         List<String> boardStateList = asList(boardStateArray);
@@ -280,7 +280,30 @@ public class CatanDice {
     public static boolean canDoAction(String action,
 				      String board_state,
 				      int[] resource_state) {
-	 return false; // FIXME: Task #9
+        if (action.substring(0,5).equals("build")){
+            // Needs to be a valid build and have the available resources
+            String structure = action.substring(6);
+            boolean result = checkBuildConstraints(structure, board_state) && checkResources(structure, resource_state);
+            return result;
+        }
+        if (action.substring(0,5).equals("trade")){
+            // Need 2 gold for a trade action
+            return (resource_state[5] >= 2);
+        }
+        if (action.substring(0,4).equals("swap")){
+            int out = Integer.parseInt(action.substring(5,6));
+            int in = Integer.parseInt(action.substring(7));
+            // The resource state needs to contain the out resource
+            if (resource_state[out] >= 1){
+                // The board_state needs to contain J + in but not contain K + in (otherwise it has been used)
+                String[] boardStateArray = board_state.split(",");
+                List<String> boardStateList = asList(boardStateArray);
+                boolean result = boardStateList.contains("J" + (in + 1)) && !(boardStateList.contains("K" + (in+1)));
+                return result;
+            }
+            return false;
+        }
+	 return false; //Task #9
     }
 
     /**
