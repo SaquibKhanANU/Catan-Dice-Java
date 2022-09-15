@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+
+import static java.lang.reflect.Array.setInt;
 import static java.util.Arrays.asList;
 
 public class CatanDice {
@@ -342,10 +344,12 @@ public class CatanDice {
                 // The board_state needs to contain J + in but not contain K + in (otherwise it has been used)
                 String[] boardStateArray = board_state.split(",");
                 List<String> boardStateList = asList(boardStateArray);
-                boolean result = boardStateList.contains("J" + (in + 1)) && !(boardStateList.contains("K" + (in+1)));
-                return result;
-            }
-            return false;
+                String cannot_contain = "K" + (in + 1);
+                boolean case_1 = boardStateList.contains("J" + (in + 1)) && !(boardStateList.contains(cannot_contain));
+                // If the wildcard joker is available then action can be done
+                boolean case_2 = boardStateList.contains("J6") && !(boardStateList.contains("K6"));
+                return case_1 || case_2;
+            } else {return false;}
         }
 	 return false; //Task #9
     }
@@ -362,7 +366,51 @@ public class CatanDice {
     public static boolean canDoSequence(String[] actions,
 					String board_state,
 					int[] resource_state) {
-	 return false; // FIXME: Task #11
+        System.out.println("NEW FUNCTION CALL");
+        boolean test;
+        String board_copy = board_state;
+        int[] resource_copy = resource_state;
+        for (int i = 0; i < actions.length; i++) {
+            String action = actions[i];
+            System.out.println("action is " + action + ", board copy is " + board_copy);
+            test = canDoAction(action, board_copy, resource_copy);
+            if (!test) {
+                return false;
+            }
+            // Otherwise the action can be done
+            // Update the board_state and resource state for the action
+            if (action.substring(0, 5).equals("build")) {
+                // Add structure to board state
+                board_state = board_state + "," + action.substring(6);
+                // TODO: Remove resources from resource_state from this build
+            }
+            if (action.substring(0, 5).equals("trade")) {
+                // Remove resources from resource state
+                resource_state[5] = resource_state[5] - 2;
+                // Add resource that has been traded for
+                int in = Integer.parseInt(action.substring(6));
+                resource_state[in] = resource_state[in]++;
+            }
+            if (action.substring(0, 4).equals("swap")) {
+                int out = Integer.parseInt(action.substring(5, 6));
+                int in = Integer.parseInt(action.substring(7));
+                // Add in resource to resource state
+                int new_in = resource_copy[in] + 1;
+                setInt(resource_copy, in, new_in);
+                // Remove out resource from resource state
+                int new_out = resource_copy[out] - 1;
+                setInt(resource_copy, out, new_out);
+                // Update board_copy depending on whether the wildcard joker was used.
+                String[] boardCopyArray = board_copy.split(",");
+                List<String> boardCopyList = asList(boardCopyArray);
+                if (boardCopyList.contains("K" + (in + 1))) {
+                    board_copy = board_copy + ",K6";
+                } else {// Wildcard was not used
+                    board_copy = board_copy + (",K" + (in + 1));
+                }
+            }
+        }
+        return true; // FIXME: Task #11
     }
 
     /**
