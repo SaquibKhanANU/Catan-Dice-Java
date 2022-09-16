@@ -74,6 +74,8 @@ public class BuildableStructure {
         this.structure_type = structure_type;
     }
 
+
+
     /**
      *
      * @return String

@@ -28,6 +28,14 @@ public abstract class Structure {
         this.isBuilt = false;
     }
 
+    public int[] getResourceCosts(String id){
+        char structureLetter = id.charAt(0);
+        switch(structureLetter){
+            case 'R': return new int[]{0, 0, 0, 1, 1, 0};
+        }
+        return new int[]{0, 0, 0, 0, 0, 0};
+    }
+
     public BuildableStructure getBuildableStructure(){
         return this.buildable_structure;
     }
