@@ -29,7 +29,7 @@ code:
   # you want to just submit classes):
 method:
   - https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/CatanDice.java#L23-53
-  - https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/CatanDice.java#L236-251
+  - https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/gui/Viewer.java#L46-104
   - https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/gui/Board.java#L82-277
 
   # sign *your* name and uid here
