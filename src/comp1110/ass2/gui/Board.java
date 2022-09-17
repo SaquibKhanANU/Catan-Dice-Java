@@ -1,6 +1,7 @@
 package comp1110.ass2.gui;
 
 import comp1110.ass2.CatanStructure.CatanCity;
+import comp1110.ass2.CatanStructure.CatanKnight;
 import comp1110.ass2.CatanStructure.CatanRoad;
 import comp1110.ass2.CatanStructure.CatanSettlement;
 import javafx.scene.Group;
@@ -9,6 +10,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class Board {
@@ -17,6 +21,9 @@ public class Board {
     static Group roads = new Group();
     static Group cities = new Group();
     static Group settlements = new Group();
+
+    static Group knights = new Group();
+    static Group jokers = new Group();
 
     static boolean built;
 
@@ -61,28 +68,28 @@ public class Board {
             System.out.println(x + "");
             return x;
         }
+    }
 
-        public static void makeBoard() {
-            int[] translationY = {2, -2, -1, -1, 1, 1};
-            int[] translationX = {0, 0, 1, -1, -1, 1};
-            Color[] hexagonColors = {Color.TAN, Color.TAN, Color.TAN, Color.TAN, Color.TAN, Color.TAN};
-            double HexagonRadius = 135;
-            Hexagon hexagon1 = new Hexagon(HexagonRadius, Color.WHITE);
-            hexBoard.setTranslateX(600);
-            hexBoard.setTranslateY(360);
-            for (int i = 0; i <= 5; i++) {
-                Hexagon hexagon = new Hexagon(HexagonRadius, hexagonColors[i]);
-                hexagon.setTranslateX(hexagon1.getOffsetX() * translationX[i]);
-                hexagon.setLayoutY(hexagon1.getOffsetY() * translationY[i]);
-                hexBoard.getChildren().add(hexagon);
-            }
+    public static void makeBoard() {
+        int[] translationY = {2, -2, -1, -1, 1, 1};
+        int[] translationX = {0, 0, 1, -1, -1, 1};
+        Color[] hexagonColors = {Color.TAN, Color.TAN, Color.TAN, Color.TAN, Color.TAN, Color.TAN};
+        double HexagonRadius = 135;
+        Hexagon hexagon1 = new Hexagon(HexagonRadius, Color.WHITE);
+        hexBoard.setTranslateX(600);
+        hexBoard.setTranslateY(360);
+        for (int i = 0; i <= 5; i++) {
+            Hexagon hexagon = new Hexagon(HexagonRadius, hexagonColors[i]);
+            hexagon.setTranslateX(hexagon1.getOffsetX() * translationX[i]);
+            hexagon.setLayoutY(hexagon1.getOffsetY() * translationY[i]);
+            hexBoard.getChildren().add(hexagon);
         }
     }
 
     static class RoadShape extends Rectangle {
 
         private static final CatanRoad[] catanRoadBlocks = new CatanRoad[]{ // WILL MAKE THIS A FOR LOOP IF POSSIBLE
-                new CatanRoad("RI", new int[]{2, 1}, 0),
+                new CatanRoad("RI", new int[]{2, 0}, 0),
                 new CatanRoad("R0", new int[]{2, 2}, 1),
                 new CatanRoad("R1", new int[]{1, 2}, 1),
                 new CatanRoad("R2", new int[]{2, 3}, 1),
@@ -272,6 +279,60 @@ public class Board {
                 String id = catanSettlementBlocks.getId();
                 SettlementShape settlement_shape = new SettlementShape(id);
                 settlements.getChildren().add(settlement_shape);
+            }
+        }
+    }
+    static class KnightShape extends Circle {
+        static Color color;
+        String[] knightId = new String[]{"K1", "K2", "K3", "K4", "K5", "K6"};
+        List<String> knightsList = Arrays.asList(knightId);
+        private static final CatanKnight[] catanKnightBlocks = new CatanKnight[]{
+                new CatanKnight("J1", new int[]{4,4}, 0),
+                new CatanKnight("J2", new int[]{4,8}, 0),
+                new CatanKnight("J5", new int[]{16,4}, 0),
+                new CatanKnight("J4", new int[]{16,8}, 0),
+                new CatanKnight("J3", new int[]{10,2}, 0),
+                new CatanKnight("J6", new int[]{10,10}, 0),
+        };
+
+        KnightShape(double x, double y) {
+            Circle c = new Circle();
+            c.setCenterX(x);
+            c.setCenterY(y-25);
+            c.setRadius(15);
+            setCenterX(x);
+            setCenterY(y);
+            setRadius(25);
+            if (built) {
+                setFill(color);
+            } else {
+                setFill(Color.LIGHTBLUE);
+            }
+            setStroke(Color.BLACK);
+            setStrokeWidth(2);
+            knights.getChildren().add(c);
+        }
+        static void setUsed(Color color){
+            Board.KnightShape.color = color;
+        }
+
+        KnightShape(String id) {
+            for (CatanKnight catanKnight: catanKnightBlocks) {
+                if (id.equals(catanKnight.getId())) {
+                    double x = catanKnight.getBuildableStructure().getX() * 30 + 90;
+                    double y = catanKnight.getBuildableStructure().getY()* 60;
+                    KnightShape road_shape = new KnightShape(x, y);
+                    knights.getChildren().add(road_shape);
+                }
+                knights.setTranslateX(210);
+                knights.setTranslateY(20);
+            }
+        }
+        public static void makeKnights() {
+            for (CatanKnight catanKnight : catanKnightBlocks) {
+                String id = catanKnight.getId();
+                KnightShape city_shape = new KnightShape(id);
+                knights.getChildren().add(city_shape);
             }
         }
     }

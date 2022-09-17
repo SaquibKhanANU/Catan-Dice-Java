@@ -1,5 +1,8 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.CatanEnum.StructureType;
+import comp1110.ass2.CatanGame.CatanBoard;
+import comp1110.ass2.CatanStructure.Structure;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,6 +13,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -30,22 +35,25 @@ public class Viewer extends Application  {
     private final Group controls = new Group();
     private TextField playerTextField;
     private TextField boardTextField;
+    Group instructions = new Group();
 
     /**
      * Show the state of a (single player's) board in the window.
      *
      * @param board_state The string representation of the board state.
      */
-    Group instructions = new Group();
+
     void displayState(String board_state) { // STARTING WITH ROADS THEN WILL CHANGE IT FOR OTHER 3 Structures.
         instructions.getChildren().clear();
         Board.roads.getChildren().clear();
         Board.cities.getChildren().clear();
         Board.settlements.getChildren().clear();
+        Board.knights.getChildren().clear();
 
 
-        String[] roadIds = new String[]{"RI","R0","R1", "R2","R3", "R4","R5", "R6", "R7", "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15",
-                "C7", "C12", "C20", "C30", "S3", "S4", "S5", "S7", "S9", "S11"};
+        String[] roadIds = new String[]{"RI","R0","R1", "R2","R3", "R4","R5", "R6", "R7", "R8", "R9", "R10", "R11", "R12",
+                "R13", "R14", "R15", "C7", "C12", "C20", "C30", "S3", "S4", "S5", "S7", "S9", "S11", "J1", "J2", "J3",
+                "J4", "J5", "J6", "K1", "K2", "K3", "K4", "K5", "k6"};
         String[] boardStateArr = board_state.split(",");
         List<String> boardStateArrList = Arrays.asList(boardStateArr);
 
@@ -61,6 +69,10 @@ public class Viewer extends Application  {
                 } else if (s.charAt(0) == 'S') {
                     Board.SettlementShape piece = new Board.SettlementShape(s);
                     Board.settlements.getChildren().add(piece);
+                } else if (s.charAt(0) == 'J') {
+                    Board.KnightShape.setUsed(Color.SADDLEBROWN);
+                    Board.KnightShape piece = new Board.KnightShape(s);
+                    Board.knights.getChildren().add(piece);
                 }
             }
         } else {
@@ -75,6 +87,7 @@ public class Viewer extends Application  {
             Board.RoadShape.makeRoads();
             Board.CityShape.makeCities();
             Board.SettlementShape.makeSettlements();
+            Board.KnightShape.makeKnights();
         }
 
         // FIXME Task 5: implement the state viewer
@@ -88,10 +101,6 @@ public class Viewer extends Application  {
         text.setX(50);
         text.setY(50);
         root.getChildren().add(text);
-    }
-
-    int points() {
-        return 1;
     }
 
 
@@ -126,13 +135,15 @@ public class Viewer extends Application  {
         root.getChildren().add(Board.roads);
         root.getChildren().add(Board.settlements);
         root.getChildren().add(instructions);
+        root.getChildren().add(Board.knights);
 
 
         makeControls();
-        Board.Hexagon.makeBoard();
+        Board.makeBoard();
         Board.RoadShape.makeRoads();
         Board.CityShape.makeCities();
         Board.SettlementShape.makeSettlements();
+        Board.KnightShape.makeKnights();
         instructions();
 
 
