@@ -21,7 +21,7 @@ declaration: >-
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external code)
 code:
-  - comment: used to amke the shape of a hexagon
+  - comment: used to make the shape of a hexagon
     url: https://stackoverflow.com/questions/72497452/how-to-create-hexagon-of-hexagons-as-buttons-in-javafx
     licence: filled to pass pipeline
 
