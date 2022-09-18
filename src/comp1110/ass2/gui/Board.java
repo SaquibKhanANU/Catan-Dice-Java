@@ -65,7 +65,6 @@ public class Board {
 
         private double calculateApothem() {
             double x = (Math.tan(radianStep) * radius) / 2;
-            System.out.println(x + "");
             return x;
         }
     }

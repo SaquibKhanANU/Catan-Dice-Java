@@ -11,7 +11,7 @@ public class CatanBoard {
     public final static int CATAN_WIDTH = 1;
     public CatanPlayer player;
 // Updated Coordinates on Thursday, 15/09/2022.
-    private final Structure[] structureBlocks = new Structure[] {
+    private static final Structure[] structureBlocks = new Structure[] {
             new CatanRoad("RI", new int[]{7, 3}, 0),
             new CatanRoad("R0", new int[]{7, 5}, 1),
             new CatanRoad("R1", new int[]{4, 6}, 1),
@@ -50,7 +50,7 @@ public class CatanBoard {
     public void setBuildableStructure(int x, int y, StructureType type) {
         this.boardArray[x][y].setStructureType(type);
     }
-   public Structure[] getStructureBlocks() {
-        return this.structureBlocks;
+   public static Structure[] getStructureBlocks() {
+        return CatanBoard.structureBlocks;
     }
 }
