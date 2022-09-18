@@ -18,9 +18,9 @@ declaration: >-
 #
 # Add as many "name+comment" entries as necessary
 # (or remove it altogether if you haven't collaborated with anyone)
-collaboration: Looked at code in the tasks allocated to other group member for help
-    name: Filled to pass pipeline
-    comment: Filled to pass pipeline
+collaboration: 
+  - name: Filled
+    comment: Filled
 
 # Use this to list any code that you used that you did not write,
 # aside from code provided by the lecturer.  Provide a comment
@@ -30,20 +30,16 @@ collaboration: Looked at code in the tasks allocated to other group member for h
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external code)
 code:
-  - comment: Please see C-originality
-    url: Please see C-originality
-    licence: Filled to pass pipeline
+  - comment: Filled
+    url: Filled
+    licence: Filled
 
 
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):
 method:
    -  rollDice
-   -  https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/CatanDice.java#L151-163
-   -  checkBuildConstraints
-   -  https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/CatanDice.java#L179-222
-   -  isActionWellFormed
-   -  https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/CatanDice.java#L64-132
+   -  https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/CatanDice.java#L154-163
 
 # sign *your* name and uid here
 name: John Larkin
