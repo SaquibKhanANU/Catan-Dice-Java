@@ -20,7 +20,7 @@ declaration: >-
 # (or remove it altogether if you haven't collaborated with anyone)
 collaboration: 
   - name: Filled
-    comment: Filled
+    comment: Looked at code in the tasks allocated to other group member for help
 
 # Use this to list any code that you used that you did not write,
 # aside from code provided by the lecturer.  Provide a comment
@@ -38,8 +38,12 @@ code:
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):
 method:
+   -  isActionWellFormed
+   -  https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/CatanDice.java#L66-134
    -  rollDice
-   -  https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/CatanDice.java#L154-163
+   -  https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/CatanDice.java#L153-165
+   -  checkBuildConstraints
+   -  https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/CatanDice.java#L181-224
 
 # sign *your* name and uid here
 name: John Larkin
