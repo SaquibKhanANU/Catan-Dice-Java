@@ -1,5 +1,7 @@
 package comp1110.ass2;
 
+import comp1110.ass2.CatanStructure.Structure;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -183,44 +185,43 @@ public class CatanDice {
         if (boardStateList.contains(structure)){return false;}
         // structure has not already been built
         String structure_type = structure.substring(0,1);
-        int structure_int = Integer.parseInt(structure.substring(1));
+        int value = Integer.parseInt(structure.substring(1));
         // structure is a road
         if (structure_type.equals("R")){
-          if (structure_int == 0){return true;}
-          if (structure_int == 2 || structure_int ==5){
-              return boardStateList.contains("R" + (structure_int-2));
+          if (value == 0){return true;}
+          if (value == 2 || value ==5){
+              return boardStateList.contains("R" + (value-2));
           }
-          if (structure_int == 12){
-              return boardStateList.contains("R" + (structure_int-5));
+          if (value == 12){
+              return boardStateList.contains("R" + (value-5));
           }
-          else {return boardStateList.contains("R" + (structure_int-1));}
+          else {return boardStateList.contains("R" + (value-1));}
         }
         // structure is a settlement
         if (structure_type.equals("S")){
-            if (structure_int == 3){return true;}
-            if (structure_int ==4 ){return boardStateList.contains("R" + 2);}
-            else {return boardStateList.contains("R" + structure_int);}
+            if (value == 3){return true;}
+            if (value ==4 ){return boardStateList.contains("R" + 2);}
+            else {return boardStateList.contains("R" + value);}
         }
         // structure is a city
         if (structure_type.equals("C")){
-            if (structure_int == 7){return boardStateList.contains("R" + 1);}
-            if (structure_int == 12){return boardStateList.contains("R" + 4);}
-            if (structure_int == 20){return boardStateList.contains("R" + 13);}
-            if (structure_int == 30){return boardStateList.contains("R" + 15);}
+            if (value == 7){return boardStateList.contains("R" + 1);}
+            if (value == 12){return boardStateList.contains("R" + 4);}
+            if (value == 20){return boardStateList.contains("R" + 13);}
+            if (value == 30){return boardStateList.contains("R" + 15);}
         }
         // structure is a joker
         if (structure_type.equals("J")){
-            if (structure_int == 1){return true;}
-            Boolean value = boardStateList.contains("J" + (structure_int-1)) || boardStateList.contains("K" + (structure_int-1));
-            return value;
+            if (value == 1){return true;}
+            Boolean truth_value = boardStateList.contains("J" + (value-1)) || boardStateList.contains("K" + (value-1));
+            return truth_value;
         }
         // structure is a knight
         if (structure_type.equals("K")){
-            {return boardStateList.contains("J" + (structure_int));}
+            {return boardStateList.contains("J" + (value));}
         }
         return false; // Task #8
     }
-
 
 
     /**
