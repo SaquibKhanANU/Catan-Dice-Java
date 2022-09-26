@@ -116,15 +116,31 @@ public class CatanBoard {
         return CatanBoard.structureBlocks;
     }
 
+    public boolean isStructurePlacementValid(Structure structure) {
+        BuildableStructure structure1 = structure.getBuildableStructure();
+        int x = structure1.getX();
+        int y = structure1.getY();
+        StructureType type = structure1.getStructureType();
+        switch (type) {
+            case DBUILT_ROAD -> type = StructureType.ROAD;
+            case YBUILT_CITY -> type = StructureType.CITY;
+            case TBUILT_SETTLEMENT -> type = StructureType.SETTLEMENT;
+            case JOKER -> type = StructureType.KNIGHT;
+        }
+        return (!(x < 0) && !(x > 20) && !(y < 0) && !(y > 12)) && this.boardArray[x][y].getStructureType() == type;
+    }
+
     public void placeStructureBlock(Structure structure){
-        BuildableStructure bStructure = structure.getBuildableStructure();
-        setBuildableStructure(bStructure.getX(), bStructure.getY(), bStructure.getStructureType());
-        structure.setIsBuilt(true);
+        if (isStructurePlacementValid(structure)) {
+            BuildableStructure bStructure = structure.getBuildableStructure();
+            setBuildableStructure(bStructure.getX(), bStructure.getY(), bStructure.getStructureType());
+            structure.setIsBuilt(true);
+        }
     }
 
     public void removeStructureBlock(Structure structure){
         BuildableStructure bStructure = structure.getBuildableStructure();
-        StructureType type = StructureType.EMPTY;
+        StructureType type = structure.getBuildableStructure().getStructureType();
         switch (bStructure.getStructureType()) {
             case DBUILT_ROAD -> type = StructureType.ROAD;
             case YBUILT_CITY -> type = StructureType.CITY;

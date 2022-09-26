@@ -122,6 +122,4 @@ public class BuildableStructure {
     public String toString() {
         return super.toString();
     }
-
-
 }
