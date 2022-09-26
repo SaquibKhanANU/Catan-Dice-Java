@@ -57,30 +57,53 @@ public class CatanBoard {
 
     private static final HashMap<String, Structure> structureBlocks = new HashMap<>();
     public static void makeStructureBlocks() {
-        structureBlocks.put("C", new CatanCity("C"));
-        structureBlocks.put("R", new CatanRoad("R"));
-        structureBlocks.put("S", new CatanSettlement("S"));
-        structureBlocks.put("K", new CatanKnight("K"));
+        structureBlocks.put("C", new CatanCity("C", new int[]{0,0}));
+        structureBlocks.put("R", new CatanRoad("R", new int[]{0,0}));
+        structureBlocks.put("S", new CatanSettlement("S", new int[]{0,0}));
+        structureBlocks.put("K", new CatanKnight("K", new int[]{0,0}));
     }
-
 
     public CatanBoard(CatanPlayer player) {
         this.player = player;
-        this.initialiseBoard(player);
+        this.initialiseBoard();
     }
 
-    private void initialiseBoard(CatanPlayer player) {
+    // Testing
+    public CatanBoard(String initialState) {
+        this.boardArray = new BuildableStructure[5][4];
+        for (int y = 0; y < 4; y++) {
+            for (int x = 0; x < 5; x++) {
+                StructureType type = StructureType.fromChar(initialState.charAt(5 * y + x));
+                this.boardArray[x][y] = new BuildableStructure(x, y, type);
+            }
+        }
+    }
+
+    private void initialiseBoard() {
         makeMap();
         this.boardArray = new BuildableStructure[CATAN_HEIGHT][CATAN_HEIGHT];
         for (BuildableStructure structure : structureBlocksMap.values()) {
             this.boardArray[structure.getX()][structure.getY()] = structure;
         }
     }
+
+    // TESTING
+    public String boardToString() {
+        StringBuilder s = new StringBuilder();
+        for (int y = 0; y < 4; y++) {
+            for (int x = 0; x < 5; x++) {
+                s.append(this.getBuildableStructure(x, y).getStructureType().toChar());
+            }
+            s.append("\n");
+        }
+        return s.toString();
+    }
+
     public BuildableStructure getBuildableStructure(int x, int y){
         return this.boardArray[x][y];
     }
 
-    public void setBuildableStructure(int x, int y, StructureType type, String id, int point) {
+    public void setBuildableStructure(int x, int y, StructureType type) {
         this.boardArray[x][y].setStructureType(type);
     }
 
@@ -95,14 +118,20 @@ public class CatanBoard {
 
     public void placeStructureBlock(Structure structure){
         BuildableStructure bStructure = structure.getBuildableStructure();
-        setBuildableStructure(bStructure.getX(), bStructure.getY(), bStructure.getStructureType(),
-                bStructure.getId(), bStructure.getPoint());
+        setBuildableStructure(bStructure.getX(), bStructure.getY(), bStructure.getStructureType());
         structure.setIsBuilt(true);
     }
+
     public void removeStructureBlock(Structure structure){
         BuildableStructure bStructure = structure.getBuildableStructure();
-        setBuildableStructure(bStructure.getX(), bStructure.getY(), bStructure.getStructureType(),
-                "R1", 5); // ID AND POINT WILL REVERT
+        StructureType type = StructureType.EMPTY;
+        switch (bStructure.getStructureType()) {
+            case DBUILT_ROAD -> type = StructureType.ROAD;
+            case YBUILT_CITY -> type = StructureType.CITY;
+            case TBUILT_SETTLEMENT -> type = StructureType.SETTLEMENT;
+            case JOKER -> type = StructureType.KNIGHT;
+        }
+        setBuildableStructure(bStructure.getX(), bStructure.getY(), type); // ID AND POINT WILL REVERT
         structure.setIsBuilt(false);
     }
 }

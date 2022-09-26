@@ -8,15 +8,18 @@ public abstract class Structure {
     // The id of the block e.g. R1, all cities have different id. (VARIABLE)
     protected final String id;
 
+    protected int[] coordinate;
+
     // resource_state required to build the structure, all cities have same resource state (FIXED)
     protected int[] resource_cost;
 
     // Check if the structure is built (VARIABLE)
     protected boolean isBuilt;
 
-    public Structure(String id, int[] resource_cost){
+    public Structure(String id, int[] coordinate, int[] resource_cost){
         this.id = id;
         this.resource_cost = resource_cost;
+        this.coordinate = coordinate;
         this.isBuilt = false;
     }
 

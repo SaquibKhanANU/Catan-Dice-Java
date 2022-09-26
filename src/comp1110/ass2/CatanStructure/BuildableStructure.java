@@ -35,6 +35,21 @@ public class BuildableStructure {
     }
 
     /**
+     * Constructor for the BuildableStructure class that allows for specifying the structure's
+     * coordinates and its type on a specific players board.
+     *
+     * @param x int
+     * @param y int
+     * @param structure_type StructureType
+     */
+
+    public BuildableStructure(int x, int y, StructureType structure_type) {
+        this.x = x;
+        this.y = y;
+        this.structure_type = structure_type;
+    }
+
+    /**
      *
      * @return x
      */
