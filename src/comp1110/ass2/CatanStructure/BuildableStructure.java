@@ -12,6 +12,12 @@ public class BuildableStructure {
     // The type of this structure
     private StructureType structure_type;
 
+    // The id of this structure
+    private String id;
+
+    // The point of this structure
+    private int point;
+
     /**
      * Constructor for the BuildableStructure class that allows for specifying the structure's
      * coordinates and its type on a specific players board.
@@ -20,6 +26,23 @@ public class BuildableStructure {
      * @param y int
      * @param structure_type StructureType
      */
+    public BuildableStructure(int x, int y, StructureType structure_type, String id, int point) {
+        this.x = x;
+        this.y = y;
+        this.structure_type = structure_type;
+        this.id = id;
+        this.point = point;
+    }
+
+    /**
+     * Constructor for the BuildableStructure class that allows for specifying the structure's
+     * coordinates and its type on a specific players board.
+     *
+     * @param x int
+     * @param y int
+     * @param structure_type StructureType
+     */
+
     public BuildableStructure(int x, int y, StructureType structure_type) {
         this.x = x;
         this.y = y;
@@ -50,6 +73,10 @@ public class BuildableStructure {
         return this.structure_type;
     }
 
+    public String getId(){
+        return this.id;
+    }
+
     /**
      *
      * @param x int
@@ -74,6 +101,17 @@ public class BuildableStructure {
         this.structure_type = structure_type;
     }
 
+    public void setId(String id){
+        this.id = id;
+    }
+
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint(int point) {
+        this.point = point;
+    }
 
 
     /**

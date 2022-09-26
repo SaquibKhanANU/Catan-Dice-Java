@@ -4,96 +4,164 @@ import comp1110.ass2.CatanEnum.StructureType;
 import comp1110.ass2.CatanStructure.*;
 
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class CatanBoard {
     public BuildableStructure[][] boardArray;
-    public final static int CATAN_HEIGHT = 1;
-    public final static int CATAN_WIDTH = 1;
+    public final static int CATAN_HEIGHT = 20;
+    public final static int CATAN_WIDTH = 12;
     public CatanPlayer player;
 // Updated Coordinates on Thursday, 15/09/2022.
-    private static final Structure[] structureBlocks = new Structure[] {
-            new CatanRoad("RI", new int[]{7, 3}, 0),
-            new CatanRoad("R0", new int[]{7, 5}, 1),
-            new CatanRoad("R1", new int[]{4, 6}, 1),
-            new CatanRoad("R2", new int[]{7, 7}, 1),
-            new CatanRoad("R3", new int[]{7, 9}, 1),
-            new CatanRoad("R4", new int[]{4, 10}, 1),
-            new CatanRoad("R5", new int[]{7, 11}, 1),
-            new CatanRoad("R6", new int[]{10, 12}, 1),
-            new CatanRoad("R7", new int[]{13, 11}, 1),
-            new CatanRoad("R8", new int[]{13, 9}, 1),
-            new CatanRoad("R9", new int[]{13, 7}, 1),
-            new CatanRoad("R10", new int[]{13, 5}, 1),
-            new CatanRoad("R11", new int[]{13, 3}, 1),
-            new CatanRoad("R12", new int[]{16, 10}, 1),
-            new CatanRoad("R13", new int[]{19, 9}, 1),
-            new CatanRoad("R14", new int[]{19, 7}, 1),
-            new CatanRoad("R15", new int[]{19, 5}, 1)
-    };
 
-    private static final HashMap<String, Structure> structureBlocksMap = new HashMap<>();
-
+    private static final HashMap<String, BuildableStructure> structureBlocksMap = new HashMap<>();
     public static void makeMap() {
-        structureBlocksMap.put("RI", new CatanRoad("RI", new int[]{7, 3}, 0));
-        structureBlocksMap.put("R0", new CatanRoad("R0", new int[]{7, 5}, 1));
-        structureBlocksMap.put("R1", new CatanRoad("R1", new int[]{4, 6}, 1));
-        structureBlocksMap.put("R2", new CatanRoad("R2", new int[]{7, 7}, 1));
-        structureBlocksMap.put("R3",new CatanRoad("R3", new int[]{7, 9}, 1));
-        structureBlocksMap.put("R4", new CatanRoad("R4", new int[]{4, 10}, 1));
-        structureBlocksMap.put("R5",  new CatanRoad("R5", new int[]{7, 11}, 1));
-        structureBlocksMap.put("R6", new CatanRoad("R6", new int[]{10, 12}, 1));
-        structureBlocksMap.put("R7", new CatanRoad("R7", new int[]{13, 11}, 1));
-        structureBlocksMap.put("R8",  new CatanRoad("R8", new int[]{13, 9}, 1));
-        structureBlocksMap.put("R9", new CatanRoad("R9", new int[]{13, 7}, 1));
-        structureBlocksMap.put("R10", new CatanRoad("R10", new int[]{13, 5}, 1));
-        structureBlocksMap.put("R11", new CatanRoad("R11", new int[]{13, 3}, 1));
-        structureBlocksMap.put("R12",  new CatanRoad("R12", new int[]{16, 10}, 1));
-        structureBlocksMap.put("R13", new CatanRoad("R13", new int[]{19, 9}, 1));
-        structureBlocksMap.put("R14", new CatanRoad("R14", new int[]{19, 7}, 1));
-        structureBlocksMap.put("R15", new CatanRoad("R15", new int[]{19, 5}, 1));
-        structureBlocksMap.put("C7", new CatanRoad("C7", new int[]{2, 6}, 7));
-        structureBlocksMap.put("C12", new CatanRoad("C12", new int[]{2, 10}, 12));
-        structureBlocksMap.put("C20", new CatanRoad("C20", new int[]{20, 8}, 20));
-        structureBlocksMap.put("C30", new CatanRoad("R30", new int[]{20, 4}, 30));
-        structureBlocksMap.put("S3", new CatanRoad("S3", new int[]{8, 4}, 3));
-        structureBlocksMap.put("S4", new CatanRoad("S4", new int[]{8, 8}, 4));
-        structureBlocksMap.put("S5", new CatanRoad("S5", new int[]{8, 12}, 5));
-        structureBlocksMap.put("S7", new CatanRoad("S7", new int[]{14, 10}, 7));
-        structureBlocksMap.put("S9", new CatanRoad("S9", new int[]{14, 6}, 9));
-        structureBlocksMap.put("S11", new CatanRoad("S11", new int[]{14, 2}, 11));
-        structureBlocksMap.put("K1", new CatanRoad("K1", new int[]{4, 4}, 1));
-        structureBlocksMap.put("K2", new CatanRoad("K2", new int[]{4, 8}, 2));
-        structureBlocksMap.put("K3", new CatanRoad("K3", new int[]{10, 10}, 3));
-        structureBlocksMap.put("K4", new CatanRoad("K4", new int[]{16, 8}, 4));
-        structureBlocksMap.put("K5", new CatanRoad("K5", new int[]{16, 4}, 5));
-        structureBlocksMap.put("K6", new CatanRoad("K6", new int[]{10, 2}, 6));
+        //ROADS
+        structureBlocksMap.put("RI", new BuildableStructure(7, 3, StructureType.ROAD, "RI", 1));
+        structureBlocksMap.put("R0", new BuildableStructure(7, 5, StructureType.ROAD, "R0", 1));
+        structureBlocksMap.put("R1", new BuildableStructure(4, 6, StructureType.ROAD, "R1", 1));
+        structureBlocksMap.put("R2", new BuildableStructure(7, 7, StructureType.ROAD, "R2", 1));
+        structureBlocksMap.put("R3", new BuildableStructure(7, 9, StructureType.ROAD, "R3", 1));
+        structureBlocksMap.put("R4", new BuildableStructure(4, 10, StructureType.ROAD, "R4", 1));
+        structureBlocksMap.put("R5", new BuildableStructure(7, 11, StructureType.ROAD, "R5", 1));
+        structureBlocksMap.put("R6", new BuildableStructure(10, 12, StructureType.ROAD, "R6", 1));
+        structureBlocksMap.put("R7", new BuildableStructure(13, 11, StructureType.ROAD, "R7", 1));
+        structureBlocksMap.put("R8", new BuildableStructure(13, 9, StructureType.ROAD, "R8", 1));
+        structureBlocksMap.put("R9", new BuildableStructure(13, 7, StructureType.ROAD, "R9", 1));
+        structureBlocksMap.put("R10", new BuildableStructure(13, 5, StructureType.ROAD, "R10", 1));
+        structureBlocksMap.put("R11", new BuildableStructure(13, 3, StructureType.ROAD, "R11", 1));
+        structureBlocksMap.put("R12", new BuildableStructure(16, 10, StructureType.ROAD, "R12", 1));
+        structureBlocksMap.put("R13", new BuildableStructure(19, 9, StructureType.ROAD, "R13", 1));
+        structureBlocksMap.put("R14", new BuildableStructure(19, 7, StructureType.ROAD, "R14", 1));
+        structureBlocksMap.put("R15", new BuildableStructure(19, 5, StructureType.ROAD, "R15", 1));
+        //CITIES
+        structureBlocksMap.put("C7", new BuildableStructure(2, 6, StructureType.CITY, "C7", 7));
+        structureBlocksMap.put("C12", new BuildableStructure(2, 10, StructureType.CITY, "C12", 12));
+        structureBlocksMap.put("C20", new BuildableStructure(20, 8, StructureType.CITY, "C20", 20));
+        structureBlocksMap.put("C30", new BuildableStructure(20, 4, StructureType.CITY, "C30", 30));
+        //SETTLEMENT
+        structureBlocksMap.put("S3", new BuildableStructure(8, 4, StructureType.SETTLEMENT, "S3", 3));
+        structureBlocksMap.put("S4", new BuildableStructure(8, 8, StructureType.SETTLEMENT, "S4", 4));
+        structureBlocksMap.put("S5", new BuildableStructure(8, 12, StructureType.SETTLEMENT, "S5", 5));
+        structureBlocksMap.put("S7", new BuildableStructure(14, 10, StructureType.SETTLEMENT, "S7", 7));
+        structureBlocksMap.put("S9", new BuildableStructure(14, 6, StructureType.SETTLEMENT, "S9", 9));
+        structureBlocksMap.put("S11", new BuildableStructure(14, 2, StructureType.SETTLEMENT, "S11", 11));
+        //KNIGHTS
+        structureBlocksMap.put("K1", new BuildableStructure(4, 4, StructureType.KNIGHT, "K1", 1));
+        structureBlocksMap.put("K2", new BuildableStructure(4, 8, StructureType.KNIGHT, "K2", 2));
+        structureBlocksMap.put("K3", new BuildableStructure(10, 10, StructureType.KNIGHT, "K3", 3));
+        structureBlocksMap.put("K4", new BuildableStructure(16, 8, StructureType.KNIGHT, "K4", 4));
+        structureBlocksMap.put("K5", new BuildableStructure(16, 4, StructureType.KNIGHT, "K5", 5));
+        structureBlocksMap.put("K6", new BuildableStructure(10, 2, StructureType.KNIGHT, "K6", 6));
     }
 
+    private static final HashMap<String, Structure> structureBlocks = new HashMap<>();
+    public static void makeStructureBlocks() {
+        structureBlocks.put("C", new CatanCity("C", new int[]{0,0}));
+        structureBlocks.put("R", new CatanRoad("R", new int[]{0,0}));
+        structureBlocks.put("S", new CatanSettlement("S", new int[]{0,0}));
+        structureBlocks.put("K", new CatanKnight("K", new int[]{0,0}));
+    }
 
     public CatanBoard(CatanPlayer player) {
         this.player = player;
-        this.initialiseBoard(player);
+        this.initialiseBoard();
     }
-    private void initialiseBoard(CatanPlayer player) {
+
+    // Testing
+    public CatanBoard(String initialState) {
         this.boardArray = new BuildableStructure[5][4];
-        for (int y = 0; y < CATAN_HEIGHT; y++) {
-            for (int x = 0; x < CATAN_WIDTH; x++) {
-                this.boardArray[x][y] = new BuildableStructure(x, y, StructureType.EMPTY) {
-                };
+        for (int y = 0; y < 4; y++) {
+            for (int x = 0; x < 5; x++) {
+                StructureType type = StructureType.fromChar(initialState.charAt(5 * y + x));
+                this.boardArray[x][y] = new BuildableStructure(x, y, type);
             }
         }
     }
+
+    private void initialiseBoard() {
+        makeMap();
+        this.boardArray = new BuildableStructure[CATAN_HEIGHT][CATAN_HEIGHT];
+        for (BuildableStructure structure : structureBlocksMap.values()) {
+            this.boardArray[structure.getX()][structure.getY()] = structure;
+        }
+    }
+
+    // TESTING
+    public String boardToString() {
+        StringBuilder s = new StringBuilder();
+        for (int y = 0; y < 4; y++) {
+            for (int x = 0; x < 5; x++) {
+                s.append(this.getBuildableStructure(x, y).getStructureType().toChar());
+            }
+            s.append("\n");
+        }
+        return s.toString();
+    }
+
     public BuildableStructure getBuildableStructure(int x, int y){
         return this.boardArray[x][y];
     }
+
     public void setBuildableStructure(int x, int y, StructureType type) {
         this.boardArray[x][y].setStructureType(type);
     }
-   public static Structure[] getStructureBlocks() {
+
+    public static HashMap<String, BuildableStructure> getStructureBlocksMap() {
+        return CatanBoard.structureBlocksMap;
+    }
+
+    public static HashMap<String, Structure> getStructureBlocks() {
+        makeStructureBlocks();
         return CatanBoard.structureBlocks;
     }
-    public static HashMap<String, Structure> getStructureBlocksTwo() {
-        return CatanBoard.structureBlocksMap;
+
+    /**
+     * Check if the structure can be placed on the buildable structure at that point.
+     * @param structure
+     * @return
+     */
+    public boolean isStructurePlacementValid(Structure structure) {
+        BuildableStructure structure1 = structure.getBuildableStructure();
+        int x = structure1.getX();
+        int y = structure1.getY();
+        StructureType type = structure1.getStructureType();
+        switch (type) {
+            case DBUILT_ROAD -> type = StructureType.ROAD;
+            case YBUILT_CITY -> type = StructureType.CITY;
+            case TBUILT_SETTLEMENT -> type = StructureType.SETTLEMENT;
+            case JOKER -> type = StructureType.KNIGHT;
+        }
+        return (!(x < 0) && !(x > 20) && !(y < 0) && !(y > 12)) && this.boardArray[x][y].getStructureType() == type;
+    }
+
+    /**
+     * place a structure at the specific point, replacing the current buildable structure with new structure.
+     * @param structure
+     */
+
+    public void placeStructureBlock(Structure structure){
+        if (isStructurePlacementValid(structure)) {
+            BuildableStructure bStructure = structure.getBuildableStructure();
+            setBuildableStructure(bStructure.getX(), bStructure.getY(), bStructure.getStructureType());
+            structure.setIsBuilt(true);
+        }
+    }
+
+    /**
+     * remove a structure at the specific point, replacing the current structure with previous buildable structure.
+     * @param structure
+     */
+    public void removeStructureBlock(Structure structure){
+        BuildableStructure bStructure = structure.getBuildableStructure();
+        StructureType type = structure.getBuildableStructure().getStructureType();
+        switch (bStructure.getStructureType()) {
+            case DBUILT_ROAD -> type = StructureType.ROAD;
+            case YBUILT_CITY -> type = StructureType.CITY;
+            case TBUILT_SETTLEMENT -> type = StructureType.SETTLEMENT;
+            case JOKER -> type = StructureType.KNIGHT;
+        }
+        setBuildableStructure(bStructure.getX(), bStructure.getY(), type); // ID AND POINT WILL REVERT
+        structure.setIsBuilt(false);
     }
 }
