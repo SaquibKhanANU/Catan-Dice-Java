@@ -116,6 +116,11 @@ public class CatanBoard {
         return CatanBoard.structureBlocks;
     }
 
+    /**
+     * Check if the structure can be placed on the buildable structure at that point.
+     * @param structure
+     * @return
+     */
     public boolean isStructurePlacementValid(Structure structure) {
         BuildableStructure structure1 = structure.getBuildableStructure();
         int x = structure1.getX();
@@ -130,6 +135,11 @@ public class CatanBoard {
         return (!(x < 0) && !(x > 20) && !(y < 0) && !(y > 12)) && this.boardArray[x][y].getStructureType() == type;
     }
 
+    /**
+     * place a structure at the specific point, replacing the current buildable structure with new structure.
+     * @param structure
+     */
+
     public void placeStructureBlock(Structure structure){
         if (isStructurePlacementValid(structure)) {
             BuildableStructure bStructure = structure.getBuildableStructure();
@@ -138,6 +148,10 @@ public class CatanBoard {
         }
     }
 
+    /**
+     * remove a structure at the specific point, replacing the current structure with previous buildable structure.
+     * @param structure
+     */
     public void removeStructureBlock(Structure structure){
         BuildableStructure bStructure = structure.getBuildableStructure();
         StructureType type = structure.getBuildableStructure().getStructureType();
