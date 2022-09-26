@@ -1,6 +1,6 @@
 # New Code for Deliverable D2D
 
-## u6717250 John Larkin
+## <u6717250> <John Larkin>
 
 For Deliverable D2D, I contributed the following new statements of original code:
 
