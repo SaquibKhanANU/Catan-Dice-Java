@@ -44,7 +44,7 @@ public class Viewer extends Application  {
      */
 
     void displayState(String board_state) { // STARTING WITH ROADS THEN WILL CHANGE IT FOR OTHER 3 Structures.
-        instructions.getChildren().clear();
+       /* instructions.getChildren().clear();
         Board.roads.getChildren().clear();
         Board.cities.getChildren().clear();
         Board.settlements.getChildren().clear();
@@ -92,6 +92,7 @@ public class Viewer extends Application  {
         }
 
         // FIXME Task 5: implement the state viewer
+    } */
     }
     void instructions() {
         Text text = new Text();
@@ -131,7 +132,8 @@ public class Viewer extends Application  {
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
         root.getChildren().add(controls);
-        root.getChildren().add(Board.hexBoard);
+        makeControls();
+       /* root.getChildren().add(Board.hexBoard);
         root.getChildren().add(Board.cities);
         root.getChildren().add(Board.roads);
         root.getChildren().add(Board.settlements);
@@ -139,13 +141,13 @@ public class Viewer extends Application  {
         root.getChildren().add(Board.knights);
 
 
-        makeControls();
+
         Board.makeBoard();
         Board.RoadShape.makeRoads();
         Board.CityShape.makeCities();
         Board.SettlementShape.makeSettlements();
         Board.KnightShape.makeKnights();
-        instructions();
+        instructions(); */
 
 
         primaryStage.setScene(scene);

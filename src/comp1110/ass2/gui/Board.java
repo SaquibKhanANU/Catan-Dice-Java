@@ -1,9 +1,6 @@
 package comp1110.ass2.gui;
 
-import comp1110.ass2.CatanStructure.CatanCity;
-import comp1110.ass2.CatanStructure.CatanKnight;
-import comp1110.ass2.CatanStructure.CatanRoad;
-import comp1110.ass2.CatanStructure.CatanSettlement;
+import comp1110.ass2.CatanStructure.*;
 import javafx.scene.Group;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
@@ -14,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
+/*
 public class Board {
 
     static Group hexBoard = new Group();
@@ -233,7 +230,7 @@ public class Board {
 
     static class SettlementShape extends Polygon {
         private static final CatanSettlement[] catanSettlementBlocks = new CatanSettlement[]{
-                new CatanSettlement("S3",new int[]{2,1}, 3),
+                new BuildableStructure("S3",new int[]{2,1}, 3),
                 new CatanSettlement("S4",new int[]{2,4}, 4),
                 new CatanSettlement("S5",new int[]{2,7}, 5),
                 new CatanSettlement("S7",new int[]{4,6}, 7),

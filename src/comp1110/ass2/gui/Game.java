@@ -2,6 +2,7 @@ package comp1110.ass2.gui;
 
 import comp1110.ass2.CatanEnum.StructureType;
 import comp1110.ass2.CatanGame.CatanBoard;
+import comp1110.ass2.CatanStructure.BuildableStructure;
 import comp1110.ass2.CatanStructure.Structure;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -38,6 +39,7 @@ public class Game extends Application {
     Group blocks = new Group();
     Group structuresBoard = new Group(hexagonBoard, roads, cities, settlements, knights);
     Group sidePanel = new Group();
+
 
 
     class Hexagon extends Polygon {
@@ -80,6 +82,7 @@ public class Game extends Application {
 
     static class RoadShape extends Rectangle {
         double mouseX, mouseY;
+
         RoadShape(double roadX, double roadY, double rotation, StructureBlock structureBlock) {
             setX(roadX);
             setY(roadY);
@@ -169,33 +172,33 @@ public class Game extends Application {
     }
 
     class StructureBlock extends Group {
+        final Structure structure;
+        int x;
+        int y;
+
         RoadShape roadShape;
-        CityShape cityShape;
-        SettlementShape settlementShape;
-        KnightShape knightShape;
-        StructureBlock(StructureType type) {
-            switch (type) {
-                case ROAD:
-                    this.roadShape = new RoadShape(-30, -25, 90, this);
-                    blocks.getChildren().add(roadShape);
-                case CITY:
-                    this.cityShape = new CityShape(50, 0);
-                    blocks.getChildren().add(cityShape);
-                case SETTLEMENT:
-                    this.settlementShape = new SettlementShape(100, 0);
-                    blocks.getChildren().add(settlementShape);
-                case KNIGHT:
-                    this.knightShape = new KnightShape(150, 0, this);
-                    blocks.getChildren().add(knightShape);
+        StructureBlock(String id) {
+            this.structure = CatanBoard.getStructureBlocks().get(id);
+            double x = this.structure.getBuildableStructure().getX();
+            double y = this.structure.getBuildableStructure().getY();
+            if (id.charAt(0) == 'R') {
+                this.roadShape = new RoadShape(x, y, 90,this);
+                blocks.getChildren().add(roadShape);
             }
+        }
+
+        protected void snapToGrid() {
+            this.setLayoutX(BOARD_offsetX + this.x * 70);
+            this.setLayoutY(BOARD_offsetY + ((this.y)) * 70);
+            roadShape.setTranslateX(this.getLayoutX());
+            roadShape.setTranslateY(this.getLayoutY());
         }
     }
 
     class DraggableStructureBlock extends StructureBlock {
         double homeX, homeY;
-
-        DraggableStructureBlock(StructureType type) {
-            super(type);
+        DraggableStructureBlock(String id) {
+            super(id);
 
             this.homeX = 0;
             this.homeY = 0;
@@ -215,16 +218,15 @@ public class Game extends Application {
             this.roadShape.setTranslateY(this.getLayoutY());
         }
 
-
     }
 
     private void makeStructures() {
         CatanBoard.makeMap();
-        var keySet = CatanBoard.getStructureBlocksTwo().keySet();
+        var keySet = CatanBoard.getStructureBlocksMap().keySet();
         for (var id : keySet) {
-            Structure structure = CatanBoard.getStructureBlocksTwo().get(id);
-            double x = structure.getCoordinate()[0] * (BOARD_WIDTH / 20);
-            double y = structure.getCoordinate()[1] * (BOARD_HEIGHT / 12);
+            BuildableStructure structure = CatanBoard.getStructureBlocksMap().get(id);
+            double x = structure.getX() * (BOARD_WIDTH / 20);
+            double y = structure.getY() * (BOARD_HEIGHT / 12);
             if (id.charAt(0) == 'R') {
                 int rotation;
                 String[] thirtyDegrees = new String[]{"R0", "R3", "R7", "R9", "R11", "R15", "R13"};
@@ -273,9 +275,9 @@ public class Game extends Application {
 
     private void makeBlocks() {
         this.blocks.getChildren().clear();
-        StructureType[] types = new StructureType[]{StructureType.ROAD, StructureType.CITY, StructureType.SETTLEMENT, StructureType.KNIGHT};
-        for (StructureType type : types) {
-            DraggableStructureBlock c = new DraggableStructureBlock(type);
+        var keySet = CatanBoard.getStructureBlocks().keySet();
+        for (String id : keySet) {
+            DraggableStructureBlock c = new DraggableStructureBlock(id);
             blocks.getChildren().add(c);
         }
         this.blocks.setLayoutY(600);
@@ -302,15 +304,24 @@ public class Game extends Application {
         leftPanel.setY(0);
         leftPanel.setStroke(Color.BLACK);
         leftPanel.setStrokeWidth(3);
-        Image image = new Image("comp1110/ass2/assets/Catan Dice title.JPG");
+        Image image = new Image("comp1110/ass2/assets/CatanTitle.JPG");
         ImageView iv1 = new ImageView();
         iv1.setFitWidth(196);
         iv1.setFitHeight(125);
         iv1.setX(3);
         iv1.setY(2);
         iv1.setImage(image);
+
+        Image image2 = new Image("comp1110/ass2/assets/javaFx_catan_dice_costs.png");
+        ImageView iv2 = new ImageView();
+        iv2.setFitWidth(197);
+        iv2.setFitHeight(125);
+        iv2.setX(3);
+        iv2.setY(124);
+        iv2.setImage(image2);
+
         sidePanel.toBack();
-        sidePanel.getChildren().addAll(rightPanel, leftPanel, iv1);
+        sidePanel.getChildren().addAll(rightPanel, leftPanel, iv1, iv2);
     }
 
     @Override
