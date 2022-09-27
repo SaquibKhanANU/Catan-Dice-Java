@@ -6,10 +6,13 @@ import comp1110.ass2.CatanStructure.Structure;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
@@ -43,6 +46,8 @@ public class Game extends Application {
     Group blocks = new Group();
     Group structuresBoard = new Group(hexagonBoard, roads, cities, settlements, knights);
     Group sidePanel = new Group();
+
+    Group controls = new Group();
 
     CatanBoard catanBoard;
 
@@ -372,6 +377,55 @@ class DraggableStructureBlock extends Game.StructureBlock {
         this.catanBoard = new CatanBoard();
     }
 
+    BorderPane pane1 = new BorderPane();
+    Scene scene1 = new Scene(pane1);
+    Stage stage1 = new Stage();
+
+    private void makeControls() {
+        Button btn = new Button();
+
+        btn.setText("Score Board");
+        btn.setTextFill(Color.DARKGREEN);
+        btn.setOnAction(e -> {
+            if(stage1.isShowing()) {
+                stage1.toFront();
+            } else {
+                displayScoreBoard();
+            }
+        });
+        btn.setTranslateX(220);
+        btn.setTranslateY(20);
+
+        pane1.setCenter(btn);
+
+        controls.getChildren().add(btn);
+    }
+
+    public void displayScoreBoard(){
+        Image image2;
+        ImageView iv2;
+
+        image2 = new Image("comp1110/ass2/assets/CatanScoreBoard.JPG");
+        iv2 = new ImageView();
+        iv2.setFitWidth(200);
+        iv2.setFitHeight(200);
+        iv2.setX(2);
+        iv2.setY(124);
+        iv2.setImage(image2);
+
+        pane1.setCenter(iv2);
+
+        stage1.setScene(scene1);
+        // Without this, the audio won't stop!
+        stage1.setOnCloseRequest(
+                e -> {
+                    e.consume();
+                    stage1.close();
+                }
+        );
+        stage1.showAndWait();
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
         Scene scene = new Scene(this.root, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -382,7 +436,9 @@ class DraggableStructureBlock extends Game.StructureBlock {
         root.getChildren().add(structuresBoard);
         root.getChildren().add(blocks);
         root.getChildren().add(sidePanel);
+        root.getChildren().add(controls);
 
+        makeControls();
         this.newGame();
         makeBoard();
         makeStructures();
