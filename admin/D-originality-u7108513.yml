@@ -24,18 +24,8 @@ declaration: >-
 code:
   - comment: Placing and removing structure block
     url: https://gitlab.cecs.anu.edu.au/u7108513/comp1110-ass1/-/blob/main/src/comp1110/ass1/PenguinsPoolParty.java#L278-345
-    licence:
+    licence: Fill
 
-# Use this to list any assets (artwork, sound, etc) that you used.
-# Provide a comment explaining your use of that asset and the URL
-# and license for the asset
-#
-# Add as many "url+licence+comment" entries as necessary
-# (or remove it altogether if you haven't used any external assets)
-assets:
-  - comment: Assignment 1 code has heavily influenced the decisions made.
-    url:
-    licence:
 
 
 # sign *your* name and uid here
