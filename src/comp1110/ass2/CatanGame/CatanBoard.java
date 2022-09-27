@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class CatanBoard {
     public BuildableStructure[][] boardArray;
-    public final static int CATAN_HEIGHT = 20;
+    public final static int CATAN_HEIGHT = 21;
     public final static int CATAN_WIDTH = 12;
     public CatanPlayer player;
 // Updated Coordinates on Thursday, 15/09/2022.
@@ -63,8 +63,7 @@ public class CatanBoard {
         structureBlocks.put("K", new CatanKnight("K", new int[]{0,0}));
     }
 
-    public CatanBoard(CatanPlayer player) {
-        this.player = player;
+    public CatanBoard() {
         this.initialiseBoard();
     }
 

@@ -19,6 +19,8 @@ import javafx.stage.Stage;
 
 import java.util.*;
 
+
+
 public class Game extends Application {
 
     private final Group root = new Group();
@@ -29,6 +31,9 @@ public class Game extends Application {
     public static final double BOARD_HEIGHT = 670;
     public static final double BOARD_offsetX = (WINDOW_WIDTH * 0.45);
     public static final double BOARD_offsetY = (WINDOW_HEIGHT * 0.5);
+
+    public static final double BLOCKS_OFFSETY = 600;
+    public static final double BLOCKS_OFFSETX= 990;
     public static final double hexagonRadius = 135;
 
     Group hexagonBoard = new Group();
@@ -39,6 +44,8 @@ public class Game extends Application {
     Group blocks = new Group();
     Group structuresBoard = new Group(hexagonBoard, roads, cities, settlements, knights);
     Group sidePanel = new Group();
+
+    CatanBoard catanboard;
 
 
 
@@ -118,7 +125,8 @@ public class Game extends Application {
                 });
 
                 this.setOnMouseReleased(event -> {
-                    draggableStructureBlock.snapToHome();
+                    draggableStructureBlock.setPosition();
+                    draggableStructureBlock.snapToGrid();
                 });
             }
         }
@@ -175,21 +183,19 @@ public class Game extends Application {
         final Structure structure;
         int x;
         int y;
-
         RoadShape roadShape;
         StructureBlock(String id) {
             this.structure = CatanBoard.getStructureBlocks().get(id);
             double x = this.structure.getBuildableStructure().getX();
             double y = this.structure.getBuildableStructure().getY();
-            if (id.charAt(0) == 'R') {
-                this.roadShape = new RoadShape(x, y, 90,this);
-                blocks.getChildren().add(roadShape);
-            }
+            this.roadShape = new RoadShape(x, y, 90, this);
+            blocks.getChildren().add(roadShape);
         }
 
         protected void snapToGrid() {
-            this.setLayoutX(BOARD_offsetX + this.x * 70);
-            this.setLayoutY(BOARD_offsetY + ((this.y)) * 70);
+            this.setLayoutX(BOARD_offsetX + this.x * 10);
+            this.setLayoutY(BOARD_offsetY + ((this.y)) * 10);
+            System.out.println(this.x +"" + this.y);
             roadShape.setTranslateX(this.getLayoutX());
             roadShape.setTranslateY(this.getLayoutY());
         }
@@ -200,8 +206,10 @@ public class Game extends Application {
         DraggableStructureBlock(String id) {
             super(id);
 
-            this.homeX = 0;
-            this.homeY = 0;
+            this.homeX = 990;
+            this.homeY = 600;
+
+            this.snapToHome();
         }
         private void snapToHome() {
             this.setLayoutX(this.homeX);
@@ -216,6 +224,14 @@ public class Game extends Application {
             this.setLayoutY(this.getLayoutY() + movementY);
             this.roadShape.setTranslateX(this.getLayoutX());
             this.roadShape.setTranslateY(this.getLayoutY());
+        }
+
+        private void setPosition() {
+            this.x = (int) ((this.getLayoutX()) + BLOCKS_OFFSETX);
+            this.y = (int) (this.getLayoutY() + BLOCKS_OFFSETY);
+            System.out.println(this.x + "," + this.y);
+            BuildableStructure hex = catanboard.getBuildableStructure(this.x, 0);
+            BuildableStructure destHex = catanboard.getBuildableStructure(this.x, this.y);
         }
 
     }
@@ -280,8 +296,6 @@ public class Game extends Application {
             DraggableStructureBlock c = new DraggableStructureBlock(id);
             blocks.getChildren().add(c);
         }
-        this.blocks.setLayoutY(600);
-        this.blocks.setLayoutX(990);
     }
 
     private void makeSidePanel(){
@@ -308,15 +322,15 @@ public class Game extends Application {
         ImageView iv1 = new ImageView();
         iv1.setFitWidth(196);
         iv1.setFitHeight(125);
-        iv1.setX(3);
+        iv1.setX(2);
         iv1.setY(2);
         iv1.setImage(image);
 
         Image image2 = new Image("comp1110/ass2/assets/javaFx_catan_dice_costs.png");
         ImageView iv2 = new ImageView();
-        iv2.setFitWidth(197);
+        iv2.setFitWidth(199);
         iv2.setFitHeight(125);
-        iv2.setX(3);
+        iv2.setX(2);
         iv2.setY(124);
         iv2.setImage(image2);
 
@@ -324,9 +338,15 @@ public class Game extends Application {
         sidePanel.getChildren().addAll(rightPanel, leftPanel, iv1, iv2);
     }
 
+    public void newGame(){
+        this.catanboard = new CatanBoard();
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
         Scene scene = new Scene(this.root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+        scene.setFill(Color.NAVAJOWHITE);
 
         root.getChildren().add(hexagonBoard);
         root.getChildren().add(structuresBoard);
@@ -337,6 +357,7 @@ public class Game extends Application {
         makeStructures();
         makeBlocks();
         makeSidePanel();
+        this.newGame();
 
         stage.setScene(scene);
         stage.show();
