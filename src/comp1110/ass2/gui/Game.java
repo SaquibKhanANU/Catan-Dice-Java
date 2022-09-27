@@ -1,6 +1,5 @@
 package comp1110.ass2.gui;
 
-import comp1110.ass2.CatanEnum.StructureType;
 import comp1110.ass2.CatanGame.CatanBoard;
 import comp1110.ass2.CatanStructure.BuildableStructure;
 import comp1110.ass2.CatanStructure.Structure;
@@ -11,10 +10,10 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 import java.util.*;
@@ -45,7 +44,7 @@ public class Game extends Application {
     Group structuresBoard = new Group(hexagonBoard, roads, cities, settlements, knights);
     Group sidePanel = new Group();
 
-    CatanBoard catanboard;
+    CatanBoard catanBoard;
 
 
 
@@ -87,7 +86,7 @@ public class Game extends Application {
         }
     }
 
-    static class RoadShape extends Rectangle {
+    class RoadShape extends Rectangle {
         double mouseX, mouseY;
 
         RoadShape(double roadX, double roadY, double rotation, StructureBlock structureBlock) {
@@ -113,6 +112,9 @@ public class Game extends Application {
                         this.mouseX = event.getSceneX();
                         this.mouseY = event.getSceneY();
                     }
+                    else if (event.getButton() == MouseButton.SECONDARY) {
+                            draggableStructureBlock.snapToHome();
+                    }
                 });
 
                 this.setOnMouseDragged(event -> {
@@ -126,7 +128,11 @@ public class Game extends Application {
 
                 this.setOnMouseReleased(event -> {
                     draggableStructureBlock.setPosition();
-                    draggableStructureBlock.snapToGrid();
+                    if (catanBoard.isStructurePlacementValid(draggableStructureBlock.structure)) {
+                        draggableStructureBlock.snapToGrid();
+                    } else {
+                        draggableStructureBlock.snapToHome();
+                    }
                 });
             }
         }
@@ -184,30 +190,53 @@ public class Game extends Application {
         int x;
         int y;
         RoadShape roadShape;
+        Rotate rotate;
+
         StructureBlock(String id) {
-            this.structure = CatanBoard.getStructureBlocks().get(id);
+            this.structure = catanBoard.getStructureBlocks().get(id);
             double x = this.structure.getBuildableStructure().getX();
             double y = this.structure.getBuildableStructure().getY();
             this.roadShape = new RoadShape(x, y, 90, this);
+            this.rotate = new Rotate();
+            this.rotate.setPivotX(0);
+            this.rotate.setPivotY(0);
+            this.getTransforms().add(this.rotate);
             blocks.getChildren().add(roadShape);
         }
 
+        protected void updateRotation() {
+            setRotate(30);
+            System.out.println("!!!!!" + this.x + "," + this.y);
+            BuildableStructure test = catanBoard.getBuildableStructure(this.x, this.y);
+            System.out.println();
+            String[] thirtyDegrees = new String[]{"R0", "R3", "R7", "R9", "R11", "R15", "R13"};
+            String[] negThirtyDegrees = new String[]{"R1", "R4", "R6", "R12"};
+            if (Arrays.asList(negThirtyDegrees).contains(test.getId())) {
+                this.roadShape.setRotate(90);
+            } else if (Arrays.asList(thirtyDegrees).contains(test.getId())) {
+                this.roadShape.setRotate(30);
+            } else {
+                this.roadShape.setRotate(-30);
+            }
+        }
+
         protected void snapToGrid() {
-            this.setLayoutX(BOARD_offsetX + this.x * 10);
-            this.setLayoutY(BOARD_offsetY + ((this.y)) * 10);
-            System.out.println(this.x +"" + this.y);
+            updateRotation();
+            this.setLayoutX(220 + (this.x * (BOARD_WIDTH / 20)));
+            this.setLayoutY((BOARD_offsetY - (hexagonRadius * 2.1 + 116.91 - 30)) + ((this.y * (BOARD_HEIGHT / 12))));
+            System.out.println(this.x + "" + this.y);
             roadShape.setTranslateX(this.getLayoutX());
             roadShape.setTranslateY(this.getLayoutY());
-        }
     }
+}
 
-    class DraggableStructureBlock extends StructureBlock {
+class DraggableStructureBlock extends Game.StructureBlock {
         double homeX, homeY;
         DraggableStructureBlock(String id) {
             super(id);
 
-            this.homeX = 990;
-            this.homeY = 600;
+            this.homeX = BOARD_offsetX - 330 + 10;
+            this.homeY = BOARD_offsetY - (hexagonRadius * 2.1 + 116.91 - 30);
 
             this.snapToHome();
         }
@@ -227,20 +256,21 @@ public class Game extends Application {
         }
 
         private void setPosition() {
-            this.x = (int) ((this.getLayoutX()) + BLOCKS_OFFSETX);
-            this.y = (int) (this.getLayoutY() + BLOCKS_OFFSETY);
+            this.x = (int) ((getLayoutX() - (BOARD_offsetX - 330 + 10)) / (BOARD_WIDTH / 21)); // 439.0,147.0
+            this.y = (int) ((getLayoutY() - (BOARD_offsetY - (hexagonRadius * 2.1 + 116.91 - 30))) / (BOARD_HEIGHT / 13));
+            this.structure.getBuildableStructure().setX(this.x);
+            this.structure.getBuildableStructure().setY(this.y);
+            System.out.println(getLayoutX() + "," + getLayoutY());
             System.out.println(this.x + "," + this.y);
-            BuildableStructure hex = catanboard.getBuildableStructure(this.x, 0);
-            BuildableStructure destHex = catanboard.getBuildableStructure(this.x, this.y);
+            BuildableStructure destHex = catanBoard.getBuildableStructure(this.x, this.y);
         }
-
     }
 
     private void makeStructures() {
-        CatanBoard.makeMap();
-        var keySet = CatanBoard.getStructureBlocksMap().keySet();
+        catanBoard.makeMap();
+        var keySet = catanBoard.getStructureBlocksMap().keySet();
         for (var id : keySet) {
-            BuildableStructure structure = CatanBoard.getStructureBlocksMap().get(id);
+            BuildableStructure structure = catanBoard.getStructureBlocksMap().get(id);
             double x = structure.getX() * (BOARD_WIDTH / 20);
             double y = structure.getY() * (BOARD_HEIGHT / 12);
             if (id.charAt(0) == 'R') {
@@ -291,7 +321,7 @@ public class Game extends Application {
 
     private void makeBlocks() {
         this.blocks.getChildren().clear();
-        var keySet = CatanBoard.getStructureBlocks().keySet();
+        var keySet = catanBoard.getStructureBlocks().keySet();
         for (String id : keySet) {
             DraggableStructureBlock c = new DraggableStructureBlock(id);
             blocks.getChildren().add(c);
@@ -312,7 +342,7 @@ public class Game extends Application {
         Rectangle leftPanel = new Rectangle();
         leftPanel.toBack();
         leftPanel.setHeight(700);
-        leftPanel.setWidth(200);
+        leftPanel.setWidth(200); // 230
         leftPanel.setFill(c);
         leftPanel.setX(1);
         leftPanel.setY(0);
@@ -339,7 +369,7 @@ public class Game extends Application {
     }
 
     public void newGame(){
-        this.catanboard = new CatanBoard();
+        this.catanBoard = new CatanBoard();
     }
 
     @Override
@@ -353,11 +383,12 @@ public class Game extends Application {
         root.getChildren().add(blocks);
         root.getChildren().add(sidePanel);
 
+        this.newGame();
         makeBoard();
         makeStructures();
         makeBlocks();
         makeSidePanel();
-        this.newGame();
+
 
         stage.setScene(scene);
         stage.show();

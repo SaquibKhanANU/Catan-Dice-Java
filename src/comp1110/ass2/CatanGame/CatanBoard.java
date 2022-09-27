@@ -14,8 +14,9 @@ public class CatanBoard {
     public CatanPlayer player;
 // Updated Coordinates on Thursday, 15/09/2022.
 
-    private static final HashMap<String, BuildableStructure> structureBlocksMap = new HashMap<>();
-    public static void makeMap() {
+    private  final HashMap<String, BuildableStructure> structureBlocksMap = new HashMap<>();
+    public void makeMap() {
+        structureBlocksMap.put("R", new BuildableStructure(0, 0, StructureType.ROAD, "R", 0));
         //ROADS
         structureBlocksMap.put("RI", new BuildableStructure(7, 3, StructureType.ROAD, "RI", 1));
         structureBlocksMap.put("R0", new BuildableStructure(7, 5, StructureType.ROAD, "R0", 1));
@@ -55,12 +56,9 @@ public class CatanBoard {
         structureBlocksMap.put("K6", new BuildableStructure(10, 2, StructureType.KNIGHT, "K6", 6));
     }
 
-    private static final HashMap<String, Structure> structureBlocks = new HashMap<>();
-    public static void makeStructureBlocks() {
-        structureBlocks.put("C", new CatanCity("C", new int[]{0,0}));
-        structureBlocks.put("R", new CatanRoad("R", new int[]{0,0}));
-        structureBlocks.put("S", new CatanSettlement("S", new int[]{0,0}));
-        structureBlocks.put("K", new CatanKnight("K", new int[]{0,0}));
+    private final HashMap<String, Structure> structureBlocks = new HashMap<>();
+    public void makeStructureBlocks() {
+        structureBlocks.put("R", new CatanRoad("R", new int[2]));
     }
 
     public CatanBoard() {
@@ -106,13 +104,13 @@ public class CatanBoard {
         this.boardArray[x][y].setStructureType(type);
     }
 
-    public static HashMap<String, BuildableStructure> getStructureBlocksMap() {
-        return CatanBoard.structureBlocksMap;
+    public  HashMap<String, BuildableStructure> getStructureBlocksMap() {
+        return this.structureBlocksMap;
     }
 
-    public static HashMap<String, Structure> getStructureBlocks() {
+    public  HashMap<String, Structure> getStructureBlocks() {
         makeStructureBlocks();
-        return CatanBoard.structureBlocks;
+        return this.structureBlocks;
     }
 
     /**
@@ -121,17 +119,18 @@ public class CatanBoard {
      * @return
      */
     public boolean isStructurePlacementValid(Structure structure) {
-        BuildableStructure structure1 = structure.getBuildableStructure();
-        int x = structure1.getX();
-        int y = structure1.getY();
-        StructureType type = structure1.getStructureType();
-        switch (type) {
-            case DBUILT_ROAD -> type = StructureType.ROAD;
-            case YBUILT_CITY -> type = StructureType.CITY;
-            case TBUILT_SETTLEMENT -> type = StructureType.SETTLEMENT;
-            case JOKER -> type = StructureType.KNIGHT;
-        }
-        return (!(x < 0) && !(x > 20) && !(y < 0) && !(y > 12)) && this.boardArray[x][y].getStructureType() == type;
+        int x = structure.getBuildableStructure().getX();
+        int y = structure.getBuildableStructure().getY();
+        StructureType type = getBuildableStructure(x, y).getStructureType();
+        System.out.println(x);
+        return switch (structure.getBuildableStructure().getStructureType()) {
+            case YBUILT_CITY -> type == StructureType.CITY;
+            case TBUILT_SETTLEMENT -> type == StructureType.SETTLEMENT;
+            case DBUILT_ROAD -> type == StructureType.ROAD;
+            case JOKER -> type == StructureType.KNIGHT;
+            default ->
+                    throw new IllegalStateException("Unexpected value: " + structure.getBuildableStructure().getStructureType());
+        };
     }
 
     /**
@@ -140,11 +139,9 @@ public class CatanBoard {
      */
 
     public void placeStructureBlock(Structure structure){
-        if (isStructurePlacementValid(structure)) {
             BuildableStructure bStructure = structure.getBuildableStructure();
             setBuildableStructure(bStructure.getX(), bStructure.getY(), bStructure.getStructureType());
             structure.setIsBuilt(true);
-        }
     }
 
     /**
@@ -153,14 +150,14 @@ public class CatanBoard {
      */
     public void removeStructureBlock(Structure structure){
         BuildableStructure bStructure = structure.getBuildableStructure();
-        StructureType type = structure.getBuildableStructure().getStructureType();
+        StructureType type = bStructure.getStructureType();
         switch (bStructure.getStructureType()) {
             case DBUILT_ROAD -> type = StructureType.ROAD;
             case YBUILT_CITY -> type = StructureType.CITY;
             case TBUILT_SETTLEMENT -> type = StructureType.SETTLEMENT;
             case JOKER -> type = StructureType.KNIGHT;
         }
-        setBuildableStructure(bStructure.getX(), bStructure.getY(), type); // ID AND POINT WILL REVERT
+        getBuildableStructure(bStructure.getX(), bStructure.getY()).setStructureType(type); // ID AND POINT WILL REVERT
         structure.setIsBuilt(false);
     }
 }

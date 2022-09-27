@@ -42,6 +42,13 @@ public abstract class Structure {
         this.isBuilt = isBuilt;
     }
 
+    public int[] getCoordinate(){
+        return this.coordinate;
+    }
+    public void setCoordinate(int x, int y) {
+        this.coordinate = new int[]{x, y};
+    }
+
 
     public String toString() {
         return super.toString();

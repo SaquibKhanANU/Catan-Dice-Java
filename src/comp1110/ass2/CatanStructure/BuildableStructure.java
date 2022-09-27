@@ -101,6 +101,7 @@ public class BuildableStructure {
         this.structure_type = structure_type;
     }
 
+
     public void setId(String id){
         this.id = id;
     }
