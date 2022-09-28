@@ -16,7 +16,6 @@ public class CatanBoard {
 
     private  final HashMap<String, BuildableStructure> structureBlocksMap = new HashMap<>();
     public void makeMap() {
-        structureBlocksMap.put("R", new BuildableStructure(0, 0, StructureType.ROAD, "R", 0));
         //ROADS
         structureBlocksMap.put("RI", new BuildableStructure(7, 3, StructureType.ROAD, "RI", 1));
         structureBlocksMap.put("R0", new BuildableStructure(7, 5, StructureType.ROAD, "R0", 1));
@@ -84,6 +83,7 @@ public class CatanBoard {
         }
     }
 
+
     // TESTING
     public String boardToString() {
         StringBuilder s = new StringBuilder();
@@ -122,7 +122,6 @@ public class CatanBoard {
         int x = structure.getBuildableStructure().getX();
         int y = structure.getBuildableStructure().getY();
         StructureType type = getBuildableStructure(x, y).getStructureType();
-        System.out.println(x);
         return switch (structure.getBuildableStructure().getStructureType()) {
             case YBUILT_CITY -> type == StructureType.CITY;
             case TBUILT_SETTLEMENT -> type == StructureType.SETTLEMENT;
@@ -139,9 +138,9 @@ public class CatanBoard {
      */
 
     public void placeStructureBlock(Structure structure){
-            BuildableStructure bStructure = structure.getBuildableStructure();
-            setBuildableStructure(bStructure.getX(), bStructure.getY(), bStructure.getStructureType());
-            structure.setIsBuilt(true);
+        BuildableStructure bStructure = structure.getBuildableStructure();
+        setBuildableStructure(bStructure.getX(), bStructure.getY(), bStructure.getStructureType());
+        structure.setIsBuilt(true);
     }
 
     /**
@@ -157,7 +156,7 @@ public class CatanBoard {
             case TBUILT_SETTLEMENT -> type = StructureType.SETTLEMENT;
             case JOKER -> type = StructureType.KNIGHT;
         }
-        getBuildableStructure(bStructure.getX(), bStructure.getY()).setStructureType(type); // ID AND POINT WILL REVERT
+        setBuildableStructure(bStructure.getX(), bStructure.getY(), type); // ID AND POINT WILL REVERT
         structure.setIsBuilt(false);
     }
 }

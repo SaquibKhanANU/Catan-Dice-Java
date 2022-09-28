@@ -6,7 +6,6 @@ import comp1110.ass2.CatanStructure.Structure;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -16,7 +15,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
-import javafx.scene.transform.Rotate;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.*;
@@ -38,6 +40,9 @@ public class Game extends Application {
     public static final double BLOCKS_OFFSETX= 990;
     public static final double hexagonRadius = 135;
 
+    public static int score = 0;
+    public static int round = 0;
+
     Group hexagonBoard = new Group();
     Group roads = new Group();
     Group cities = new Group();
@@ -48,6 +53,8 @@ public class Game extends Application {
     Group sidePanel = new Group();
 
     Group controls = new Group();
+
+    Group scoreCounter = new Group();
 
     CatanBoard catanBoard;
 
@@ -111,14 +118,24 @@ public class Game extends Application {
             setStroke(strokeColor);
             setRotate(rotation);
             setStrokeWidth(2);
+
             if (structureBlock instanceof DraggableStructureBlock draggableStructureBlock) {
                 this.setOnMousePressed(event -> {
                     if (event.getButton() == MouseButton.PRIMARY) {
                         this.mouseX = event.getSceneX();
                         this.mouseY = event.getSceneY();
+                        if (draggableStructureBlock.structure.isBuilt()) {
+                            catanBoard.removeStructureBlock(draggableStructureBlock.structure);
+                        }
                     }
                     else if (event.getButton() == MouseButton.SECONDARY) {
+                        if (draggableStructureBlock.structure.isBuilt()) {
+                            catanBoard.removeStructureBlock(draggableStructureBlock.structure);
+                        }
+                        if (draggableStructureBlock.isOnBoard()) {
                             draggableStructureBlock.snapToHome();
+                        }
+                        event.consume();
                     }
                 });
 
@@ -130,12 +147,21 @@ public class Game extends Application {
                     this.mouseX = event.getSceneX();
                     this.mouseY = event.getSceneY();
                 });
-
+                
                 this.setOnMouseReleased(event -> {
-                    draggableStructureBlock.setPosition();
-                    if (catanBoard.isStructurePlacementValid(draggableStructureBlock.structure)) {
-                        draggableStructureBlock.snapToGrid();
-                    } else {
+                    if (draggableStructureBlock.isOnBoard()) {
+                        draggableStructureBlock.setPosition();
+                        System.out.println(draggableStructureBlock.structure);
+                        if (catanBoard.isStructurePlacementValid(draggableStructureBlock.structure)) {
+                            draggableStructureBlock.snapToGrid();
+                            draggableStructureBlock.accessPoints();
+                            catanBoard.placeStructureBlock(draggableStructureBlock.structure);
+                        }
+                        else {
+                            draggableStructureBlock.snapToHome();
+                        }
+                    }
+                    else {
                         draggableStructureBlock.snapToHome();
                     }
                 });
@@ -195,25 +221,19 @@ public class Game extends Application {
         int x;
         int y;
         RoadShape roadShape;
-        Rotate rotate;
+
 
         StructureBlock(String id) {
             this.structure = catanBoard.getStructureBlocks().get(id);
-            double x = this.structure.getBuildableStructure().getX();
-            double y = this.structure.getBuildableStructure().getY();
+            int x = this.structure.getBuildableStructure().getX();
+            int y = this.structure.getBuildableStructure().getY();
             this.roadShape = new RoadShape(x, y, 90, this);
-            this.rotate = new Rotate();
-            this.rotate.setPivotX(0);
-            this.rotate.setPivotY(0);
-            this.getTransforms().add(this.rotate);
             blocks.getChildren().add(roadShape);
         }
 
         protected void updateRotation() {
             setRotate(30);
-            System.out.println("!!!!!" + this.x + "," + this.y);
             BuildableStructure test = catanBoard.getBuildableStructure(this.x, this.y);
-            System.out.println();
             String[] thirtyDegrees = new String[]{"R0", "R3", "R7", "R9", "R11", "R15", "R13"};
             String[] negThirtyDegrees = new String[]{"R1", "R4", "R6", "R12"};
             if (Arrays.asList(negThirtyDegrees).contains(test.getId())) {
@@ -229,47 +249,69 @@ public class Game extends Application {
             updateRotation();
             this.setLayoutX(220 + (this.x * (BOARD_WIDTH / 20)));
             this.setLayoutY((BOARD_offsetY - (hexagonRadius * 2.1 + 116.91 - 30)) + ((this.y * (BOARD_HEIGHT / 12))));
-            System.out.println(this.x + "" + this.y);
             roadShape.setTranslateX(this.getLayoutX());
             roadShape.setTranslateY(this.getLayoutY());
-    }
+        }
+
+        protected void accessPoints() {
+            BuildableStructure buildableStructure = catanBoard.getBuildableStructure(this.x, this.y);
+            int points = buildableStructure.getPoint();
+            score = score + points;
+
+            scoreCounter.getChildren().clear();
+            Text text = new Text();
+            text.setText("Points for " + round + ": " +score);
+            text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            text.setFill(Color.RED);
+            text.setX(220);
+            text.setY(60);
+            scoreCounter.getChildren().add(text);
+        }
 }
 
 class DraggableStructureBlock extends Game.StructureBlock {
-        double homeX, homeY;
-        DraggableStructureBlock(String id) {
-            super(id);
+    double homeX, homeY;
 
-            this.homeX = BOARD_offsetX - 330 + 10;
-            this.homeY = BOARD_offsetY - (hexagonRadius * 2.1 + 116.91 - 30);
+    DraggableStructureBlock(String id) {
+        super(id);
 
-            this.snapToHome();
-        }
-        private void snapToHome() {
-            this.setLayoutX(this.homeX);
-            this.setLayoutY(this.homeY);
+        this.homeX = BLOCKS_OFFSETX;
+        this.homeY = BLOCKS_OFFSETY;
 
-            this.roadShape.setTranslateX(this.getLayoutX());
-            this.roadShape.setTranslateY(this.getLayoutY());
-        }
-
-        protected void drag(double movementX, double movementY) {
-            this.setLayoutX(this.getLayoutX() + movementX);
-            this.setLayoutY(this.getLayoutY() + movementY);
-            this.roadShape.setTranslateX(this.getLayoutX());
-            this.roadShape.setTranslateY(this.getLayoutY());
-        }
-
-        private void setPosition() {
-            this.x = (int) ((getLayoutX() - (BOARD_offsetX - 330 + 10)) / (BOARD_WIDTH / 21)); // 439.0,147.0
-            this.y = (int) ((getLayoutY() - (BOARD_offsetY - (hexagonRadius * 2.1 + 116.91 - 30))) / (BOARD_HEIGHT / 13));
-            this.structure.getBuildableStructure().setX(this.x);
-            this.structure.getBuildableStructure().setY(this.y);
-            System.out.println(getLayoutX() + "," + getLayoutY());
-            System.out.println(this.x + "," + this.y);
-            BuildableStructure destHex = catanBoard.getBuildableStructure(this.x, this.y);
-        }
+        this.snapToHome();
     }
+
+    private void snapToHome() {
+        this.setLayoutX(this.homeX);
+        this.setLayoutY(this.homeY);
+        this.roadShape.setRotate(90);
+        this.roadShape.setTranslateX(this.getLayoutX());
+        this.roadShape.setTranslateY(this.getLayoutY());
+    }
+
+    protected void drag(double movementX, double movementY) {
+        this.setLayoutX(this.getLayoutX() + movementX);
+        this.setLayoutY(this.getLayoutY() + movementY);
+        this.roadShape.setTranslateX(this.getLayoutX());
+        this.roadShape.setTranslateY(this.getLayoutY());
+    }
+
+    private void setPosition() {
+        this.x = (int) ((getLayoutX() - (BOARD_offsetX - 330 + 10)) / (BOARD_WIDTH / 21)); // 439.0,147.0
+        this.y = (int) ((getLayoutY() - (BOARD_offsetY - (hexagonRadius * 2.1 + 116.91 - 30))) / (BOARD_HEIGHT / 13));
+        this.structure.getBuildableStructure().setX(this.x);
+        this.structure.getBuildableStructure().setY(this.y);
+        System.out.println(catanBoard.getBuildableStructure(this.x, this.y));
+        System.out.println("(" + getLayoutX() + "," + getLayoutY() + ")");
+        System.out.println(this.x + "," + this.y);
+        BuildableStructure destHex = catanBoard.getBuildableStructure(this.x, this.y);
+    }
+
+    private boolean isOnBoard() {
+        return getLayoutX() > (250) && getLayoutX() < (850) &&
+                getLayoutY() > (50) && getLayoutY() < (650);
+    }
+}
 
     private void makeStructures() {
         catanBoard.makeMap();
@@ -396,9 +438,23 @@ class DraggableStructureBlock extends Game.StructureBlock {
         btn.setTranslateX(220);
         btn.setTranslateY(20);
 
+        Button button = new Button();
+        button.setText("End Turn");
+        button.setLayoutX(60);
+        button.setLayoutY(260);
+        button.setOnAction(e -> {
+            endTurn();
+        });
+        this.controls.getChildren().add(button);
+
         pane1.setCenter(btn);
 
-        controls.getChildren().add(btn);
+        controls.getChildren().addAll(btn);
+    }
+
+    private void endTurn()  {
+        round = round + 1;
+        score = 0;
     }
 
     public void displayScoreBoard(){
@@ -413,7 +469,17 @@ class DraggableStructureBlock extends Game.StructureBlock {
         iv2.setY(124);
         iv2.setImage(image2);
 
+        Text text = new Text();
+        text.setText("Points for round " + round + ": " +score);
+        text.setFont(Font.font("cambria", FontWeight.BOLD, FontPosture.REGULAR, 14));
+        text.setFill(Color.DARKGREEN);
+        text.setX(0);
+        text.setY(0);
+
         pane1.setCenter(iv2);
+        pane1.setTop(text);
+
+        stage1.setResizable(false);
 
         stage1.setScene(scene1);
         // Without this, the audio won't stop!
@@ -431,12 +497,14 @@ class DraggableStructureBlock extends Game.StructureBlock {
         Scene scene = new Scene(this.root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         scene.setFill(Color.NAVAJOWHITE);
+        stage.setResizable(false);
 
         root.getChildren().add(hexagonBoard);
         root.getChildren().add(structuresBoard);
         root.getChildren().add(blocks);
         root.getChildren().add(sidePanel);
         root.getChildren().add(controls);
+        root.getChildren().add(scoreCounter);
 
         makeControls();
         this.newGame();
@@ -444,7 +512,6 @@ class DraggableStructureBlock extends Game.StructureBlock {
         makeStructures();
         makeBlocks();
         makeSidePanel();
-
 
         stage.setScene(scene);
         stage.show();

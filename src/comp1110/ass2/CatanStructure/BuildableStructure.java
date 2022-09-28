@@ -121,6 +121,6 @@ public class BuildableStructure {
      */
     @Override
     public String toString() {
-        return super.toString();
+        return structure_type + "";
     }
 }

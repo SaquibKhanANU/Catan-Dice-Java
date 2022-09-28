@@ -1,9 +1,11 @@
 package comp1110.ass2;
 
+import comp1110.ass2.CatanEnum.StructureType;
 import comp1110.ass2.CatanGame.CatanBoard;
-import comp1110.ass2.CatanGame.CatanPlayer;
 import comp1110.ass2.CatanStructure.*;
 import org.junit.jupiter.api.*;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -33,8 +35,15 @@ public class TestPlaceRemoveStructureBlocks {
             new CatanCity("C", new int[]{2,1}),
     };
 
+    private static final ArrayList<StructureType> c = new ArrayList<>();
+
+    private void makeArrayList() {
+        c.add(StructureType.ROAD);
+    }
+
     @Test
     public void testPlacement() {
+        makeArrayList();
         for (int i = 0; i < ICE_BLOCKS.length; i++) {
             CatanBoard catanBoard = new CatanBoard(STATES[i]);
             CatanBoard expected = new CatanBoard(EXPECTED_STATES[i]);
