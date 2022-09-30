@@ -1,6 +1,6 @@
 package comp1110.ass2.CatanStructure;
 
-public abstract class Structure {
+public class Structure {
 
     // The buildable structure of a specific type (VARIABLE)
     protected  BuildableStructure buildable_structure;
@@ -16,11 +16,34 @@ public abstract class Structure {
     // Check if the structure is built (VARIABLE)
     protected boolean isBuilt;
 
-    public Structure(String id, int[] coordinate, int[] resource_cost){
+    public Structure(String id, int[] coordinate){
         this.id = id;
-        this.resource_cost = resource_cost;
+        char structure_type = id.charAt(0);
+        if (structure_type == 'R'){
+            this.resource_cost = new int[]{0, 0, 0, 1, 1, 0};
+        } else if (structure_type == 'S'){
+            this.resource_cost = new int[]{0, 1, 1, 1, 1, 0};
+        } else if (structure_type == 'C'){
+            this.resource_cost = new int[]{3, 2, 0, 0, 0, 0};
+        } else if (structure_type == 'J'){
+            this.resource_cost = new int[]{1, 1, 1, 0, 0, 0};
+        }
         this.coordinate = coordinate;
         this.isBuilt = false;
+    }
+
+    public Structure(String id){
+        this.id = id;
+        char structure_type = id.charAt(0);
+        if (structure_type == 'R'){
+            this.resource_cost = new int[]{0, 0, 0, 1, 1, 0};
+        } else if (structure_type == 'S'){
+            this.resource_cost = new int[]{0, 1, 1, 1, 1, 0};
+        } else if (structure_type == 'C'){
+            this.resource_cost = new int[]{3, 2, 0, 0, 0, 0};
+        } else if (structure_type == 'J'){
+            this.resource_cost = new int[]{1, 1, 1, 0, 0, 0};
+        }
     }
 
     public BuildableStructure getBuildableStructure(){

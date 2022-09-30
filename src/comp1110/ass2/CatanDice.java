@@ -328,29 +328,35 @@ public class CatanDice {
         String board_copy = board_state;
         int[] resource_copy = resource_state;
         for (int i = 0; i < actions.length; i++) {
-            String action = actions[i];
+            Action action = new Action(actions[i]);
             System.out.println("action is " + action + ", board copy is " + board_copy);
-            test = canDoAction(action, board_copy, resource_copy);
+            test = canDoAction(actions[i], board_copy, resource_copy);
             if (!test) {
                 return false;
             }
             // Otherwise the action can be done
             // Update the board_state and resource state for the action
-            if (action.substring(0, 5).equals("build")) {
+            if (action.first == 'b') {
                 // Add structure to board state
-                board_state = board_state + "," + action.substring(6);
+                board_copy = board_copy + "," + action.id;
                 // TODO: Remove resources from resource_state from this build
+                Structure structure = new Structure(action.id);
+                System.out.println("Action id is " + action.id);
+                System.out.println("cost is " + structure.getResourceCost()[0] );
+                resource_copy = subtractArray(resource_copy, structure.getResourceCost());
             }
-            if (action.substring(0, 5).equals("trade")) {
+            if (action.first == 't') {
                 // Remove resources from resource state
-                resource_state[5] = resource_state[5] - 2;
+                resource_copy[5] = resource_copy[5] - 2;
                 // Add resource that has been traded for
-                int in = Integer.parseInt(action.substring(6));
-                resource_state[in] = resource_state[in]++;
+                int in = action.in;
+                System.out.println("Traded in for " + in);
+                resource_copy[in]++;
+                System.out.println("Resource for in is "+resource_copy[in]);
             }
-            if (action.substring(0, 4).equals("swap")) {
-                int out = Integer.parseInt(action.substring(5, 6));
-                int in = Integer.parseInt(action.substring(7));
+            if (action.first == 's') {
+                int out = action.out;
+                int in = action.in;
                 // Add in resource to resource state
                 int new_in = resource_copy[in] + 1;
                 setInt(resource_copy, in, new_in);
@@ -368,6 +374,16 @@ public class CatanDice {
             }
         }
         return true; // FIXME: Task #11
+    }
+
+    // Given array1 and array 2 assumed to be of the same length and not empty
+    // Return an array that is a componentwise subtraction of array1 - array2
+    public static int[] subtractArray(int[] array1, int[] array2){
+        int[] res = new int[array1.length];
+        for (int i = 0; i < array1.length; i++){
+            res[i] = array1[i] - array2[i];
+        }
+        return res;
     }
 
     /**
