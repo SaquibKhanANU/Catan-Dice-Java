@@ -29,6 +29,10 @@ public abstract class Structure {
     public void setBuildableStructure(BuildableStructure buildable_structure){
         this.buildable_structure = buildable_structure;
     }
+
+    public String getId(){
+        return this.id;
+    }
     public int[] getResourceCost(){
         return this.resource_cost;
     }

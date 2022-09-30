@@ -1,5 +1,6 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.CatanDice;
 import comp1110.ass2.CatanGame.CatanBoard;
 import comp1110.ass2.CatanStructure.BuildableStructure;
 import comp1110.ass2.CatanStructure.Structure;
@@ -44,6 +45,9 @@ public class Game extends Application {
     public static int score = 0;
     public static int round = 0;
 
+    String board_state = "";
+    String action = "";
+
     Group hexagonBoard = new Group();
     Group roads = new Group();
     Group cities = new Group();
@@ -58,6 +62,8 @@ public class Game extends Application {
     Group scoreCounter = new Group();
 
     CatanBoard catanBoard;
+
+
 
 
 
@@ -134,10 +140,12 @@ public class Game extends Application {
 
                     else if (event.getButton() == MouseButton.SECONDARY) {
                         if (draggableStructureBlock.structure.isBuilt()) {
-                            draggableStructureBlock.removePoint();
-                            catanBoard.removeStructureBlock(draggableStructureBlock.structure);
-                            blocks.getChildren().remove(event.getTarget());
-
+                            if (draggableStructureBlock.canDoRemove()) {
+                                draggableStructureBlock.removePoint();
+                                draggableStructureBlock.removeBoardState();
+                                catanBoard.removeStructureBlock(draggableStructureBlock.structure);
+                                blocks.getChildren().remove(event.getTarget());
+                            }
                         }
                         if (draggableStructureBlock.isOnBoard()) {
                             draggableStructureBlock.snapToHome();
@@ -163,10 +171,16 @@ public class Game extends Application {
                             draggableStructureBlock.setPosition();
                             System.out.println(draggableStructureBlock.structure);
                             if (catanBoard.isStructurePlacementValid(draggableStructureBlock.structure)) {
-                                draggableStructureBlock.snapToGrid();
-                                draggableStructureBlock.accessPoints();
-                                catanBoard.placeStructureBlock(draggableStructureBlock.structure);
-                                draggableStructureBlock.newBlock();
+                                draggableStructureBlock.updateAction();
+                                if (CatanDice.canDoAction(action, board_state, new int[]{6, 6, 6, 6, 6, 6})) { // GET ACTION, GET BOARD_STATE, GET RESOURCE.
+                                    draggableStructureBlock.updateBoardState();
+                                    System.out.println(board_state);
+                                    System.out.println(action);
+                                    draggableStructureBlock.snapToGrid();
+                                    draggableStructureBlock.accessPoints();
+                                    catanBoard.placeStructureBlock(draggableStructureBlock.structure);
+                                    draggableStructureBlock.newBlock();
+                                }
                             }
                             else {
                                 draggableStructureBlock.snapToHome();
@@ -293,6 +307,41 @@ public class Game extends Application {
             scoreCounter.getChildren().add(text);
         }
 
+        // WILL SIMPLIFY CODE BELOW, CURRENTLY TESTING IF IT WILL WORK
+        protected void newBlock(){
+            blocks.getChildren().add(new DraggableStructureBlock("R"));
+        }
+
+        protected boolean canDoRemove() {
+            // REMOVE id from board_state
+            // if board_state is still valid after remove
+            // then structure can be removed!
+           /* removeBoardState();
+            if (CatanDice.isBoardStateWellFormed(board_state)) {
+                return true;
+            } else {
+                updateBoardState();
+                return false;
+            } */
+            return true;
+        }
+
+        protected void updateBoardState() {
+            if (catanBoard.getBuildableStructure(this.x, this.y).getId().equals("R0")) {
+                board_state = board_state + catanBoard.getBuildableStructure(this.x, this.y).getId();
+            } else {
+                board_state = board_state + "," + catanBoard.getBuildableStructure(this.x, this.y).getId();
+            }
+        }
+        protected void removeBoardState() {
+            if (catanBoard.getBuildableStructure(this.x, this.y).getId().equals("R0")) {
+                board_state = board_state.replace(catanBoard.getBuildableStructure(this.x, this.y).getId(), "");
+            }
+            board_state = board_state.replace("," + catanBoard.getBuildableStructure(this.x, this.y).getId(), "");
+        }
+        protected void updateAction() {
+            action = "build" + " " + catanBoard.getBuildableStructure(this.x, this.y).getId();
+        }
 }
 
 class DraggableStructureBlock extends StructureBlock {
@@ -337,9 +386,7 @@ class DraggableStructureBlock extends StructureBlock {
                 getLayoutY() > (50) && getLayoutY() < (650);
     }
 
-    private void newBlock(){
-        blocks.getChildren().add(new DraggableStructureBlock("R"));
-    }
+
 }
 
     private void makeStructures() {
@@ -361,6 +408,9 @@ class DraggableStructureBlock extends StructureBlock {
                     rotation = -30;
                 }
                 RoadShape roadShape = new RoadShape(x, y, rotation, null);
+                if (id.equals("RI")){
+                    roadShape.setFill(Color.PURPLE);
+                }
                 roads.getChildren().add(roadShape);
             }
             else if (id.charAt(0) == 'C') {
@@ -403,7 +453,6 @@ class DraggableStructureBlock extends StructureBlock {
             blocks.getChildren().add(c);
         }
     }
-
 
 
     private void makeSidePanel(){

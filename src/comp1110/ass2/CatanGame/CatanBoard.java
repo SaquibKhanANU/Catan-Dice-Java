@@ -17,7 +17,7 @@ public class CatanBoard {
     private  final HashMap<String, BuildableStructure> structureBlocksMap = new HashMap<>();
     public void makeMap() {
         //ROADS
-        structureBlocksMap.put("RI", new BuildableStructure(7, 3, StructureType.ROAD, "RI", 1));
+        structureBlocksMap.put("RI", new BuildableStructure(7, 3, StructureType.DBUILT_ROAD, "RI", 0));
         structureBlocksMap.put("R0", new BuildableStructure(7, 5, StructureType.ROAD, "R0", 1));
         structureBlocksMap.put("R1", new BuildableStructure(4, 6, StructureType.ROAD, "R1", 1));
         structureBlocksMap.put("R2", new BuildableStructure(7, 7, StructureType.ROAD, "R2", 1));
