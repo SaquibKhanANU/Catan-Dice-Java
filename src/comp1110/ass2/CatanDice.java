@@ -283,17 +283,17 @@ public class CatanDice {
     public static boolean canDoAction(String action,
 				      String board_state,
 				      int[] resource_state) {
-        if (action.substring(0,5).equals("build")){
+        if (action.startsWith("build")){
             // Needs to be a valid build and have the available resources
             String structure = action.substring(6);
             boolean result = checkBuildConstraints(structure, board_state) && checkResources(structure, resource_state);
             return result;
         }
-        if (action.substring(0,5).equals("trade")){
+        if (action.startsWith("trade")){
             // Need 2 gold for a trade action
             return (resource_state[5] >= 2);
         }
-        if (action.substring(0,4).equals("swap")){
+        if (action.startsWith("swap")){
             int out = Integer.parseInt(action.substring(5,6));
             int in = Integer.parseInt(action.substring(7));
             // The resource state needs to contain the out resource
@@ -324,16 +324,18 @@ public class CatanDice {
 					String board_state,
 					int[] resource_state) {
         System.out.println("NEW FUNCTION CALL");
-        boolean test;
+        boolean test=true;
         String board_copy = board_state;
         int[] resource_copy = resource_state;
-        for (int i = 0; i < actions.length; i++) {
-            Action action = new Action(actions[i]);
-            System.out.println("action is " + action + ", board copy is " + board_copy);
+        String[] actions_copy = actions;
+        for (int i = 0; i < actions_copy.length; i++) {
+            Action action = new Action(actions_copy[i]);
+            System.out.println("action is " + actions_copy[i]+ ", board copy is " + board_copy);
             test = canDoAction(actions[i], board_copy, resource_copy);
+            System.out.println(test);
             if (!test) {
                 return false;
-            }
+            } else{
             // Otherwise the action can be done
             // Update the board_state and resource state for the action
             if (action.first == 'b') {
@@ -345,7 +347,7 @@ public class CatanDice {
                 System.out.println("cost is " + structure.getResourceCost()[0] );
                 resource_copy = subtractArray(resource_copy, structure.getResourceCost());
             }
-            if (action.first == 't') {
+            else if (action.first == 't') {
                 // Remove resources from resource state
                 resource_copy[5] = resource_copy[5] - 2;
                 // Add resource that has been traded for
@@ -354,7 +356,7 @@ public class CatanDice {
                 resource_copy[in]++;
                 System.out.println("Resource for in is "+resource_copy[in]);
             }
-            if (action.first == 's') {
+            else if (action.first == 's') {
                 int out = action.out;
                 int in = action.in;
                 // Add in resource to resource state
@@ -372,8 +374,13 @@ public class CatanDice {
                     board_copy = board_copy + (",K" + (in + 1));
                 }
             }
+            }
         }
         return true; // FIXME: Task #11
+    }
+
+    public static void main(String[] args) {
+        System.out.println(canDoSequence(new String[]{"trade 4", "build R7"}, "R0,S3,R1,C7,R2,S4,R3,R4,R5,R6,J1,J2,J3", new int[]{1,1,0,1,1,2}));
     }
 
     // Given array1 and array 2 assumed to be of the same length and not empty

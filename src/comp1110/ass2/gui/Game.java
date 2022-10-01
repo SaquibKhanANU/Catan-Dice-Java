@@ -5,6 +5,8 @@ import comp1110.ass2.CatanGame.CatanBoard;
 import comp1110.ass2.CatanStructure.BuildableStructure;
 import comp1110.ass2.CatanStructure.Structure;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -25,6 +27,7 @@ import javafx.stage.Stage;
 import java.lang.reflect.Array;
 import java.util.*;
 
+import static comp1110.ass2.CatanDice.rollDice;
 
 
 public class Game extends Application {
@@ -54,6 +57,7 @@ public class Game extends Application {
     Group settlements = new Group();
     Group knights = new Group();
     Group blocks = new Group();
+    Group resources = new Group();
     Group structuresBoard = new Group(hexagonBoard, roads, cities, settlements, knights);
     Group sidePanel = new Group();
 
@@ -62,8 +66,6 @@ public class Game extends Application {
     Group scoreCounter = new Group();
 
     CatanBoard catanBoard;
-
-
 
 
 
@@ -532,6 +534,28 @@ class DraggableStructureBlock extends StructureBlock {
         controls.getChildren().addAll(btn);
     }
 
+
+    private void makeDiceRoll(){
+        Button button = new Button();
+        button.setText("Roll Dice");
+        button.setLayoutX(800);
+        button.setLayoutY(20);
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                int[] resource_state = new int[]{1,1,1,1,1,1};
+                rollDice(4, resource_state); // The array should be the current resources
+                for (var a : resource_state){
+                    System.out.print(a + ", ");
+                }
+            }
+        });
+
+        this.controls.getChildren().add(button);
+        pane1.setCenter(button);
+        controls.getChildren().add(button);
+    }
+
     private void endTurn()  {
         round = round + 1;
         score = 0;
@@ -585,6 +609,7 @@ class DraggableStructureBlock extends StructureBlock {
         root.getChildren().add(sidePanel);
         root.getChildren().add(controls);
         root.getChildren().add(scoreCounter);
+        root.getChildren().add(resources);
 
         makeControls();
         this.newGame();
@@ -592,6 +617,8 @@ class DraggableStructureBlock extends StructureBlock {
         makeStructures();
         makeBlocks();
         makeSidePanel();
+
+        makeDiceRoll();
 
         stage.setScene(scene);
         stage.show();
