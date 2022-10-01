@@ -379,9 +379,6 @@ public class CatanDice {
         return true; // FIXME: Task #11
     }
 
-    public static void main(String[] args) {
-        System.out.println(canDoSequence(new String[]{"trade 4", "build R7"}, "R0,S3,R1,C7,R2,S4,R3,R4,R5,R6,J1,J2,J3", new int[]{1,1,0,1,1,2}));
-    }
 
     // Given array1 and array 2 assumed to be of the same length and not empty
     // Return an array that is a componentwise subtraction of array1 - array2
