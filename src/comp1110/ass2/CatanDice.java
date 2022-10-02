@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 
+import static comp1110.ass2.CatanStructure.Structure.boardStateToStructures;
 import static java.lang.reflect.Array.setInt;
 import static java.util.Arrays.asList;
 
@@ -184,10 +185,10 @@ public class CatanDice {
         // look at what structure is to be built,
         if (boardStateList.contains(structure)){return false;}
         // structure has not already been built
-        String structure_type = structure.substring(0,1);
-        int value = Integer.parseInt(structure.substring(1));
+        Structure current_structure = new Structure(structure);
+        int value = current_structure.value;
         // structure is a road
-        if (structure_type.equals("R")){
+        if (current_structure.type == 'R'){
           if (value == 0){return true;}
           if (value == 2 || value ==5){
               return boardStateList.contains("R" + (value-2));
@@ -198,26 +199,26 @@ public class CatanDice {
           else {return boardStateList.contains("R" + (value-1));}
         }
         // structure is a settlement
-        if (structure_type.equals("S")){
+        if (current_structure.type == 'S'){
             if (value == 3){return true;}
             if (value ==4 ){return boardStateList.contains("R" + 2);}
             else {return boardStateList.contains("R" + value);}
         }
         // structure is a city
-        if (structure_type.equals("C")){
+        if (current_structure.type == 'C'){
             if (value == 7){return boardStateList.contains("R" + 1);}
             if (value == 12){return boardStateList.contains("R" + 4);}
             if (value == 20){return boardStateList.contains("R" + 13);}
             if (value == 30){return boardStateList.contains("R" + 15);}
         }
         // structure is a joker
-        if (structure_type.equals("J")){
+        if (current_structure.type == 'J'){
             if (value == 1){return true;}
             Boolean truth_value = boardStateList.contains("J" + (value-1)) || boardStateList.contains("K" + (value-1));
             return truth_value;
         }
         // structure is a knight
-        if (structure_type.equals("K")){
+        if (current_structure.type == 'K'){
             {return boardStateList.contains("J" + (value));}
         }
         return false; // Task #8
@@ -283,19 +284,20 @@ public class CatanDice {
     public static boolean canDoAction(String action,
 				      String board_state,
 				      int[] resource_state) {
-        if (action.startsWith("build")){
+        Action current_action = new Action(action);
+        if (current_action.first == 'b'){
             // Needs to be a valid build and have the available resources
             String structure = action.substring(6);
             boolean result = checkBuildConstraints(structure, board_state) && checkResources(structure, resource_state);
             return result;
         }
-        if (action.startsWith("trade")){
+        if (current_action.first == 't'){
             // Need 2 gold for a trade action
             return (resource_state[5] >= 2);
         }
-        if (action.startsWith("swap")){
-            int out = Integer.parseInt(action.substring(5,6));
-            int in = Integer.parseInt(action.substring(7));
+        if (current_action.first == 's'){
+            int out = current_action.out;
+            int in = current_action.in;
             // The resource state needs to contain the out resource
             if (resource_state[out] >= 1){
                 // The board_state needs to contain J + in but not contain K + in (otherwise it has been used)
