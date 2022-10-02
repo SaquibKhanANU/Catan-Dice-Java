@@ -2,6 +2,7 @@ package comp1110.ass2;
 
 import comp1110.ass2.CatanStructure.Structure;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -269,7 +270,68 @@ public class CatanDice {
     public static boolean checkResourcesWithTradeAndSwap(String structure,
 							 String board_state,
 							 int[] resource_state) {
-	return false; // FIXME: Task #12
+        // If the structure can be built in the current resource state, then return true
+        if (checkResources(structure, resource_state)){return true;}
+        // Now check if the structure can be built considering swaps and trades.
+        else{
+            // Find out what is needed to build the structure
+            Structure current_structure = new Structure(structure);
+            int[] cost = current_structure.getResourceCost();
+            // Find out resource_state - cost, values that are negative need to be swapped or traded for
+            int[] difference = subtractArray(resource_state, cost);
+            String[] array = board_state.split(",");
+            List<String> board_state_list = asList(array);
+            // Try to make up the difference through jokers and knights
+            for (int i = 0; i < difference.length; i++) {
+                if (difference[i] < 0) {
+                    // Check the board state has J(i+1) but not K(i+1)
+                    if (board_state_list.contains("J" + (i + 1)) && !(board_state_list.contains("K" + (i + 1)))) {
+                        // If so then add to difference
+                        difference[i]++;
+                    }
+                }
+            }
+                // If difference is all positive then return true
+                if (allNonNegative(difference)){return true;}
+                // Else a trade may need to be done
+                // WLOG if resource_state has J6 but not K6 then swap an available resource
+                // If there is no available resource then add to the gold
+                if (board_state_list.contains("J6") && !(board_state_list.contains("K6"))) {
+                    // Add to one negative element in difference
+                    for (int k = 0; k < difference.length; k++){
+                        if (difference[k] < 0){
+                            for (int l = 0; l < difference.length; l ++){
+                                if (difference[l] > 0){
+                                    difference[l]--;
+                                    difference[k]++;
+                                    break;}
+                            }
+                        break;
+                        }
+                        // If the loop has not reached a break statement then no
+                        // excess resource was available to swap using J6.
+                        // In this case k == 5.
+                        else if (k == 5){difference[5]++;}
+                    }
+                }
+                for (int j = 0; j < difference.length; j++) {
+                    // If there are at least 2 gold then can add to difference
+                    if (difference[j] < 0 && difference[5] >= 2) {
+                        difference[j]++;
+                        difference[5] -= 2;
+                    }
+                }
+                if (allNonNegative(difference)){return true;}
+            }
+	return false; // Task #12
+    }
+
+    // Return true if every element is non-negative
+    public static boolean allNonNegative(int[] array){
+        for (int i = 0; i < array.length; i++){
+            if (array[i]<0){return false;}
+        }
+        return true;
     }
 
     /**
