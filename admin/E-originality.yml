@@ -30,15 +30,20 @@ collaboration:
 #
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external code)
-    code: makeDiceRoll
-    comment: Java FX in makeDiceRoll
-    url: https://docs.oracle.com/javase/8/javafx/events-tutorial/convenience_methods.htm
-    licence:
+  code: makeDiceRoll
+  comment: Java FX in makeDiceRoll
+  url: https://docs.oracle.com/javase/8/javafx/events-tutorial/convenience_methods.htm
+  licence:
 
-    code: makeDiceRoll
-    comment: Used code written by fellow team member
-    url: filled
-    licence: filled
+  code: makeDiceRoll
+  comment: Used code written by fellow team member
+  url: filled
+  licence: filled
+
+  code: CatanPlayer and GameState
+  comment: Helpful to put constructors of CatanPlayer into an array
+  url: https://stackoverflow.com/questions/12771245/for-loops-to-send-info-to-a-constructor-in-java
+  licence: filled
 
 # Use this to list any assets (artwork, sound, etc) that you used.
 # Provide a comment explaining your use of that asset and the URL
