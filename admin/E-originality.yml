@@ -14,15 +14,6 @@ declaration: >-
   and all stages before it is entirely our own work, with the following
   exceptions:
 
-# Use this to list names of people who you collaborated with, and a
-# comment about what you collaborated on.
-#
-# Add as many "name+comment" entries as necessary
-# (or remove it altogether if you haven't collaborated with anyone)
-collaboration:
-  - name:
-    comment: >-
-
 # Use this to list any code that you used that you did not write,
 # aside from code provided by the lecturer.  Provide a comment
 # explaining your use and the URL to that code and the licence for
@@ -30,31 +21,23 @@ collaboration:
 #
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external code)
-  code: makeDiceRoll
-  comment: Java FX in makeDiceRoll
-  url: https://docs.oracle.com/javase/8/javafx/events-tutorial/convenience_methods.htm
-  licence:
+code:
+  - comment: makeDiceRoll, Java FX in makeDiceRoll
+    url: https://docs.oracle.com/javase/8/javafx/events-tutorial/convenience_methods.htm
+    licence: filled
 
-  code: makeDiceRoll
-  comment: Used code written by fellow team member
-  url: filled
-  licence: filled
 
-  code: CatanPlayer and GameState
-  comment: Helpful to put constructors of CatanPlayer into an array
-  url: https://stackoverflow.com/questions/12771245/for-loops-to-send-info-to-a-constructor-in-java
-  licence: filled
+  - comment: makeDiceRoll, Used code written by fellow team member
+    url: filled
+    licence: filled
 
-# Use this to list any assets (artwork, sound, etc) that you used.
-# Provide a comment explaining your use of that asset and the URL
-# and license for the asset
-#
-# Add as many "url+licence+comment" entries as necessary
-# (or remove it altogether if you haven't used any external assets)
-assets:
-  - comment:
-    url:
-    licence:
+  - comment: CatanPlayer and GameState, Helpful to put constructors of CatanPlayer into an array
+    url: https://stackoverflow.com/questions/12771245/for-loops-to-send-info-to-a-constructor-in-java
+    licence: filled
+
+  - comment: Certain code written by John Larkin, Took inspiration from code written by fellow team member.
+    url: filled
+    licence: filled
 
 
 # Sign *your* name and uids here. (Remove entries if you have fewer
@@ -62,6 +45,6 @@ assets:
 signatures:
   - name: Saquib Khan
     uid: u7108513
-  - name:
-    uid:
+  - name: John Larkin
+    uid: u6717250
 

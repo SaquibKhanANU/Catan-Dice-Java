@@ -24,7 +24,6 @@ public class Structure {
     public Structure(String id, int[] coordinate){
         this.id = id;
         this.type = id.charAt(0);
-        this.value = Integer.parseInt(id.substring(1));
         if (type == 'R'){
             this.resource_cost = new int[]{0, 0, 0, 1, 1, 0};
         } else if (type== 'S'){
@@ -63,7 +62,7 @@ public class Structure {
     /**
      * Given a board state as a string return an array of Structures.
      */
-
+// John L
     public static Structure[] boardStateToStructures(String board_state){
         String[] board_state_array = board_state.split(",");
         Structure[] res = new Structure[board_state_array.length];
