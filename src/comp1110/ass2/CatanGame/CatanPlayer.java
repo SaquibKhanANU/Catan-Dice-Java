@@ -5,6 +5,7 @@ import comp1110.ass2.CatanStructure.Structure;
 import java.util.ArrayList;
 import java.util.List;
 
+// John Larkin
 public class CatanPlayer {
 
     // The index distinguishes the player, either 0,1,2,3

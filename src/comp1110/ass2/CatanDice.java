@@ -65,6 +65,7 @@ public class CatanDice {
      * @return true iff the string is a well-formed representation of
      *         a board state, false otherwise.
      */
+    // John Larkin
     public static boolean isActionWellFormed(String action) { // Task #4
         // The strings to check. Strings contain a space at the end.
         String build = "build ";
@@ -179,7 +180,7 @@ public class CatanDice {
      *         otherwise.
      */
 
-
+// John Larkin
     public static boolean checkBuildConstraints(String structure, String board_state) {
         String[] boardStateArray = board_state.split(",");
         List<String> boardStateList = asList(boardStateArray);
@@ -267,6 +268,7 @@ public class CatanDice {
      * @return true iff the structure can be built with the available
      *         resources, false otherwise.
      */
+    // John Larkin
     public static boolean checkResourcesWithTradeAndSwap(String structure,
 							 String board_state,
 							 int[] resource_state) {
