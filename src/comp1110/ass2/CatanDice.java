@@ -2,11 +2,13 @@ package comp1110.ass2;
 
 import comp1110.ass2.CatanStructure.Structure;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 
+import static comp1110.ass2.CatanStructure.Structure.boardStateToStructures;
 import static java.lang.reflect.Array.setInt;
 import static java.util.Arrays.asList;
 
@@ -63,6 +65,7 @@ public class CatanDice {
      * @return true iff the string is a well-formed representation of
      *         a board state, false otherwise.
      */
+    // John Larkin
     public static boolean isActionWellFormed(String action) { // Task #4
         // The strings to check. Strings contain a space at the end.
         String build = "build ";
@@ -177,17 +180,17 @@ public class CatanDice {
      *         otherwise.
      */
 
-
+// John Larkin
     public static boolean checkBuildConstraints(String structure, String board_state) {
         String[] boardStateArray = board_state.split(",");
         List<String> boardStateList = asList(boardStateArray);
         // look at what structure is to be built,
         if (boardStateList.contains(structure)){return false;}
         // structure has not already been built
-        String structure_type = structure.substring(0,1);
-        int value = Integer.parseInt(structure.substring(1));
+        Structure current_structure = new Structure(structure);
+        int value = current_structure.value;
         // structure is a road
-        if (structure_type.equals("R")){
+        if (current_structure.type == 'R'){
           if (value == 0){return true;}
           if (value == 2 || value ==5){
               return boardStateList.contains("R" + (value-2));
@@ -198,26 +201,26 @@ public class CatanDice {
           else {return boardStateList.contains("R" + (value-1));}
         }
         // structure is a settlement
-        if (structure_type.equals("S")){
+        if (current_structure.type == 'S'){
             if (value == 3){return true;}
             if (value ==4 ){return boardStateList.contains("R" + 2);}
             else {return boardStateList.contains("R" + value);}
         }
         // structure is a city
-        if (structure_type.equals("C")){
+        if (current_structure.type == 'C'){
             if (value == 7){return boardStateList.contains("R" + 1);}
             if (value == 12){return boardStateList.contains("R" + 4);}
             if (value == 20){return boardStateList.contains("R" + 13);}
             if (value == 30){return boardStateList.contains("R" + 15);}
         }
         // structure is a joker
-        if (structure_type.equals("J")){
+        if (current_structure.type == 'J'){
             if (value == 1){return true;}
             Boolean truth_value = boardStateList.contains("J" + (value-1)) || boardStateList.contains("K" + (value-1));
             return truth_value;
         }
         // structure is a knight
-        if (structure_type.equals("K")){
+        if (current_structure.type == 'K'){
             {return boardStateList.contains("J" + (value));}
         }
         return false; // Task #8
@@ -265,10 +268,72 @@ public class CatanDice {
      * @return true iff the structure can be built with the available
      *         resources, false otherwise.
      */
+    // John Larkin
     public static boolean checkResourcesWithTradeAndSwap(String structure,
 							 String board_state,
 							 int[] resource_state) {
-	return false; // FIXME: Task #12
+        // If the structure can be built in the current resource state, then return true
+        if (checkResources(structure, resource_state)){return true;}
+        // Now check if the structure can be built considering swaps and trades.
+        else{
+            // Find out what is needed to build the structure
+            Structure current_structure = new Structure(structure);
+            int[] cost = current_structure.getResourceCost();
+            // Find out resource_state - cost, values that are negative need to be swapped or traded for
+            int[] difference = subtractArray(resource_state, cost);
+            String[] array = board_state.split(",");
+            List<String> board_state_list = asList(array);
+            // Try to make up the difference through jokers and knights
+            for (int i = 0; i < difference.length; i++) {
+                if (difference[i] < 0) {
+                    // Check the board state has J(i+1) but not K(i+1)
+                    if (board_state_list.contains("J" + (i + 1)) && !(board_state_list.contains("K" + (i + 1)))) {
+                        // If so then add to difference
+                        difference[i]++;
+                    }
+                }
+            }
+                // If difference is all positive then return true
+                if (allNonNegative(difference)){return true;}
+                // Else a trade may need to be done
+                // WLOG if resource_state has J6 but not K6 then swap an available resource
+                // If there is no available resource then add to the gold
+                if (board_state_list.contains("J6") && !(board_state_list.contains("K6"))) {
+                    // Add to one negative element in difference
+                    for (int k = 0; k < difference.length; k++){
+                        if (difference[k] < 0){
+                            for (int l = 0; l < difference.length; l ++){
+                                if (difference[l] > 0){
+                                    difference[l]--;
+                                    difference[k]++;
+                                    break;}
+                            }
+                        break;
+                        }
+                        // If the loop has not reached a break statement then no
+                        // excess resource was available to swap using J6.
+                        // In this case k == 5.
+                        else if (k == 5){difference[5]++;}
+                    }
+                }
+                for (int j = 0; j < difference.length; j++) {
+                    // If there are at least 2 gold then can add to difference
+                    if (difference[j] < 0 && difference[5] >= 2) {
+                        difference[j]++;
+                        difference[5] -= 2;
+                    }
+                }
+                if (allNonNegative(difference)){return true;}
+            }
+	return false; // Task #12
+    }
+
+    // Return true if every element is non-negative
+    public static boolean allNonNegative(int[] array){
+        for (int i = 0; i < array.length; i++){
+            if (array[i]<0){return false;}
+        }
+        return true;
     }
 
     /**
@@ -283,19 +348,20 @@ public class CatanDice {
     public static boolean canDoAction(String action,
 				      String board_state,
 				      int[] resource_state) {
-        if (action.startsWith("build")){
+        Action current_action = new Action(action);
+        if (current_action.first == 'b'){
             // Needs to be a valid build and have the available resources
             String structure = action.substring(6);
             boolean result = checkBuildConstraints(structure, board_state) && checkResources(structure, resource_state);
             return result;
         }
-        if (action.startsWith("trade")){
+        if (current_action.first == 't'){
             // Need 2 gold for a trade action
             return (resource_state[5] >= 2);
         }
-        if (action.startsWith("swap")){
-            int out = Integer.parseInt(action.substring(5,6));
-            int in = Integer.parseInt(action.substring(7));
+        if (current_action.first == 's'){
+            int out = current_action.out;
+            int in = current_action.in;
             // The resource state needs to contain the out resource
             if (resource_state[out] >= 1){
                 // The board_state needs to contain J + in but not contain K + in (otherwise it has been used)
@@ -320,6 +386,7 @@ public class CatanDice {
      * @param resource_state: The available resources.
      * @return true iff the action sequence is executable, false otherwise.
      */
+    // FIXME: Complete this function
     public static boolean canDoSequence(String[] actions,
 					String board_state,
 					int[] resource_state) {

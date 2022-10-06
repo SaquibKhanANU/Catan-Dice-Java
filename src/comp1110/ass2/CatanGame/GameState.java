@@ -10,9 +10,9 @@ package comp1110.ass2.CatanGame;
  * When a GameState is constructed the number of players needs to be specified.
  * Then it creates an array of CatanPlayer objects which each specify a player
  * in the game. The GameState also keeps track of the round number,
- * turn number (between 0 and num-1 inclusive).
+ * and the current players turn (turn number between 0 and num-1 inclusive).
  */
-
+// John Larkin
 public class GameState {
     // The number of players, between 2 and 4.
     public int num;
