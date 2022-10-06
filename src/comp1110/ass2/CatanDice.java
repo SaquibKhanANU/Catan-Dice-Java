@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+import comp1110.ass2.CatanStructure.GameTree;
 import comp1110.ass2.CatanStructure.Structure;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 
+import static comp1110.ass2.CatanStructure.GameTree.createCatanGameTree;
 import static comp1110.ass2.CatanStructure.Structure.boardStateToStructures;
 import static java.lang.reflect.Array.setInt;
 import static java.util.Arrays.asList;
@@ -477,7 +479,38 @@ public class CatanDice {
      */
     public static String[] pathTo(String target_structure,
 				  String board_state) {
-	String[] result = {};
+        // Create the GameTree
+        GameTree path = createCatanGameTree();
+        ArrayList<Object> path_array = new ArrayList<>();
+        // Find the path from RI to this target structure, includes settlements and cities
+        ArrayList<Object> paths_list = path.findPath(target_structure, path_array);
+        paths_list.remove("RI");
+        // If the target structure is a road then do not include it in paths_list
+        if (target_structure.charAt(0) == 'R'){
+            paths_list.remove(target_structure);
+        }
+        Object[] paths = paths_list.toArray();
+        // Remove occurrences of cities and settlements
+        ArrayList<String> res = new ArrayList<>();
+        for (int i = 0; i < paths.length; i++){
+            if (paths[i].toString().charAt(0) == 'R'){
+                res.add((String) paths[i]);
+            }
+        }
+        // Remove occurrences in paths of any already built roads
+        String[] board_state_array = board_state.split(",");
+        for (int j = 0; j < paths.length; j++){
+            for (int k = 0; k < board_state_array.length; k++){
+                if (paths[j].equals(board_state_array[k])){
+                    res.remove(paths[j]);
+                }
+            }
+        }
+	Object[] res_array = res.toArray();
+    String[] result = new String[res_array.length];
+        for (int l = 0; l < res_array.length; l++){
+            result[l] = res_array[l].toString();
+        }
 	return result; // FIXME: Task #13
     }
 

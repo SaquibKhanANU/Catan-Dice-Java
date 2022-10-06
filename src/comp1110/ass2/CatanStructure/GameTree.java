@@ -15,24 +15,44 @@ public class GameTree {
         this.right = null;
     }
 
-    public static void main(String[] args) {
+    public static GameTree createCatanGameTree(){
         GameTree path = new GameTree();
         path.node = "RI";
-        path.add("RI", null, "R0");
+        path.add("RI", null, "S3");
+        path.add("S3", null, "R0");
         path.add("R0", "R1", "R2");
         path.add("R1", null, "C7");
         path.add("R2", null, "S4");
+        path.add("S4", null, "R3");
+        path.add("R3", "R4", "R5");
+        path.add("R4", null, "C12");
+        path.add("R5", null, "S5");
+        path.add("S5", null, "R6");
+        path.add("R6", null, "R7");
+        path.add("R7", null, "S7");
+        path.add("S7", "R12", "R8");
+        path.add("R8", null, "R9");
+        path.add("R9", null, "S9");
+        path.add("S9", null, "R10");
+        path.add("R10", null, "R11");
+        path.add("R11", null, "S11");
+        path.add("R12", null, "R13");
+        path.add("R13", null, "C20");
+        path.add("C20", null, "R14");
+        path.add("R14", null, "R15");
+        path.add("R15", null, "C30");
 
+        return path;
+    }
+
+    public static void main(String[] args) {
+        GameTree path = createCatanGameTree();
 
         ArrayList<Object> res = new ArrayList<>();
         System.out.println(path.fold(res));
 
-        GameTree simple = new GameTree();
-        simple.node = "RI";
-        simple.left = new GameTree();
-        simple.left.node = "R0";
         ArrayList<Object> res1 = new ArrayList<>();
-        System.out.println(path.findPath("RI", res1));
+        System.out.println(path.findPath("C30", res1));
     }
 
 // A fold on the GameTree into an ArrayList
