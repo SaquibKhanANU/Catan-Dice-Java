@@ -386,6 +386,7 @@ public class CatanDice {
      * @param resource_state: The available resources.
      * @return true iff the action sequence is executable, false otherwise.
      */
+    // FIXME: Complete this function
     public static boolean canDoSequence(String[] actions,
 					String board_state,
 					int[] resource_state) {
