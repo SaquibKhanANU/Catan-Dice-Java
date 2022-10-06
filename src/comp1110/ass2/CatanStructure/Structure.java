@@ -16,6 +16,9 @@ public class Structure {
     // Check if the structure is built (VARIABLE)
     protected boolean isBuilt;
 
+    protected boolean removable;
+
+
     public Structure(String id, int[] coordinate){
         this.id = id;
         char structure_type = id.charAt(0);
@@ -30,6 +33,7 @@ public class Structure {
         }
         this.coordinate = coordinate;
         this.isBuilt = false;
+        this.removable = true;
     }
 
     public Structure(String id){
@@ -69,6 +73,7 @@ public class Structure {
         this.isBuilt = isBuilt;
     }
 
+
     public int[] getCoordinate(){
         return this.coordinate;
     }
@@ -76,6 +81,12 @@ public class Structure {
         this.coordinate = new int[]{x, y};
     }
 
+    public void setRemovable(boolean removable) {
+        this.removable = removable;
+    }
+    public boolean getRemovable() {
+        return this.removable;
+    }
 
     public String toString() {
         return super.toString();
