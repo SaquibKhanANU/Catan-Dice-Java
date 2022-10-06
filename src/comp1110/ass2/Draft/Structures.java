@@ -1,7 +1,6 @@
 package comp1110.ass2.Draft;
 
 import comp1110.ass2.CatanEnum.StructureType;
-import comp1110.ass2.Draft.Resources;
 
 // DRAFT WILL DELETE LATER
 public class Structures {
