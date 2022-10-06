@@ -31,8 +31,8 @@ public class GameTree {
         simple.node = "RI";
         simple.left = new GameTree();
         simple.left.node = "R0";
-
-        System.out.println(path.contains("S4"));
+        ArrayList<Object> res1 = new ArrayList<>();
+        System.out.println(path.findPath("RI", res1));
     }
 
 // A fold on the GameTree into an ArrayList
@@ -103,6 +103,32 @@ public class GameTree {
             this.left.add(node, l ,r);
             this.right.add(node, l ,r);
         }
+    }
+
+    /**
+     * For a GameTree find a path down the gameTree to the object. Assumes no nodes in this GameTree
+     * are duplicate and the target object is not null.
+     *
+     * If this GameTree does not contain the target object then paths will be empty.
+     *
+     * @param target: The target object of the path
+     * @param res: An empty ArrayList of objects
+     */
+
+    public ArrayList<Object> findPath(Object target, ArrayList<Object> res){
+        if (this.contains(target)){
+            res.add(this.node);
+            if (this.left != null && this.left.contains(target)){
+                this.left.findPath(target, res);
+            }
+            if (this.right != null && this.right.contains(target)){
+                this.right.findPath(target, res);
+            }
+            if (this.right == null && this.left == null){
+                return res;
+            }
+        }
+        return res;
     }
 
 }
