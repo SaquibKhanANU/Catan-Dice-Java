@@ -14,8 +14,8 @@ public class CatanBoard {
     public final static int CATAN_HEIGHT = 21;
     public final static int CATAN_WIDTH = 12;
     public GameState gameState;
-    private final HashMap<String, Structure> structureBlocks = new HashMap<>();
-    private  final HashMap<String, BuildableStructure> structureBlocksMap = new HashMap<>();
+    public final HashMap<String, Structure> structureBlocks = new HashMap<>();
+    public  final HashMap<String, BuildableStructure> structureBlocksMap = new HashMap<>();
     public void makeMap() {
         //ROADS
         structureBlocksMap.put("RI", new BuildableStructure(7, 3, StructureType.DBUILT_ROAD, "RI", 0));
@@ -61,19 +61,6 @@ public class CatanBoard {
         structureBlocks.put("C", new CatanCity("C", new int[2]));
         structureBlocks.put("K", new CatanKnight("K", new int[2]));
         structureBlocks.put("S", new CatanSettlement("S", new int[2]));
-    }
-
-
-    // NEW
-
-    private CatanPlayer player;
-    private CatanPlayer activePlayer;
-
-    private List<BuildableStructure> piecesPlaced = new ArrayList<>();
-
-    public CatanBoard(CatanPlayer player) {
-        this.initialiseBoard();
-        this.player = player;
     }
 
     public CatanBoard() {
