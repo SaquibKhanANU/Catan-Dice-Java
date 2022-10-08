@@ -1,14 +1,18 @@
 package comp1110.ass2.gui.Controls;
 
+import comp1110.ass2.Action;
+import comp1110.ass2.CatanEnum.ActionType;
 import comp1110.ass2.CatanEnum.ResourceType;
 import comp1110.ass2.CatanEnum.StructureType;
 import comp1110.ass2.CatanGame.CatanBoard;
 import comp1110.ass2.CatanGame.CatanPlayer;
+import comp1110.ass2.CatanStructure.CatanKnight;
 import comp1110.ass2.CatanStructure.Structure;
 import comp1110.ass2.gui.Game;
 import comp1110.ass2.gui.Scenes.GameBoard;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -28,6 +32,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -37,32 +42,45 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static comp1110.ass2.CatanDice.rollDice;
 
 public class GameControls {
-
     public Group controls = new Group();
     public Group chooseBoard = new Group();
     public Group sidePanel = new Group();
-    public Group allControls = new Group(controls, chooseBoard, sidePanel);
+    public Group scoreBoard = new Group();
+    public Group allControls = new Group(controls, chooseBoard, sidePanel, scoreBoard);
     BorderPane pane1 = new BorderPane();
     CatanPlayer catanPlayer;
-
     BorderPane scoreBoardPane = new BorderPane();
     Scene scoreBoardScene = new Scene(scoreBoardPane);
     Stage scoreBoardStage = new Stage();
-    Image image2 = new Image("comp1110/ass2/assets/CatanScoreBoard.JPG");
-    ImageView iv2 = new ImageView();
+    Image scoreBoardImage = new Image("comp1110/ass2/assets/CatanScoreBoard.JPG");
+    ImageView scoreBoardView = new ImageView();
 
+    public Action action;
+    public boolean diceRolled;
+    public int diceRollCount;
     public GameControls(CatanPlayer catanPlayer) {
+        this.diceRolled = false;
         this.catanPlayer = catanPlayer;
         makeSidePanel();
         makeDiceRoll();
         createChooseBoard();
         gameButtons();
-        displayScoreBoard();
+        makeScoreBoard();
+        action = new Action(ActionType.NONE);
     }
 
-    static class SidePanel extends  Rectangle {
+    public void setDiceRolled(boolean diceRolled) {
+        this.diceRolled = diceRolled;
+    }
+
+    public boolean isDiceRolled() {
+        return diceRolled;
+    }
+
+    static class SidePanel extends Rectangle {
         double height;
         double width;
+
         SidePanel(double height, double width, double x, double y) {
             this.height = height;
             this.width = width;
@@ -77,7 +95,7 @@ public class GameControls {
         }
     }
 
-    private void makeSidePanel(){
+    private void makeSidePanel() {
         SidePanel rightPanel = new SidePanel(700, 300, 899, 0);
         SidePanel leftPanel = new SidePanel(700, 200, 1, 0);
 
@@ -107,6 +125,8 @@ public class GameControls {
             if (Game.playerOne.equals(catanPlayer)) {
                 // UPDATE SCORES
                 catanPlayer.setCurrentTurn(true);
+                catanPlayer.resource_state = new int[]{0, 0, 0 , 0 ,0,0};
+                diceRolled = false;
                 catanPlayer.scoreTotal.add(catanPlayer.score);
                 if (Game.gameState.round == 15) {
                     catanPlayer.calculateFinalScore();
@@ -168,6 +188,7 @@ public class GameControls {
             this.test = test;
         }
     }
+
     public HashMap<Integer, Score> scores = new HashMap<>();
 
     public void makeScores() {
@@ -190,37 +211,30 @@ public class GameControls {
     }
 
 
-    public void displayScoreBoard(){
-
-        iv2.setFitHeight(200);
-        iv2.setFitWidth(200);
-        iv2.setX(2);
-        iv2.setY(124);
-        iv2.setImage(image2);
+    private void makeScoreBoard() {
+        scoreBoardView.setFitHeight(200);
+        scoreBoardView.setFitWidth(195);
+        scoreBoardView.setX(4);
+        scoreBoardView.setY(400);
+        scoreBoardView.setImage(scoreBoardImage);
 
         Text text = new Text();
-        text.setText("Points for round " + ": " + Game.playerOne.score);
+        text.setText(catanPlayer.name + "");
         text.setFont(Font.font("cambria", FontWeight.BOLD, FontPosture.REGULAR, 14));
-        text.setFill(Color.DARKGREEN);
+        text.setFill(Color.WHITE);
         text.setX(0);
         text.setY(0);
 
-        scoreBoardPane.setCenter(iv2);
+        scoreBoardPane.setCenter(scoreBoardView);
         scoreBoardPane.setTop(text);
+        scoreBoardPane.setLayoutX(4);
+        scoreBoardPane.setLayoutY(400);
+        scoreBoardPane.setBackground(new Background(new BackgroundFill(Color.web("#439527"), CornerRadii.EMPTY, Insets.EMPTY)));
 
-        scoreBoardStage.setResizable(true);
-
-        scoreBoardStage.setScene(scoreBoardScene);
-
-        scoreBoardStage.setOnCloseRequest(
-                e -> {
-                    e.consume();
-                    scoreBoardStage.close();
-                }
-        );
+        scoreBoard.getChildren().add(scoreBoardPane);
     }
 
-    private void makeDiceRoll(){
+    private void makeDiceRoll() {
         Button button = new Button();
         button.setText("Roll Dice");
         button.setLayoutX(800);
@@ -228,9 +242,9 @@ public class GameControls {
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                int[] resource_state = new int[]{1,1,1,1,1,1};
+                int[] resource_state = new int[]{1, 1, 1, 1, 1, 1};
                 rollDice(4, resource_state); // The array should be the current resources
-                for (var a : resource_state){
+                for (var a : resource_state) {
                     System.out.print(a + ", ");
                 }
             }
@@ -247,23 +261,19 @@ public class GameControls {
         ChooseBoard playerTwo = new ChooseBoard("PLAYER TWO");
         if (Game.gameState.num == 1) {
             vbox = new ChooseBoardBox(
-                    new ChooseBoard("SCORE BOARD"),
                     playerOne);
         } else if (Game.gameState.num == 2) {
             vbox = new ChooseBoardBox(
-                    new ChooseBoard("SCORE BOARD"),
                     playerOne,
                     playerTwo);
         } else {
             vbox = new ChooseBoardBox(
-                    new ChooseBoard("SCORE BOARD"),
                     playerOne,
                     playerTwo
             );
         }
-
         vbox.setTranslateX(-3);
-        vbox.setTranslateY(300);
+        vbox.setTranslateY(270);
         this.chooseBoard.getChildren().addAll(vbox);
     }
 
@@ -286,13 +296,14 @@ public class GameControls {
 
 
     private static class ChooseBoardBox extends VBox {
-        public  ChooseBoardBox(ChooseBoard... items) {
+        public ChooseBoardBox(ChooseBoard... items) {
             getChildren().add(createSeperator());
 
             for (ChooseBoard item : items) {
                 getChildren().addAll(item, createSeperator());
             }
         }
+
         private Line createSeperator() {
             Line sep = new Line();
             sep.setEndX(205);
@@ -301,9 +312,9 @@ public class GameControls {
         }
     }
 
-    AtomicInteger count = new AtomicInteger();
     public class ChooseBoard extends StackPane {
         public static String name;
+
         public ChooseBoard(String name) {
             ChooseBoard.name = name;
             Rectangle bg;
@@ -339,72 +350,86 @@ public class GameControls {
                     bg.setFill(Color.BLACK);
                 }
                 text.setFill(Color.SANDYBROWN);
+                GameBoard.warningTextGroup.getChildren().clear();
             });
 
             setOnMousePressed(event -> {
                 switch (name) {
-                    case "ROLL DICE":
-                        int[] resource_state = new int[]{1, 1, 1, 1, 1, 1};
+                    case "ROLL DICE" -> {
+                        int[] resource_state = new int[]{0, 0, 0, 0, 0, 0};
                         rollDice(4, resource_state); // The array should be the current resources
-
-                        for (var a : resource_state) {
-                            System.out.print(a + ", ");
+                        for (int i = 0; i < resource_state.length; i++) {
+                            System.out.print(resource_state[i] + ", ");
+                            catanPlayer.resource_state[i] = resource_state[i];
+                            diceRolled = true;
                         }
-                        break;
-                    case "SCORE BOARD":
-                        if (scoreBoardStage.isShowing()) {
-                            scoreBoardStage.toFront();
-                        } else {
-                            displayScoreBoard();
-                            scoreBoardStage.show();
-                        }
-                        break;
-                    case "TRADE":
-                        System.out.println("TRADE");
-                        break;
-                    case "SWAP":
-                        String[] knightId = new String[]{"K1", "K2", "K3", "K4", "K5", "K6"};
-                        int index = 0;
-                        count.getAndIncrement();
-                        if (count.get() == 1) {
-                            for (GameBoard.KnightShape knightShape : GameBoard.knightsList) {
-                                int x = GameBoard.catanBoard.getStructureBlocksMap().get(knightId[index]).getX();
-                                int y = GameBoard.catanBoard.getStructureBlocksMap().get(knightId[index]).getY();
-                                if (GameBoard.catanBoard.getBuildableStructure(x, y).getStructureType() == StructureType.JOKER) {
-                                    knightShape.setFill(Color.GOLD);
-                                    knightShape.setEffect(new DropShadow(30, Color.YELLOW));
-                                    knightShape.setSwappable(true);
-                                }
-                                ChooseBoard.name = "END SWAP";
-                                index++;
-                            }
-                        } else {
-                            for (GameBoard.KnightShape knightShape : GameBoard.knightsList) {
-                                count.set(0);
-                                knightShape.setFill(Color.WHITE);
-                                knightShape.setEffect(null);
-                                knightShape.setSwappable(false);
-                                swapResourceStage.close();
-                            }
-                        }
-                        System.out.println("SWAP");
-                        break;
-                    case "END TURN":
-                        endTurn();
-                        break;
-                    default:
-                        Game.n.activate(name);
-                        break;
+                    }
+                    case "TRADE" -> tradeButton();
+                    case "SWAP" -> swapButton();
+                    case "END TURN" -> endTurn();
+                    default -> Game.n.activate(name);
                 }
             });
         }
     }
 
+    AtomicInteger count = new AtomicInteger();
+    Pane swapResourcePane = new Pane();
+    public Scene swapResourceScene = new Scene(swapResourcePane);
+    public Stage swapResourceStage = new Stage();
 
+    // Highlights all possible knights that can be swapped and sets them to swappable.
+    public void swapButton() {
+        String[] knightId = new String[]{"K1", "K2", "K3", "K4", "K5", "K6"};
+        int index = 0;
+        count.getAndIncrement();
+        if (diceRolled) {
+            if (count.get() == 1) {
+                for (GameBoard.KnightShape knightShape : GameBoard.knightsList) {
+                    int x = GameBoard.catanBoard.getStructureBlocksMap().get(knightId[index]).getX();
+                    int y = GameBoard.catanBoard.getStructureBlocksMap().get(knightId[index]).getY();
+                    if (GameBoard.catanBoard.getBuildableStructure(x, y).getStructureType() == StructureType.JOKER) {
+                        knightShape.setFill(Color.GOLD);
+                        knightShape.setEffect(new DropShadow(30, Color.YELLOW));
+                        knightShape.setSwappable(true);
+                        action.setActionType(ActionType.SWAP);
+                    }
+                    index++;
+                }
+            } else {
+                for (GameBoard.KnightShape knightShape : GameBoard.knightsList) {
+                    count.set(0);
+                    knightShape.setFill(Color.WHITE);
+                    knightShape.setEffect(null);
+                    knightShape.setSwappable(false);
+                    action.setActionType(ActionType.NONE);
+                    swapResourceStage.close();
+                }
+            }
+        } else {
+            new GameBoard.Warning("ROLL DICE FIRST");
+        }
+        System.out.println("SWAP");
+    }
 
-    class ResourceImage extends ImageView {
-        public boolean used;
-        ResourceImage(String name, int x, int y, ResourceType resourceType) {
+    public void tradeButton() {
+        if (diceRolled) {
+            if (catanPlayer.resource_state[5] >= 2)  {
+                swapAndTradePopUp(null, ActionType.TRADE);
+                action.setActionType(ActionType.TRADE);
+                swapResourceStage.show();
+                System.out.println("TRADE");
+            } else {
+                new GameBoard.Warning("NOT ENOUGH GOLD");
+            }
+        } else {
+            new GameBoard.Warning("ROLL DICE FIRST");
+        }
+    }
+
+    // Creates the clickable images for trading and swapping.
+    public class ResourceImage extends ImageView {
+        public ResourceImage(String name, int x, int y, ResourceType resourceType) {
             Image c = new Image(name);
             setFitHeight(30);
             setFitWidth(30);
@@ -412,57 +437,85 @@ public class GameControls {
             setY(y);
             setImage(c);
             setOnMousePressed(event -> {
-               if (event.getButton() == MouseButton.PRIMARY)  {
-                   switch (resourceType) {
-                       case ORE -> System.out.println(catanPlayer.resource_state[0] - 1 + "");
-                       case GRAIN -> System.out.println(catanPlayer.resource_state[1] - 1 + "");
-                       case WOOL -> System.out.println(catanPlayer.resource_state[2] - 1 + "");
-                       case TIMBER -> System.out.println(catanPlayer.resource_state[3] - 1 + "");
-                       case BRICKS -> System.out.println(catanPlayer.resource_state[4] - 1 + "");
-                   }
-                   int index = 0;
-                   String[] knightId = new String[]{"K1", "K2", "K3", "K4", "K5", "K6"};
-                   for (GameBoard.KnightShape knightShape : GameBoard.knightsList) {
-                       int x2 = GameBoard.catanBoard.getStructureBlocksMap().get(knightId[index]).getX();
-                       int y2 = GameBoard.catanBoard.getStructureBlocksMap().get(knightId[index]).getY();
-                       if (GameBoard.catanBoard.getBuildableStructure(x2, y2).getStructureType() == StructureType.USED) {
-                           knightShape.setFill(Color.WHITE);
-                           knightShape.setEffect(null);
-                           knightShape.setSwappable(false);
-                           count.set(0);
-                       }
-                       ChooseBoard.name = "END SWAP";
-                       index++;
-                   }
-                   swapResourceStage.close();
+                if (action.getActionType() == ActionType.SWAP) {
+                    if (event.getButton() == MouseButton.PRIMARY) {
+                        switch (resourceType) {
+                            case ORE -> catanPlayer.changeResourceState(0, -1);
+                            case GRAIN -> catanPlayer.changeResourceState(1, -1);
+                            case WOOL ->catanPlayer.changeResourceState(2, -1);
+                            case TIMBER -> catanPlayer.changeResourceState(3, -1);
+                            case BRICKS -> catanPlayer.changeResourceState(4, -1);
+                        }
+                        System.out.println(catanPlayer.resource_state[1]);
+                        int index = 0;
+                        String[] knightId = new String[]{"K1", "K2", "K3", "K4", "K5", "K6"};
+                        for (GameBoard.KnightShape knightShape : GameBoard.knightsList) {
+                            int x2 = GameBoard.catanBoard.getStructureBlocksMap().get(knightId[index]).getX();
+                            int y2 = GameBoard.catanBoard.getStructureBlocksMap().get(knightId[index]).getY();
+                            StructureType checkType = GameBoard.catanBoard.getBuildableStructure(x2, y2).getStructureType();
+                            if (checkType == StructureType.JOKER || checkType == StructureType.USED) {
+                                action.setActionType(ActionType.NONE);
+                                knightShape.setFill(Color.WHITE);
+                                knightShape.setEffect(null);
+                                knightShape.setSwappable(false);
+                                count.set(0);
+                            }
+                            index++;
+                        }
+                        swapResourceStage.close();
+                    }
+                } else if (action.getActionType() == ActionType.TRADE) {
+                    if (event.getButton() == MouseButton.PRIMARY) {
+                        switch (resourceType) {
+                            case ORE -> catanPlayer.changeResourceState(0, 1);
+                            case GRAIN -> catanPlayer.changeResourceState(1, 1);
+                            case WOOL ->catanPlayer.changeResourceState(2, 1);
+                            case TIMBER -> catanPlayer.changeResourceState(3, 1);
+                            case BRICKS -> catanPlayer.changeResourceState(4, 1);
+                        }
+                        catanPlayer.changeResourceState(5, -2);
+                        swapResourceStage.close();
+                    }
                 }
             });
         }
     }
 
-    Pane swapResourcePane = new Pane();
-    Scene swapResourceScene =new Scene(swapResourcePane);
-    public Stage swapResourceStage = new Stage();
-    public void swapResource(String id){
+    // creates stage for clickable images for trading and swapping as a popup.
+    public void swapAndTradePopUp(String id, ActionType type) {
         ResourceImage ore = new ResourceImage("comp1110/ass2/assets/ResourceImages/Ore.png", 10, 30, ResourceType.ORE);
         ResourceImage grain = new ResourceImage("comp1110/ass2/assets/ResourceImages/Wheat.png", 40, 30, ResourceType.GRAIN);
         ResourceImage wool = new ResourceImage("comp1110/ass2/assets/ResourceImages/Ore.png", 70, 30, ResourceType.WOOL);
         ResourceImage timber = new ResourceImage("comp1110/ass2/assets/ResourceImages/Wood.png", 100, 30, ResourceType.TIMBER);
         ResourceImage bricks = new ResourceImage("comp1110/ass2/assets/ResourceImages/Clay.png", 130, 30, ResourceType.BRICKS);
-
-        switch (id) {
-            case "K1" -> System.out.println("ORE");
-            case "K2" -> System.out.println("WHEAT");
-            case "K3" -> System.out.println("SHEEP");
-            case "K4" -> System.out.println("WOOD");
-            case "K5" -> System.out.println("CLAY");
-            case "K6" -> System.out.println("ANY");
+        ResourceImage[] resourceImages = new ResourceImage[]{ore, grain, wool, timber, bricks};
+        for (int i = 0; i < resourceImages.length; i++) {
+            if (catanPlayer.resource_state[i] > 0) {
+                swapResourcePane.getChildren().add(resourceImages[i]);
+            }
+        }
+        if (type == ActionType.SWAP) {
+            switch (id) {
+                case "K1" -> catanPlayer.changeResourceState(0, 1);
+                case "K2" -> catanPlayer.changeResourceState(1, 1);
+                case "K3" -> catanPlayer.changeResourceState(2, 1);
+                case "K4" -> catanPlayer.changeResourceState(3, 1);
+                case "K5" -> catanPlayer.changeResourceState(4, 1);
+                case "K6" -> catanPlayer.changeResourceState(5, 1);
+            }
+        } else if (type == ActionType.UNDO_SWAP) {
+            switch (id) {
+                case "K1" -> catanPlayer.changeResourceState(0, -1);
+                case "K2" -> catanPlayer.changeResourceState(1, -1);
+                case "K3" -> catanPlayer.changeResourceState(2, -1);
+                case "K4" -> catanPlayer.changeResourceState(3, -1);
+                case "K5" -> catanPlayer.changeResourceState(4, -1);
+                case "K6" -> catanPlayer.changeResourceState(5, -1);
+            }
         }
 
-        swapResourcePane.getChildren().addAll(ore, grain, wool, timber, bricks);
         swapResourcePane.setPrefSize(170, 100);
         swapResourceStage.setResizable(true);
         swapResourceStage.setScene(swapResourceScene);
-
     }
 }

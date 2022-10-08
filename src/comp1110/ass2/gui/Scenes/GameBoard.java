@@ -1,6 +1,8 @@
 package comp1110.ass2.gui.Scenes;
 
 import comp1110.ass2.CatanDice;
+import comp1110.ass2.CatanEnum.ActionType;
+import comp1110.ass2.CatanEnum.ResourceType;
 import comp1110.ass2.CatanEnum.StructureType;
 import comp1110.ass2.CatanGame.CatanBoard;
 import comp1110.ass2.CatanGame.CatanPlayer;
@@ -13,7 +15,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -22,6 +27,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 
 import java.awt.geom.RectangularShape;
 import java.util.ArrayList;
@@ -38,6 +44,7 @@ public class GameBoard extends Pane {
     public Text warningText;
     String board_state = "";
     String action = "";
+
     Group hexagonBoard = new Group();
     Group roads = new Group();
     Group cities = new Group();
@@ -47,7 +54,7 @@ public class GameBoard extends Pane {
     Group resources = new Group();
     Group structuresBoard = new Group(hexagonBoard, roads, cities, settlements, knights);
     Group scoreCounter = new Group();
-    Group warningTextGroup = new Group();
+    public static Group warningTextGroup = new Group();
     public static ArrayList<KnightShape> knightsList = new ArrayList<>();
     public static CatanBoard catanBoard;
     public CatanPlayer catanPlayer;
@@ -60,6 +67,7 @@ public class GameBoard extends Pane {
         makeStructures();
         makeBlocks();
         gameControls = new GameControls(catanPlayer);
+        gameControls.swapResourceStage.initModality(Modality.APPLICATION_MODAL);
         gameControls.sidePanel.toBack();
         blocks.toFront();
         getChildren().addAll(hexagonBoard, structuresBoard, resources, scoreCounter, gameControls.allControls, blocks, warningTextGroup);
@@ -138,7 +146,7 @@ public class GameBoard extends Pane {
                             this.mouseY = event.getSceneY();
                             if (draggableStructureBlock.structure.isBuilt()) {
                                 warningTextGroup.getChildren().clear();
-                                makeWarning("RIGHT CLICK TO REMOVE");
+                                new Warning("RIGHT CLICK TO REMOVE");
                                 System.out.println("RIGHT CLICK TO REMOVE");
                             }
                         } else if (event.getButton() == MouseButton.SECONDARY) {
@@ -153,7 +161,7 @@ public class GameBoard extends Pane {
                                             blocks.getChildren().remove(event.getTarget());
                                         } else {
                                             warningTextGroup.getChildren().clear();
-                                            makeWarning("NOT YOUR TURN");
+                                            new Warning("NOT YOUR TURN");
                                             System.out.println("NOT YOUR TURN");
                                         }
                                     } else {
@@ -165,7 +173,7 @@ public class GameBoard extends Pane {
                                 }
                             } else {
                                 warningTextGroup.getChildren().clear();
-                                makeWarning("NOT REMOVABLE");
+                                new Warning("NOT REMOVABLE");
                                 System.out.println("NOT REMOVABLE");
                             }
                             event.consume();
@@ -254,7 +262,6 @@ public class GameBoard extends Pane {
     public class KnightShape extends Circle {
         double mouseX, mouseY;
         public static boolean swappable;
-        public boolean used;
 
         KnightShape(double x, double y, StructureBlock structureBlock) {
             swappable = false;
@@ -294,25 +301,19 @@ public class GameBoard extends Pane {
                 this.setOnMousePressed(event -> {
                     if (event.getButton() == MouseButton.PRIMARY) {
                         if (swappable && draggableStructureBlock.isOnBoard() && !draggableStructureBlock.structure.isUsed()) {
-                            System.out.println("swappable");
                             if (gameControls.swapResourceStage.isShowing()) {
                                 gameControls.swapResourceStage.toFront();
                             } else {
-                                gameControls.swapResource(draggableStructureBlock.structure.getId());
+                                gameControls.swapAndTradePopUp(draggableStructureBlock.getKnightId(), ActionType.SWAP);
                                 gameControls.swapResourceStage.show();
-                                draggableStructureBlock.structure.setUsed(true);
                                 draggableStructureBlock.setUsed();
-                                draggableStructureBlock.structure.getBuildableStructure().setStructureType(StructureType.USED);
                                 setOpacity(1);
                             }
                             gameControls.swapResourceStage.setOnCloseRequest(
                                     e -> {
                                         e.consume();
-                                        this.used = false;
                                         gameControls.swapResourceStage.close();
-                                        draggableStructureBlock.structure.setUsed(false);
                                         draggableStructureBlock.setUnused();
-                                        draggableStructureBlock.structure.getBuildableStructure().setStructureType(StructureType.JOKER);
                                         setOpacity(0.3);
                                     });
                         } else {
@@ -320,12 +321,12 @@ public class GameBoard extends Pane {
                             this.mouseY = event.getSceneY();
                             if (draggableStructureBlock.structure.isBuilt()) {
                                 warningTextGroup.getChildren().clear();
-                                makeWarning("RIGHT CLICK TO REMOVE");
+                                new Warning("RIGHT CLICK TO REMOVE");
                                 System.out.println("RIGHT CLICK TO REMOVE");
                             }
                         }
                     } else if (event.getButton() == MouseButton.SECONDARY) {
-                        if (draggableStructureBlock.structure.getRemovable() && !swappable) {
+                        if (draggableStructureBlock.structure.getRemovable() && !swappable && !draggableStructureBlock.structure.isUsed()) {
                             if (draggableStructureBlock.structure.isBuilt()) {
                                 if (catanBoard.canDoRemove()) {
                                     if (catanPlayer.currentTurn) {
@@ -336,7 +337,7 @@ public class GameBoard extends Pane {
                                         blocks.getChildren().remove(event.getTarget());
                                     } else {
                                         warningTextGroup.getChildren().clear();
-                                        makeWarning("NOT YOUR TURN");
+                                        new Warning("NOT YOUR TURN");
                                         System.out.println("NOT YOUR TURN");
                                     }
                                 } else {
@@ -348,7 +349,7 @@ public class GameBoard extends Pane {
                             }
                         } else {
                             warningTextGroup.getChildren().clear();
-                            makeWarning("NOT REMOVABLE");
+                            new Warning("NOT REMOVABLE");
                             System.out.println("NOT REMOVABLE");
                         }
                         event.consume();
@@ -509,12 +510,13 @@ public class GameBoard extends Pane {
             int points = buildableStructure.getPoint();
             catanPlayer.score = catanPlayer.score  + points;
             scoreCounter.getChildren().clear();
-            pointCounter.setText("Points for " + catanPlayer.turn_num + ": " + catanPlayer.score);
-            pointCounter.setFill(Color.web("#439527"));
+            pointCounter.setText("Points for round " + catanPlayer.turn_num + ": " + catanPlayer.score);
+            pointCounter.setFill(Color.WHITE);
             pointCounter.setFont(Font.font("times new roman", FontWeight.BOLD, FontPosture.REGULAR, 20));
-            pointCounter.setX(300);
-            pointCounter.setY(20);
+            pointCounter.setX(13);
+            pointCounter.setY(380);
             pointCounter.toFront();
+            scoreCounter.toFront();
             scoreCounter.getChildren().add(pointCounter);
         }
 
@@ -523,12 +525,13 @@ public class GameBoard extends Pane {
             int points = buildableStructure.getPoint();
             catanPlayer.score  = catanPlayer.score  - points;
             scoreCounter.getChildren().clear();
-            pointCounter.setText("Points for " + catanPlayer.turn_num + ": " + catanPlayer.score);
-            pointCounter.toFront();
-            pointCounter.setFill(Color.web("#439527"));
+            pointCounter.setText("Points for round " + catanPlayer.turn_num + ": " + catanPlayer.score);
+            pointCounter.setFill(Color.WHITE);
             pointCounter.setFont(Font.font("times new roman", FontWeight.BOLD, FontPosture.REGULAR, 20));
-            pointCounter.setX(300);
-            pointCounter.setY(20);
+            pointCounter.setX(13);
+            pointCounter.setY(380);
+            pointCounter.toFront();
+            scoreCounter.toFront();
             scoreCounter.getChildren().add(pointCounter);
         }
 
@@ -548,19 +551,27 @@ public class GameBoard extends Pane {
             }
             board_state = board_state.replace("," + catanBoard.getBuildableStructure(this.x, this.y).getId(), "");
         }
-
         protected void updateAction() {
             action = "build" + " " + catanBoard.getBuildableStructure(this.x, this.y).getId();
         }
-
         protected void setUsed() {
+            structure.setUsed(true);
             catanBoard.getBuildableStructure(this.x, this.y).setStructureType(StructureType.USED);
+            structure.getBuildableStructure().setStructureType(StructureType.USED);
         }
+
         protected void setUnused(){
+            structure.setUsed(false);
             catanBoard.getBuildableStructure(this.x, this.y).setStructureType(StructureType.JOKER);
+            structure.getBuildableStructure().setStructureType(StructureType.JOKER);
         }
-        protected boolean checkUsed() {
-            return catanBoard.getBuildableStructure(this.x, this.y).getStructureType() == StructureType.JOKER;
+
+        protected ResourceType getKnightResource() {
+            return catanBoard.getBuildableStructure(this.x, this.y).getResourceType();
+        }
+
+        protected String getKnightId() {
+            return catanBoard.getBuildableStructure(this.x, this.y).getId();
         }
     }
 
@@ -661,8 +672,10 @@ public class GameBoard extends Pane {
         }
     }
 
+
     private void makeStructures() {
         catanBoard.makeMap();
+        String[] names = new String[]{"Ore.png","Wheat.png","Wood.png","Clay.PN"};
         var keySet = catanBoard.getStructureBlocksMap().keySet();
         for (var id : keySet) {
             BuildableStructure structure = catanBoard.getStructureBlocksMap().get(id);
@@ -673,8 +686,10 @@ public class GameBoard extends Pane {
             label.setTextFill(Color.web("#439527"));
             label.setText(id);
             label.setFont(Font.font("times new roman", FontWeight.BOLD, FontPosture.REGULAR, 10));
-            label.setLayoutX(x+3);
-            label.setLayoutY(y+24);
+            if (id.charAt(0) != 'K') {
+                label.setLayoutX(x+3);
+                label.setLayoutY(y+24);
+            }
             if (id.charAt(0) == 'R') {
                 int rotation;
                 String[] thirtyDegrees = new String[]{"R0", "R3", "R7", "R9", "R11", "R15", "R13"};
@@ -701,8 +716,12 @@ public class GameBoard extends Pane {
                 settlements.getChildren().add(settlementShape);
             }
             else if (id.charAt(0) == 'K') {
+                KnightImage resource = new KnightImage(catanBoard.getStructureBlocksMap().get(id).getResourceType(), x - 5, y + 15);
+                resource.toFront();
+                label.setLayoutX(x+3);
+                label.setLayoutY(y-7);
                 KnightShape knightShape = new KnightShape(x + 10, y + 30, null);
-                knights.getChildren().add(knightShape);
+                knights.getChildren().addAll(knightShape, resource);
                 knightsList.add(knightShape);
             }
             structuresBoard.getChildren().add(label);
@@ -735,18 +754,49 @@ public class GameBoard extends Pane {
         }
     }
 
+    BorderPane scoreBoardPane = new BorderPane();
+
+
+
+    public static class Warning extends Text {
+        public Warning(String warning) {
+            setText(warning);
+            setText(warning);
+            toFront();
+            setFill(Color.RED);
+            setFont(Font.font("times new roman", FontWeight.BOLD, FontPosture.REGULAR, 20));
+            setX(430);
+            setY(40);
+            warningTextGroup.getChildren().add(this);
+        }
+    }
+
+    static class KnightImage extends ImageView {
+        KnightImage(ResourceType resourceType, double x, double y) {
+            String name;
+            switch (resourceType) {
+                case ORE -> name = "comp1110/ass2/assets/ResourceImages/Ore.png";
+                case GRAIN -> name = "comp1110/ass2/assets/ResourceImages/Wheat.png";
+                case TIMBER -> name = "comp1110/ass2/assets/ResourceImages/Wood.png";
+                case WOOL -> name = "comp1110/ass2/assets/ResourceImages/Ore.png";
+                case BRICKS -> name = "comp1110/ass2/assets/ResourceImages/Clay.png";
+                case ANY -> name = "comp1110/ass2/assets/ResourceImages/Clay.png";
+                default -> throw new IllegalStateException("Unexpected value: " + resourceType);
+            }
+            Image c = new Image(name);
+            setFitHeight(30);
+            setFitWidth(30);
+            setX(x);
+            setY(y);
+            setImage(c);
+        }
+    }
+
     public void newGame(){
         catanBoard = new CatanBoard();
     }
 
-    public void makeWarning(String warning) {
-        warningText = new Text();
-        warningText.setText(warning);
-        warningText.toFront();
-        warningText.setFill(Color.RED);
-        warningText.setFont(Font.font("times new roman", FontWeight.BOLD, FontPosture.REGULAR, 20));
-        warningText.setX(350);
-        warningText.setY(30);
-        warningTextGroup.getChildren().add(warningText);
-    }
+
+
+
 }

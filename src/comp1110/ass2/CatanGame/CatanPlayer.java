@@ -59,4 +59,8 @@ public class CatanPlayer {
     public void setCurrentTurn(boolean currentTurn) {
         this.currentTurn = currentTurn;
     }
+
+    public void changeResourceState(int index, int change) {
+        resource_state[index] = resource_state[index] + change;
+    }
 }

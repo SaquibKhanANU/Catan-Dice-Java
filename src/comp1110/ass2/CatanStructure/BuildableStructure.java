@@ -1,5 +1,6 @@
 package comp1110.ass2.CatanStructure;
 
+import comp1110.ass2.CatanEnum.ResourceType;
 import comp1110.ass2.CatanEnum.StructureType;
 
 public class BuildableStructure {
@@ -18,6 +19,9 @@ public class BuildableStructure {
     // The point of this structure
     private int point;
 
+    // For knights.
+    private ResourceType resourceType;
+
     /**
      * Constructor for the BuildableStructure class that allows for specifying the structure's
      * coordinates and its type on a specific players board.
@@ -32,6 +36,15 @@ public class BuildableStructure {
         this.structure_type = structure_type;
         this.id = id;
         this.point = point;
+        switch (id) {
+                case "K1" -> this.resourceType = ResourceType.ORE;
+                case "K2" -> this.resourceType = ResourceType.GRAIN;
+                case "K3" -> this.resourceType = ResourceType.WOOL;
+                case "K4" -> this.resourceType = ResourceType.TIMBER;
+                case "K5" -> this.resourceType = ResourceType.BRICKS;
+                case "K6" -> this.resourceType = ResourceType.ANY;
+                default -> this.resourceType = null;
+        }
     }
 
     /**
@@ -114,6 +127,13 @@ public class BuildableStructure {
         this.point = point;
     }
 
+    public ResourceType getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(ResourceType resourceType) {
+        this.resourceType = resourceType;
+    }
 
     /**
      *
@@ -123,4 +143,6 @@ public class BuildableStructure {
     public String toString() {
         return structure_type + "";
     }
+
+
 }

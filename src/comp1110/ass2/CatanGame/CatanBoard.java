@@ -93,9 +93,6 @@ public class CatanBoard {
     }
 
 
-
-
-
     /**
      * Check if the structure can be placed on the buildable structure at that point.
      * @param structure
