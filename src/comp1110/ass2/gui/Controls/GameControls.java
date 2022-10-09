@@ -1,12 +1,15 @@
 package comp1110.ass2.gui.Controls;
 
+import comp1110.ass2.CatanEnum.ResourceType;
 import comp1110.ass2.CatanGame.CatanPlayer;
 import comp1110.ass2.CatanStructure.Structure;
 import comp1110.ass2.gui.Game;
+import comp1110.ass2.gui.Scenes.VisualResource;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -30,12 +33,14 @@ import javafx.stage.Stage;
 import java.util.HashMap;
 
 import static comp1110.ass2.CatanDice.rollDice;
+import static comp1110.ass2.CatanEnum.ResourceType.ORE;
 
 public class GameControls {
 
     public Group controls = new Group();
     public Group chooseBoard = new Group();
     public Group sidePanel = new Group();
+    public Group resourceDisplay = new Group();
     public Group allControls = new Group(controls, chooseBoard, sidePanel);
     BorderPane pane1 = new BorderPane();
     CatanPlayer catanPlayer;
@@ -252,26 +257,7 @@ public class GameControls {
         );
     }
 
-    private void makeDiceRoll(){
-        Button button = new Button();
-        button.setText("Roll Dice");
-        button.setLayoutX(800);
-        button.setLayoutY(20);
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                int[] resource_state = new int[]{1,1,1,1,1,1};
-                rollDice(4, resource_state); // The array should be the current resources
-                for (var a : resource_state){
-                    System.out.print(a + ", ");
-                }
-            }
-        });
 
-        this.controls.getChildren().add(button);
-        pane1.setCenter(button);
-        controls.getChildren().add(button);
-    }
 
     public void createChooseBoard() {
         ChooseBoardBox vbox;
@@ -372,12 +358,10 @@ public class GameControls {
             });
             setOnMousePressed(event -> {
                 if (name.equals("ROLL DICE")) {
-                    int[] resource_state = new int[]{1,1,1,1,1,1};
-                    rollDice(4, resource_state); // The array should be the current resources
-                    for (var a : resource_state) {
-                            System.out.print(a + ", ");
+                    // TODO: Fill in method here
+                    makeDiceRoll();
                     }
-                } else if (name.equals("SCORE BOARD")) {
+                 else if (name.equals("SCORE BOARD")) {
                     if(scoreBoardStage.isShowing()) {
                         scoreBoardStage.toFront();
                     } else {
@@ -395,6 +379,36 @@ public class GameControls {
                 }
             });
         }
+    }
+
+    private void makeDiceRoll() {
+        Node view  = visualResource(ResourceType.ORE, 2,2);
+        resourceDisplay.getChildren().add(view);
+        // allControls.getChildren().add(resourceDisplay);
+    }
+
+    /**
+     * Giv
+     * @param type The type of resource
+     * @param x The x coordinate of the image
+     * @param y The y coordinate of the image
+     * @return A Node which can be added to resourceDisplay
+     */
+
+    // TODO: Finish this function
+    private Node visualResource(ResourceType type, int x, int y) {
+        Image image = null;
+        ImageView view = null;
+        if (type == ORE) {
+            image = new Image("comp1110/ass2/assets/test.jpg");
+            view = new ImageView();
+            view.setFitWidth(196);
+            view.setFitHeight(125);
+            view.setX(x);
+            view.setY(y);
+            view.setImage(image);
+        }
+        return view;
     }
 
     class resourceCounter extends GridPane {

@@ -1,6 +1,7 @@
 package comp1110.ass2.gui.Scenes;
 
 import comp1110.ass2.CatanDice;
+import comp1110.ass2.CatanEnum.ResourceType;
 import comp1110.ass2.CatanGame.CatanBoard;
 import comp1110.ass2.CatanGame.CatanPlayer;
 import comp1110.ass2.CatanStructure.BuildableStructure;
@@ -8,8 +9,11 @@ import comp1110.ass2.CatanStructure.Structure;
 import comp1110.ass2.gui.Controls.GameControls;
 import comp1110.ass2.gui.Game;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -24,6 +28,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.util.Arrays;
+
+import static comp1110.ass2.CatanEnum.ResourceType.ORE;
 
 public class GameBoard extends Pane {
     public static final double BOARD_WIDTH = 618;
@@ -602,4 +608,7 @@ public class GameBoard extends Pane {
         warningText.setY(30);
         warningTextGroup.getChildren().add(warningText);
     }
+
+
+
 }
