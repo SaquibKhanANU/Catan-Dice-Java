@@ -22,6 +22,7 @@ public class Structure {
     protected boolean isBuilt;
 
     protected boolean removable;
+    protected boolean used;
 
 
     public Structure(String id, int[] coordinate){
@@ -112,6 +113,13 @@ public class Structure {
     }
     public boolean getRemovable() {
         return this.removable;
+    }
+
+    public boolean isUsed() {
+        return used;
+    }
+    public void setUsed(boolean used) {
+        this.used = used;
     }
 
     public String toString() {

@@ -1,7 +1,7 @@
 package comp1110.ass2.CatanEnum;
 
 public enum StructureType {
-    CITY, SETTLEMENT, ROAD, KNIGHT, YBUILT_CITY, TBUILT_SETTLEMENT, DBUILT_ROAD, JOKER;
+    CITY, SETTLEMENT, ROAD, KNIGHT, YBUILT_CITY, TBUILT_SETTLEMENT, DBUILT_ROAD, JOKER, USED;
 
     public static StructureType fromChar(char c) {
         return switch (c) {

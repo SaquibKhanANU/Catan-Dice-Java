@@ -1,7 +1,9 @@
 package comp1110.ass2;
 import comp1110.ass2.CatanDice;
+import comp1110.ass2.CatanEnum.ActionType;
 
 public class Action {
+    ActionType actionType;
     String type;
     char structure;
     char first;
@@ -28,4 +30,15 @@ public class Action {
         }
     }
 
+    public Action(ActionType actionType) {
+        this.actionType = actionType;
+    }
+
+    public void setActionType(ActionType actionType) {
+        this.actionType = actionType;
+    }
+
+    public ActionType getActionType() {
+        return this.actionType;
+    }
 }
