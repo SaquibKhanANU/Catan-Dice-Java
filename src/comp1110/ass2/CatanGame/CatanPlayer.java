@@ -30,6 +30,10 @@ public class CatanPlayer {
     public String name;
     public boolean currentTurn;
 
+    // structures for current round, clears at end of each round.
+    public ArrayList<Structure> structuresForRound;
+    public String board_state;
+    public String action;
     public CatanPlayer(int index){
         // Initialise the values associated to this player
         this.index = index;
@@ -44,6 +48,9 @@ public class CatanPlayer {
         this.score = 0;
         this.turn_num = 0;
         this.scoreTotal = new ArrayList<>();
+        this.structuresForRound = new ArrayList<>();
+        this.board_state = "";
+        this.action = "";
     }
 
     public void calculateFinalScore() {
