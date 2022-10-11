@@ -33,7 +33,7 @@ collaboration:
 code:
   - comment: System.arraycopy in canDoSequence, task 11
     url: https://www.knowprogram.com/java/system-arraycopy/#:~:text=Java%20Program%20to%20Copy%20Complete%20Array%20using%20System.arraycopy,3%29%20Call%20System.arraycopy%20%28src%2C%200%2C%20dest%2C%200%2C%20src.length%29%3B
-    licence:
+    licence: filled
 
 # Use this to list any assets (artwork, sound, etc) that you used.
 # Provide a comment explaining your use of that asset and the URL
