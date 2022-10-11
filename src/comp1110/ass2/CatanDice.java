@@ -379,75 +379,135 @@ public class CatanDice {
 	 return false; //Task #9
     }
 
-    /**
-     * Check if the specified sequence of player actions is executable
-     * from the given board and resource state.
-     *
-     * @param actions: The sequence of (string representatins of) actions.
-     * @param board_state: The string representation of the board state.
-     * @param resource_state: The available resources.
-     * @return true iff the action sequence is executable, false otherwise.
-     */
-    // FIXME: Complete this function
+//    /**
+//     * Check if the specified sequence of player actions is executable
+//     * from the given board and resource state.
+//     *
+//     * @param actions: The sequence of (string representatins of) actions.
+//     * @param board_state: The string representation of the board state.
+//     * @param resource_state: The available resources.
+//     * @return true iff the action sequence is executable, false otherwise.
+//     */
+//    // FIXME: Complete this function
+//    public static boolean canDoSequence(String[] actions,
+//					String board_state,
+//					int[] resource_state) {
+//        System.out.println("NEW FUNCTION CALL");
+//        boolean test=true;
+//        String board_copy = board_state;
+//        int[] resource_copy = resource_state;
+//        String[] actions_copy = actions;
+//        for (int i = 0; i < actions_copy.length; i++) {
+//            Action action = new Action(actions_copy[i]);
+//            System.out.println("action is " + actions_copy[i]+ ", board copy is " + board_copy);
+//            test = canDoAction(actions[i], board_copy, resource_copy);
+//            System.out.println(test);
+//            if (!test) {
+//                return false;
+//            }
+//            // Otherwise the action can be done
+//            // Update the board_state and resource state for the action
+//            else if (action.first == 'b') {
+//                // Add structure to board state
+//                board_copy = board_copy + "," + action.id;
+//                // Remove the resources
+//                Structure structure = new Structure(action.id);
+//                System.out.println("Action id is " + action.id);
+//                System.out.println("cost is " + structure.getResourceCost()[0] );
+//                resource_copy = subtractArray(resource_copy, structure.getResourceCost());
+//            }
+//            else if (action.first == 't') {
+//                // Remove resources from resource state
+//                resource_copy[5] = resource_copy[5] - 2;
+//                // Add resource that has been traded for
+//                int in = action.in;
+//                System.out.println("Traded in for " + in);
+//                resource_copy[in]++;
+//                System.out.println("Resource for in is "+resource_copy[in]);
+//            }
+//            else if (action.first == 's') {
+//                int out = action.out;
+//                int in = action.in;
+//                // Add in resource to resource state
+//                int new_in = resource_copy[in] + 1;
+//                setInt(resource_copy, in, new_in);
+//                // Remove out resource from resource state
+//                int new_out = resource_copy[out] - 1;
+//                setInt(resource_copy, out, new_out);
+//                // Update board_copy depending on whether the wildcard joker was used.
+//                String[] boardCopyArray = board_copy.split(",");
+//                List<String> boardCopyList = asList(boardCopyArray);
+//                if (boardCopyList.contains("K" + (in + 1))) {
+//                    board_copy = board_copy + ",K6";
+//                } else {// Wildcard was not used
+//                    board_copy = board_copy + (",K" + (in + 1));
+//                }
+//            }
+//            }
+//        return true; // FIXME: Task #11
+//    }
+
     public static boolean canDoSequence(String[] actions,
-					String board_state,
-					int[] resource_state) {
-        System.out.println("NEW FUNCTION CALL");
-        boolean test=true;
-        String board_copy = board_state;
-        int[] resource_copy = resource_state;
-        String[] actions_copy = actions;
-        for (int i = 0; i < actions_copy.length; i++) {
-            Action action = new Action(actions_copy[i]);
-            System.out.println("action is " + actions_copy[i]+ ", board copy is " + board_copy);
-            test = canDoAction(actions[i], board_copy, resource_copy);
-            System.out.println(test);
-            if (!test) {
-                return false;
-            } else{
-            // Otherwise the action can be done
-            // Update the board_state and resource state for the action
-            if (action.first == 'b') {
-                // Add structure to board state
-                board_copy = board_copy + "," + action.id;
-                // TODO: Remove resources from resource_state from this build
-                Structure structure = new Structure(action.id);
-                System.out.println("Action id is " + action.id);
-                System.out.println("cost is " + structure.getResourceCost()[0] );
-                resource_copy = subtractArray(resource_copy, structure.getResourceCost());
-            }
-            else if (action.first == 't') {
-                // Remove resources from resource state
-                resource_copy[5] = resource_copy[5] - 2;
-                // Add resource that has been traded for
-                int in = action.in;
-                System.out.println("Traded in for " + in);
-                resource_copy[in]++;
-                System.out.println("Resource for in is "+resource_copy[in]);
-            }
-            else if (action.first == 's') {
-                int out = action.out;
-                int in = action.in;
-                // Add in resource to resource state
-                int new_in = resource_copy[in] + 1;
-                setInt(resource_copy, in, new_in);
-                // Remove out resource from resource state
-                int new_out = resource_copy[out] - 1;
-                setInt(resource_copy, out, new_out);
-                // Update board_copy depending on whether the wildcard joker was used.
-                String[] boardCopyArray = board_copy.split(",");
-                List<String> boardCopyList = asList(boardCopyArray);
-                if (boardCopyList.contains("K" + (in + 1))) {
-                    board_copy = board_copy + ",K6";
-                } else {// Wildcard was not used
-                    board_copy = board_copy + (",K" + (in + 1));
+                                        String board_state,
+                                        int[] resource_state){
+        // If the length of the actions array is zero then all actions were possible
+        if (actions.length == 0){return true;}
+        else{
+            // If the first action in the array cannot be done then return false
+            if (!(canDoAction(actions[0],board_state,resource_state))){return false;}
+            // Otherwise the action can be done and the actions, board_state and resource state
+            // need to be updated.
+            else{
+                Action current_action = new Action(actions[0]);
+                String[] updated_actions = new String[actions.length-1];
+                for (int j = 1; j < actions.length; j++){
+                    updated_actions[j-1] = actions[j];
                 }
-            }
+                // Copy the board_state to update
+                String updated_board_state = board_state;
+                // Copy the resource_state to update;
+                int[] updated_resource_state = resource_state;
+                // Split cases depending upon the current_action.
+                if (current_action.first == 'b'){
+                    // Add the structure to the updated_board_state
+                    updated_board_state = updated_board_state + "," + current_action.id;
+                    Structure structure = new Structure(current_action.id);
+                    // Remove the resources
+                    updated_resource_state = subtractArray(updated_resource_state, structure.getResourceCost());
+                }
+                else if (current_action.first == 't'){
+                    // Remove resources from updated_resource_state
+                    updated_resource_state[5] = updated_resource_state[5] - 2;
+                    // Add resource that has been traded for
+                    int in = current_action.in;
+                    updated_resource_state[in]++;
+                }
+                else if (current_action.first == 's'){
+                    int out = current_action.out;
+                    int in = current_action.in;
+                    // Add in resource to resource state
+                    int new_in = updated_resource_state[in] + 1;
+                    setInt(updated_resource_state, in, new_in);
+                    // Remove out resource from resource state
+                    int new_out = updated_resource_state[out] - 1;
+                    setInt(updated_resource_state, out, new_out);
+                    // Update board_copy depending on whether the wildcard joker was used.
+                    String[] boardCopyArray = updated_board_state.split(",");
+                    List<String> boardCopyList = asList(boardCopyArray);
+                    if (boardCopyList.contains("K" + (in + 1))) {
+                        updated_board_state = updated_board_state + ",K6";
+                    } else {// Wildcard was not used
+                        updated_board_state = updated_board_state + (",K" + (in + 1));
+                    }
+                }
+                System.out.println("Actions is " + Arrays.stream(actions).toList().toString());
+                System.out.println("Board State is  " + board_state);
+
+                System.out.println("Resources are  " + resource_state[0]+", " + resource_state[1]+", " + resource_state[2]+", " + resource_state[3]+", "  );
+                return canDoSequence(updated_actions, updated_board_state, updated_resource_state);
             }
         }
-        return true; // FIXME: Task #11
     }
-
 
     // Given array1 and array 2 assumed to be of the same length and not empty
     // Return an array that is a componentwise subtraction of array1 - array2
