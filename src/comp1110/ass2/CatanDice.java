@@ -359,7 +359,7 @@ public class CatanDice {
         }
         if (current_action.first == 't'){
             // Need 2 gold for a trade action
-            return (resource_state[5] >= 2);
+            if (resource_state[5] >= 2){return true;}
         }
         if (current_action.first == 's'){
             int out = current_action.out;
@@ -377,6 +377,10 @@ public class CatanDice {
             } else {return false;}
         }
 	 return false; //Task #9
+    }
+
+    public static void main(String[] args) {
+        System.out.println(canDoAction("trade 4","" ,new int[]{1,1,0,1,1,1}));
     }
 
 //    /**
@@ -466,6 +470,7 @@ public class CatanDice {
                 // Copy the board_state to update
                 String updated_board_state = board_state;
                 // Copy the resource_state to update;
+
                 int[] updated_resource_state = resource_state;
                 // Split cases depending upon the current_action.
                 if (current_action.first == 'b'){
@@ -503,7 +508,8 @@ public class CatanDice {
                 System.out.println("Actions is " + Arrays.stream(actions).toList().toString());
                 System.out.println("Board State is  " + board_state);
 
-                System.out.println("Resources are  " + resource_state[0]+", " + resource_state[1]+", " + resource_state[2]+", " + resource_state[3]+", "  );
+                System.out.println("Resources are  " + resource_state[0]+", " + resource_state[1]+", " + resource_state[2]+", " + resource_state[3]+", " + resource_state[4]+", " + resource_state[5]+", "   );
+                System.out.println("Updated resources are  " + updated_resource_state[0]+", " + updated_resource_state[1]+", " + updated_resource_state[2]+", " + updated_resource_state[3]+", " + updated_resource_state[4]+", " + updated_resource_state[5]+", "   );
                 return canDoSequence(updated_actions, updated_board_state, updated_resource_state);
             }
         }
