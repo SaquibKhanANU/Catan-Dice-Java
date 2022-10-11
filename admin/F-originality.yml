@@ -31,8 +31,8 @@ collaboration:
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external code)
 code:
-  - comment:
-    url:
+  - comment: System.arraycopy in canDoSequence, task 11
+    url: https://www.knowprogram.com/java/system-arraycopy/#:~:text=Java%20Program%20to%20Copy%20Complete%20Array%20using%20System.arraycopy,3%29%20Call%20System.arraycopy%20%28src%2C%200%2C%20dest%2C%200%2C%20src.length%29%3B
     licence:
 
 # Use this to list any assets (artwork, sound, etc) that you used.
