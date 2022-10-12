@@ -142,30 +142,6 @@ public class CatanBoard {
     }
 
 
-    /**
-     * Returns true if and only if the structure can be removed from the board.
-     * Can only remove structures placed that turn
-     * @return
-     */
-    public boolean canDoRemove() {
-        ArrayList<Structure> board_state = GameBoard.catanPlayer.structures;
-        // Make the game tree for the current board state
-        // An action can be undone if:
-        // 1. It was done that round (i.e in the structures for this round)
-        // 2. Removing it does not break up a path
-
-        ArrayList<Structure> structures_this_round = GameBoard.catanPlayer.structuresForRound;
-        // Items can be removed in a sequence if when reversing that sequence
-        // it becomes a valid sequence of actions.
-
-        return true;
-    }
-
-
-
-
-
-
     // Testing
     public CatanBoard(String initialState) {
         this.boardArray = new BuildableStructure[5][4];
@@ -176,6 +152,9 @@ public class CatanBoard {
             }
         }
     }
+
+    //TODO: Fix this function.
+    public boolean canDoRemove(){return true;}
 
     // TESTING
     public String boardToString() {
