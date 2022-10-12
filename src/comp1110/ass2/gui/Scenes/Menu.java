@@ -130,7 +130,6 @@ public class Menu {
             }
             if ("TWO PLAYER".equals(name)) {
                 setOnMousePressed(event -> {
-                    bg.setFill(Color.TAN);
                     Game.gameState = new GameState(2);
                     Game.playerOnePane = new Pane();
                     Game.playerTwoPane = new Pane();
