@@ -6,6 +6,7 @@ import comp1110.ass2.CatanGame.GameState;
 import comp1110.ass2.gui.Scenes.GameBoard;
 import comp1110.ass2.gui.Scenes.Menu;
 import comp1110.ass2.gui.Controls.ScreenController;
+import comp1110.ass2.gui.Scenes.Winner;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -23,15 +24,19 @@ public class Game extends Application {
     public static final int WINDOW_HEIGHT = 700;
 
     public static Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-    public static ScreenController n = new ScreenController(scene);
+    public static ScreenController scenes = new ScreenController(scene);
     Menu menu;
     public static CatanPlayer playerOne = new CatanPlayer(1);
     public static CatanPlayer playerTwo = new CatanPlayer(2);
-    public static Pane playerOnePane;
-    public static Pane playerTwoPane;
-    public static GameBoard one;
-    public static GameBoard two;
+    public static CatanPlayer playerThree = new CatanPlayer(3);
+    public static CatanPlayer playerFour = new CatanPlayer(4);
+    public static GameBoard oneBoard;
+    public static GameBoard twoBoard;
+    public static GameBoard threeBoard;
+    public static GameBoard fourBoard;
     public static GameState gameState;
+    public static Winner winner;
+
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -39,8 +44,8 @@ public class Game extends Application {
         stage.setResizable(false);
 
         this.menu = new Menu();
-        n.addScreen("Menu", menu.menuPane);
-        n.activate("Menu");
+        scenes.addScreen("Menu", menu.menuPane);
+        scenes.activate("Menu");
 
         stage.setScene(scene);
         stage.show();
