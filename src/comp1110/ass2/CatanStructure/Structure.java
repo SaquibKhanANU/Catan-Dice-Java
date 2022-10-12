@@ -52,7 +52,8 @@ public class Structure {
     public Structure(String id){
         this.id = id;
         this.type = id.charAt(0);
-        this.value = Integer.parseInt(id.substring(1));
+        if (id.charAt(1) == 'I'){this.value = 0;}
+        else{this.value = Integer.parseInt(id.substring(1));}
         if (type == 'R'){
             this.resource_cost = new int[]{0, 0, 0, 1, 1, 0};
         } else if (type == 'S'){

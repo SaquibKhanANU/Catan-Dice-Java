@@ -1,5 +1,7 @@
 package comp1110.ass2.CatanStructure;
 
+import comp1110.ass2.gui.Game;
+
 import java.util.ArrayList;
 
 public class GameTree {
@@ -50,9 +52,20 @@ public class GameTree {
 
         ArrayList<Object> res = new ArrayList<>();
         System.out.println(path.fold(res));
+        System.out.println(path.canPrune("C30"));
+        ArrayList<Object> res4 = new ArrayList<>();
+        System.out.println(path.fold(res4));
+        GameTree res5 = new GameTree();
+        res5.node = "RI";
+        ArrayList<Object> res6 = new ArrayList<>();
+        System.out.println(path.removeNulls(res5).fold(res6));
 
-        ArrayList<Object> res1 = new ArrayList<>();
-        System.out.println(path.findPath("C30", res1));
+//        ArrayList<Object> res1 = new ArrayList<>();
+//        System.out.println(path.findPath("C30", res1));
+//
+//        ArrayList<Object> res2 = new ArrayList<>();
+//        path.add("RI", "null",null);
+//        System.out.println(path.fold(res2));
     }
 
 // A fold on the GameTree into an ArrayList
@@ -96,6 +109,8 @@ public class GameTree {
 
     // Given a GameTree a Object node, l and r extend the current GameTree by adding l and r to the
     // branches of the tree where the node is located. If the node is not in the tree then it does nothing
+    // It will overwrite the current tree
+    // If nothing is to be added to that branch then use input null
     public void add(Object node, Object l, Object r){
         if (this.node.equals(node)){
             if (l != null && r != null){
@@ -126,6 +141,40 @@ public class GameTree {
     }
 
     /**
+     * Add the element to the left branch at a specified node
+     * Adds to the branch only if the boolean value of the branch is true
+     */
+    public void addSelective(Object node, Object l, Object r, boolean left, boolean right){
+        if (this.node.equals(node)){
+            if (l != null && r != null && left && right){
+                this.left = new GameTree();
+                this.right = new GameTree();
+                this.left.node = l;
+                this.right.node = r;
+            }
+            else if (l == null && r != null && right){
+                this.right = new GameTree();
+                this.right.node = r;
+            }
+            else if (l != null && r == null && left){
+                this.left = new GameTree();
+                this.left.node = l;
+            }
+        }
+        else if (this.left == null && this.right !=null){
+            this.right.add(node, l, r);
+        }
+        else if (this.right == null && this.left!= null){
+            this.left.add(node, l ,r);
+        }
+        else if (this.left != null && this.right != null){
+            this.left.add(node, l ,r);
+            this.right.add(node, l ,r);
+        }
+    }
+
+
+    /**
      * For a GameTree find a path down the gameTree to the object. Assumes no nodes in this GameTree
      * are duplicate and the target object is not null.
      *
@@ -149,6 +198,63 @@ public class GameTree {
             }
         }
         return res;
+    }
+
+    /**
+     * An object can be pruned (removed) iff it is a leaf with no branches in the tree.
+     * If this function returns true then the object was removed.
+     * @param remove: The object to remove
+     * @return true iff the object can be removed, and removes the object.
+     */
+    public boolean canPrune(Object remove){
+        if (this.node.equals(remove)){
+            if (this.left == null && this.right == null){
+                this.node = null;
+                return true;
+            }
+        }
+        else if (this.left == null && this.right!= null){
+            return this.right.canPrune(remove);
+        }
+        else if (this.right == null && this.left!= null){
+            return this.left.canPrune(remove);
+        }
+        else if (this.left == null & this.right == null){return false;}
+        else {
+            return this.left.canPrune(remove) || this.right.canPrune(remove);
+        }
+        return false;
+    }
+
+    /**
+     * Remove a node if the node is null and both branches are null.
+     * @param empty: The empty GameTree to add values to. It must have the first node the same as the GameTree.
+     *             In this case "RI" is a convenient choice.
+     * @return The input GameTree
+     */
+    public GameTree removeNulls(GameTree empty){
+        if (this.node == null && this.left == null && this.right == null){
+            // Do nothing
+        }
+        else if (this.node != null){
+            if (this.left == null && this.right == null){
+                empty.add(this.node, null, null);
+            }
+            else if (this.left == null && this.right != null){
+                empty.add(this.node, null, this.right.node);
+                this.right.removeNulls(empty);
+            }
+            else if (this.right == null && this.left != null){
+                empty.add(this.node, this.left.node, null);
+                this.left.removeNulls(empty);
+            }
+            else if (this.right != null && this.left != null){
+                empty.add(this.node, this.left.node, this.right.node);
+                this.left.removeNulls(empty);
+                this.right.removeNulls(empty);
+            }
+        }
+        return empty;
     }
 
 }

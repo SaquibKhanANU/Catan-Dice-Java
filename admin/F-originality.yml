@@ -46,6 +46,22 @@ assets:
     url: https://www.geeksforgeeks.org/how-to-add-an-element-to-an-array-in-java/
     licence: filled
 
+  - comment: Ordering Elements BoardStateTree
+    url: https://docs.oracle.com/javase/tutorial/collections/interfaces/order.html
+    licence: filled
+
+  - comment: Ordering Elements
+    url: https://www.javatpoint.com/how-to-sort-arraylist-in-java#:~:text=ArrayList%201%20Collections.sort%20%28%29%20Method%20An%20ArrayList%20can,...%204%20Sort%20ArrayList%20in%20Descending%20Order%20
+    licence: filled
+
+  - comment: Ordering Elements
+    url: https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html
+    licence: filled
+
+ - comment: ArrayList
+    url: https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html
+    licence: filled
+
 
 # Sign *your* name and uids here. (Remove entries if you have fewer
 # than three members.)
