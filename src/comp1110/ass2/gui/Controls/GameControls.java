@@ -416,6 +416,7 @@ public class GameControls {
             });
             setOnMousePressed(event -> {
                 System.out.println(catanPlayer.board_state);
+                System.out.println(Arrays.toString(catanPlayer.resource_state));
                 if (clickable) {
                     if (action.getActionType() == ActionType.SWAP) {
                         if (event.getButton() == MouseButton.PRIMARY) {
@@ -428,7 +429,6 @@ public class GameControls {
                             }
                             resourceState.getChildren().clear();
                             swapped = true;
-                            System.out.println(Arrays.toString(catanPlayer.resource_state));
                             int index = 0;
                             String[] knightId = new String[]{"K1", "K2", "K3", "K4", "K5", "K6"};
                             for (GameBoard.KnightShape knightShape : knightsList) {

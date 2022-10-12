@@ -881,10 +881,10 @@ public class GameBoard extends Pane {
             }
         }
         protected void removeBoardState() {
-            if (gameControls.catanPlayer.board_state.equals("")) {
+            if (gameControls.catanPlayer.board_state.equals("," + gameControls.catanBoard.getBuildableStructure(this.x, this.y).getId())) {
                 gameControls.catanPlayer.board_state = gameControls.catanPlayer.board_state.replace(gameControls.catanBoard.getBuildableStructure(this.x, this.y).getId(), "");
             }
-            gameControls.catanPlayer.board_state = gameControls.catanPlayer.board_state.replace("," + gameControls.catanBoard.getBuildableStructure(this.x, this.y).getId(), "");
+            gameControls.catanPlayer.board_state = gameControls.catanPlayer.board_state.replace(gameControls.catanBoard.getBuildableStructure(this.x, this.y).getId(), "");
         }
         protected void updateAction() {
             gameControls.catanPlayer.action = "build" + " " + gameControls.catanBoard.getBuildableStructure(this.x, this.y).getId();
