@@ -10,6 +10,7 @@ import comp1110.ass2.CatanGame.GameState;
 import comp1110.ass2.CatanStructure.Structure;
 import comp1110.ass2.gui.Game;
 import comp1110.ass2.gui.Scenes.GameBoard;
+import comp1110.ass2.gui.Scenes.Winner;
 import gittest.A;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -225,17 +226,19 @@ public class GameControls {
         traded = false;
         catanPlayer.setCurrentTurn(false);
         catanPlayer.resource_state = new int[]{0, 0, 0 , 0 ,0,0};
+        currentResourceState(catanPlayer.resource_state);
         diceRolled = false;
         diceRollCount = 0;
-        if (catanPlayer.structuresForRound.size() == 0) {
+        if (catanPlayer.structuresForRound.size() == 0 && Game.gameState.round < 15) {
             catanPlayer.score = catanPlayer.score - 2;
         }
         catanPlayer.scoreTotal.add(catanPlayer.score);
         catanPlayer.structuresForRound.clear();
-        if (Game.gameState.round == 15) {
-            catanPlayer.calculateFinalScore();
-        }
+
         try {
+            if (Game.gameState.round == 14) {
+                catanPlayer.calculateFinalScore();
+            }
             scores.clear();
             makeScores();
             scores.get(Game.gameState.round).setScore(catanPlayer.score);
@@ -254,17 +257,81 @@ public class GameControls {
         }
 
         if (Game.gameState.num == 1) {
-            Game.n.activate("PLAYER ONE");
+            Game.scenes.activate("PLAYER ONE");
             catanPlayer.setCurrentTurn(true);
             Game.gameState.round++;
+            if (Game.gameState.round == 16) {
+                ArrayList<CatanPlayer> catanPlayers = new ArrayList<>();
+                catanPlayers.add(Game.playerOne);
+                Game.winner = new Winner(1, catanPlayers);
+                Game.scenes.addScreen("WINNER", Game.winner);
+                Game.scenes.activate("WINNER");
+            }
         } else if (Game.gameState.num == 2) {
             if (Game.playerOne == catanPlayer) {
                 Game.playerTwo.setCurrentTurn(true);
-                Game.n.activate("PLAYER TWO");
+                Game.scenes.activate("PLAYER TWO");
             } else {
                 Game.gameState.round++;
                 Game.playerOne.setCurrentTurn(true);
-                Game.n.activate("PLAYER ONE");
+                Game.scenes.activate("PLAYER ONE");
+                if (Game.gameState.round == 16) {
+                    ArrayList<CatanPlayer> catanPlayers = new ArrayList<>();
+                    catanPlayers.add(Game.playerOne);
+                    catanPlayers.add(Game.playerTwo);
+                    catanPlayer.calculateFinalScore();
+                    Game.winner = new Winner(2, catanPlayers);
+                    Game.scenes.addScreen("WINNER", Game.winner);
+                    Game.scenes.activate("WINNER");
+                }
+            }
+        } else if (Game.gameState.num == 3) {
+            if (Game.playerOne == catanPlayer) {
+                Game.playerTwo.setCurrentTurn(true);
+                Game.scenes.activate("PLAYER TWO");
+            } else if (Game.playerTwo == catanPlayer) {
+                Game.playerThree.setCurrentTurn(true);
+                Game.scenes.activate("PLAYER THREE");
+            } else {
+                Game.gameState.round++;
+                Game.playerOne.setCurrentTurn(true);
+                Game.scenes.activate("PLAYER ONE");
+                if (Game.gameState.round == 16) {
+                    ArrayList<CatanPlayer> catanPlayers = new ArrayList<>();
+                    catanPlayers.add(Game.playerOne);
+                    catanPlayers.add(Game.playerTwo);
+                    catanPlayers.add(Game.playerThree);
+                    catanPlayer.calculateFinalScore();
+                    Game.winner = new Winner(2, catanPlayers);
+                    Game.scenes.addScreen("WINNER", Game.winner);
+                    Game.scenes.activate("WINNER");
+                }
+            }
+        } else {
+            if (Game.playerOne == catanPlayer) {
+                Game.playerTwo.setCurrentTurn(true);
+                Game.scenes.activate("PLAYER TWO");
+            } else if (Game.playerTwo == catanPlayer) {
+                Game.playerThree.setCurrentTurn(true);
+                Game.scenes.activate("PLAYER THREE");
+            } else if (Game.playerThree == catanPlayer) {
+                Game.playerFour.setCurrentTurn(true);
+                Game.scenes.activate("PLAYER FOUR");
+            } else {
+                Game.gameState.round++;
+                Game.playerOne.setCurrentTurn(true);
+                Game.scenes.activate("PLAYER ONE");
+                if (Game.gameState.round == 16) {
+                    ArrayList<CatanPlayer> catanPlayers = new ArrayList<>();
+                    catanPlayers.add(Game.playerOne);
+                    catanPlayers.add(Game.playerTwo);
+                    catanPlayers.add(Game.playerThree);
+                    catanPlayers.add(Game.playerFour);
+                    catanPlayer.calculateFinalScore();
+                    Game.winner = new Winner(2, catanPlayers);
+                    Game.scenes.addScreen("WINNER", Game.winner);
+                    Game.scenes.activate("WINNER");
+                }
             }
         }
     }
@@ -386,7 +453,7 @@ public class GameControls {
                             }
                         }
                     }
-                    default -> Game.n.activate(name);
+                    default -> Game.scenes.activate(name);
                 }
             });
         }
@@ -772,22 +839,22 @@ public class GameControls {
     }
 
     public void makeScores() {
-        scores.put(0, new Score(17, 45, catanPlayer.score));
-        scores.put(1, new Score(55, 45, Game.playerOne.score));
-        scores.put(2, new Score(55 + 38, 45, Game.playerOne.score));
-        scores.put(3, new Score(55 + 38 * 2, 45, Game.playerOne.score));
-        scores.put(4, new Score(55 + 38 * 3, 45, Game.playerOne.score));
-        scores.put(5, new Score(55 + 38 * 3, 45 + 39, Game.playerOne.score));
-        scores.put(10, new Score(17, 123, Game.playerOne.score));
-        scores.put(9, new Score(55, 123, Game.playerOne.score));
-        scores.put(8, new Score(55 + 38, 123, Game.playerOne.score));
-        scores.put(7, new Score(55 + 38 * 2, 123, Game.playerOne.score));
-        scores.put(6, new Score(55 + 38 * 3, 123, Game.playerOne.score));
-        scores.put(11, new Score(17, 123 + 39, Game.playerOne.score));
-        scores.put(12, new Score(17, 123 + 78, Game.playerOne.score));
-        scores.put(13, new Score(55, 123 + 78, Game.playerOne.score));
-        scores.put(14, new Score(55 + 38, 123 + 78, Game.playerOne.score));
-        scores.put(15, new Score(55 + 110, 123 + 78, catanPlayer.finalScore));
+        scores.put(0, new Score(12, 45, catanPlayer.score));
+        scores.put(1, new Score(50, 45, catanPlayer.score));
+        scores.put(2, new Score(50 + 38, 45, catanPlayer.score));
+        scores.put(3, new Score(50 + 38 * 2, 45, catanPlayer.score));
+        scores.put(4, new Score(50 + 38 * 3, 45, catanPlayer.score));
+        scores.put(5, new Score(50 + 38 * 3, 45 + 39, catanPlayer.score));
+        scores.put(10, new Score(12, 123, catanPlayer.score));
+        scores.put(9, new Score(50, 123, catanPlayer.score));
+        scores.put(8, new Score(50 + 38, 123, catanPlayer.score));
+        scores.put(7, new Score(50 + 38 * 2, 123, catanPlayer.score));
+        scores.put(6, new Score(50 + 38 * 3, 123, catanPlayer.score));
+        scores.put(11, new Score(12, 123 + 39,catanPlayer.score));
+        scores.put(12, new Score(12, 123 + 78, catanPlayer.score));
+        scores.put(13, new Score(50, 123 + 78, catanPlayer.score));
+        scores.put(14, new Score(50 + 38, 123 + 78, catanPlayer.score));
+        scores.put(15, new Score(40 + 110, 123 + 78, catanPlayer.finalScore));
     }
 
     private void makeSidePanel() {
@@ -858,6 +925,8 @@ public class GameControls {
         ChooseBoardBox vbox;
         GameButtonsBoard playerOne = new GameButtonsBoard("PLAYER ONE");
         GameButtonsBoard playerTwo = new GameButtonsBoard("PLAYER TWO");
+        GameButtonsBoard playerThree = new GameButtonsBoard("PLAYER THREE");
+        GameButtonsBoard playerFour = new GameButtonsBoard("PLAYER FOUR");
         if (Game.gameState.num == 1) {
             vbox = new ChooseBoardBox(
                     playerOne);
@@ -865,10 +934,18 @@ public class GameControls {
             vbox = new ChooseBoardBox(
                     playerOne,
                     playerTwo);
+        } else if (Game.gameState.num == 3) {
+            vbox = new ChooseBoardBox(
+                    playerOne,
+                    playerTwo,
+                    playerThree
+            );
         } else {
             vbox = new ChooseBoardBox(
                     playerOne,
-                    playerTwo
+                    playerTwo,
+                    playerThree,
+                    playerFour
             );
         }
         vbox.setTranslateX(-3);

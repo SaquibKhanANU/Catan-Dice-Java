@@ -120,26 +120,44 @@ public class Menu {
             if ("ONE PLAYER".equals(name)) {
                 setOnMousePressed(event -> {
                     Game.gameState = new GameState(1);
-                    Game.playerOnePane = new Pane();
-                    Game.one = new GameBoard(Game.playerOne);
-                    Game.playerOnePane.getChildren().add(Game.one);
-
-                    Game.n.addScreen("PLAYER ONE", Game.playerOnePane);
-                    Game.n.activate("PLAYER ONE");
+                    Game.oneBoard = new GameBoard(Game.playerOne);
+                    Game.scenes.addScreen("PLAYER ONE", Game.oneBoard);
+                    Game.scenes.activate("PLAYER ONE");
                 });
             }
             if ("TWO PLAYER".equals(name)) {
                 setOnMousePressed(event -> {
                     Game.gameState = new GameState(2);
-                    Game.playerOnePane = new Pane();
-                    Game.playerTwoPane = new Pane();
-                    Game.one = new GameBoard(Game.playerOne);
-                    Game.two = new GameBoard(Game.playerTwo);
-                    Game.playerOnePane.getChildren().add(Game.one);
-                    Game.playerTwoPane.getChildren().add(Game.two);
-                    Game.n.addScreen("PLAYER ONE", Game.playerOnePane);
-                    Game.n.addScreen("PLAYER TWO", Game.playerTwoPane);
-                    Game.n.activate("PLAYER ONE");
+                    Game.oneBoard = new GameBoard(Game.playerOne);
+                    Game.twoBoard = new GameBoard(Game.playerTwo);
+                    Game.scenes.addScreen("PLAYER ONE", Game.oneBoard);
+                    Game.scenes.addScreen("PLAYER TWO", Game.twoBoard);
+                    Game.scenes.activate("PLAYER ONE");
+                });
+            }
+            if ("THREE PLAYER".equals(name)) {
+                setOnMousePressed(event -> {
+                    Game.gameState = new GameState(3);
+                    Game.oneBoard = new GameBoard(Game.playerOne);
+                    Game.twoBoard = new GameBoard(Game.playerTwo);
+                    Game.threeBoard = new GameBoard(Game.playerThree);
+                    Game.scenes.addScreen("PLAYER ONE", Game.oneBoard);
+                    Game.scenes.addScreen("PLAYER TWO", Game.twoBoard);
+                    Game.scenes.addScreen("PLAYER THREE", Game.threeBoard);
+                    Game.scenes.activate("PLAYER ONE");
+                });
+            } if ("FOUR PLAYER".equals(name)) {
+                setOnMousePressed(event -> {
+                    Game.gameState = new GameState(4);
+                    Game.oneBoard = new GameBoard(Game.playerOne);
+                    Game.twoBoard = new GameBoard(Game.playerTwo);
+                    Game.threeBoard = new GameBoard(Game.playerThree);
+                    Game.fourBoard = new GameBoard(Game.playerFour);
+                    Game.scenes.addScreen("PLAYER ONE", Game.oneBoard);
+                    Game.scenes.addScreen("PLAYER TWO", Game.twoBoard);
+                    Game.scenes.addScreen("PLAYER THREE", Game.threeBoard);
+                    Game.scenes.addScreen("PLAYER FOUR", Game.fourBoard);
+                    Game.scenes.activate("PLAYER ONE");
                 });
             }
         }

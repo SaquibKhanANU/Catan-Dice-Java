@@ -45,7 +45,6 @@ public class GameBoard extends Pane {
     Group resources = new Group();
     Group structuresBoard = new Group(hexagonBoard, roads, cities, settlements, knights);
     Group scoreCounter = new Group();
-
     public GameControls gameControls;
     public GameBoard(CatanPlayer catanPlayer) {
         gameControls = new GameControls(catanPlayer);

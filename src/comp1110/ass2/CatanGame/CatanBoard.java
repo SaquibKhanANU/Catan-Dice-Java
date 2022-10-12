@@ -56,16 +56,6 @@ public class CatanBoard {
         structureBlocksMap.put("K6", new BuildableStructure(10, 2, StructureType.KNIGHT, "K6", 6));
     }
 
-    public ArrayList<BuildableStructure> returnKnights() {
-        ArrayList<BuildableStructure> knights = new ArrayList<>();
-        makeMap();
-        String[] knightId = new String[]{"K1", "K2", "K3", "K4", "K5", "K6"};
-        for (String id : knightId) {
-            knights.add(structureBlocksMap.get(id));
-        }
-        return knights;
-    }
-
     public void makeStructureBlocks() {
         structureBlocks.put("R", new CatanRoad("R", new int[2]));
         structureBlocks.put("C", new CatanCity("C", new int[2]));

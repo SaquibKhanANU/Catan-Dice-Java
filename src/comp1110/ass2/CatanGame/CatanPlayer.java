@@ -26,7 +26,6 @@ public class CatanPlayer {
     //total score
     public ArrayList<Integer> scoreTotal;
     public int finalScore;
-
     public String name;
     public boolean currentTurn;
 
@@ -43,6 +42,7 @@ public class CatanPlayer {
             case 3 -> this.name = "PLAYER THREE";
             case 4 -> this.name = "PLAYER FOUR";
         }
+        this.finalScore = 0;
         this.structures = new ArrayList<>();
         this.resource_state = new int[6];
         this.score = 0;
@@ -55,12 +55,10 @@ public class CatanPlayer {
 
     public void calculateFinalScore() {
         int sum = 0;
-        if (Game.gameState.round == 15) {
-            for (int i : Game.playerOne.scoreTotal) {
-                sum = sum + i;
-            }
+        for (int i : scoreTotal) {
+            sum = sum + i;
         }
-        Game.playerOne.finalScore = sum;
+        finalScore = sum;
     }
 
     public void setCurrentTurn(boolean currentTurn) {
