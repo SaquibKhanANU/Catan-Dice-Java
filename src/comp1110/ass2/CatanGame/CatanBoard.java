@@ -2,6 +2,7 @@ package comp1110.ass2.CatanGame;
 
 import comp1110.ass2.CatanEnum.StructureType;
 import comp1110.ass2.CatanStructure.*;
+import comp1110.ass2.gui.Scenes.GameBoard;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -140,20 +141,25 @@ public class CatanBoard {
         structure.setIsBuilt(false);
     }
 
+
+    /**
+     * Returns true if and only if the structure can be removed from the board.
+     * Can only remove structures placed that turn
+     * @return
+     */
     public boolean canDoRemove() {
-        // REMOVE id from board_state
-        // if board_state is still valid after remove
-        // then structure can be removed!
-           /* removeBoardState();
-            if (CatanDice.isBoardStateWellFormed(board_state)) {
-                return true;
-            } else {
-                updateBoardState();
-                return false;
-            } */
+        ArrayList<Structure> board_state = GameBoard.catanPlayer.structures;
+        // Make the game tree for the current board state
+        // An action can be undone if:
+        // 1. It was done that round (i.e in the structures for this round)
+        // 2. Removing it does not break up a path
+
+        ArrayList<Structure> structures_this_round = GameBoard.catanPlayer.structuresForRound;
+        // Items can be removed in a sequence if when reversing that sequence
+        // it becomes a valid sequence of actions.
+
         return true;
     }
-
 
 
 

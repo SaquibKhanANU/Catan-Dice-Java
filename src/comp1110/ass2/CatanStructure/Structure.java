@@ -64,6 +64,9 @@ public class Structure {
         }
     }
 
+    public String toBuildString(){
+        return "build " + this.id;
+    }
     /**
      * Given a board state as a string return an array of Structures.
      */

@@ -50,7 +50,7 @@ public class GameBoard extends Pane {
     public static Group warningTextGroup = new Group();
     public static ArrayList<KnightShape> knightsList = new ArrayList<>();
     public static CatanBoard catanBoard;
-    public CatanPlayer catanPlayer;
+    public static CatanPlayer catanPlayer;
     public GameControls gameControls;
     public GameBoard(CatanPlayer catanPlayer) {
         setBackground(new Background(new BackgroundFill(Color.web("#3399ff"), CornerRadii.EMPTY, Insets.EMPTY)));
