@@ -159,6 +159,12 @@ public class Menu {
                     Game.scenes.addScreen("PLAYER FOUR", Game.fourBoard);
                     Game.scenes.activate("PLAYER ONE");
                 });
+            } if ("INSTRUCTIONS".equals(name)) {
+                setOnMousePressed(event -> {
+                    Game.instructions = new Instructions();
+                    Game.scenes.addScreen("INSTRUCTIONS", Game.instructions);
+                    Game.scenes.activate("INSTRUCTIONS");
+                });
             }
         }
     }

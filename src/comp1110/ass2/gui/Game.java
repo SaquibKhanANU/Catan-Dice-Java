@@ -4,6 +4,7 @@ import comp1110.ass2.CatanGame.CatanBoard;
 import comp1110.ass2.CatanGame.CatanPlayer;
 import comp1110.ass2.CatanGame.GameState;
 import comp1110.ass2.gui.Scenes.GameBoard;
+import comp1110.ass2.gui.Scenes.Instructions;
 import comp1110.ass2.gui.Scenes.Menu;
 import comp1110.ass2.gui.Controls.ScreenController;
 import comp1110.ass2.gui.Scenes.Winner;
@@ -36,6 +37,7 @@ public class Game extends Application {
     public static GameBoard fourBoard;
     public static GameState gameState;
     public static Winner winner;
+    public static Instructions instructions;
 
 
     @Override

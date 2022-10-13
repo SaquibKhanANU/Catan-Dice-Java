@@ -5,6 +5,7 @@ import comp1110.ass2.CatanEnum.ActionType;
 import comp1110.ass2.CatanEnum.ResourceType;
 import comp1110.ass2.CatanEnum.StructureType;
 import comp1110.ass2.CatanGame.CatanPlayer;
+import comp1110.ass2.CatanStructure.BoardStateTree;
 import comp1110.ass2.CatanStructure.BuildableStructure;
 import comp1110.ass2.CatanStructure.Structure;
 import comp1110.ass2.gui.Controls.GameControls;
@@ -46,6 +47,9 @@ public class GameBoard extends Pane {
     Group structuresBoard = new Group(hexagonBoard, roads, cities, settlements, knights);
     Group scoreCounter = new Group();
     public GameControls gameControls;
+    public BoardStateTree boardStateTree;
+
+
     public GameBoard(CatanPlayer catanPlayer) {
         gameControls = new GameControls(catanPlayer);
         setBackground(new Background(new BackgroundFill(Color.web("#3399ff"), CornerRadii.EMPTY, Insets.EMPTY)));
@@ -195,6 +199,12 @@ public class GameBoard extends Pane {
                                                 draggableStructureBlock.updateAction();
                                                 if (CatanDice.canDoAction(gameControls.catanPlayer.action, gameControls.catanPlayer.board_state, gameControls.catanPlayer.resource_state)) { // GET ACTION, GET BOARD_STATE, GET RESOURCE.
                                                     draggableStructureBlock.updateBoardState();
+
+                                                    // Adding code.
+                                                    // TODO: John: Finish this here.
+                                                    boardStateTree = new BoardStateTree(gameControls.catanPlayer.board_state);
+
+
                                                     System.out.println(gameControls.catanPlayer.board_state);
                                                     System.out.println(gameControls.catanPlayer.action);
                                                     draggableStructureBlock.snapToGrid();
