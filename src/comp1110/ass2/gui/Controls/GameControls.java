@@ -79,7 +79,6 @@ public class GameControls {
         this.catanPlayer = catanPlayer;
         this.catanBoard = new CatanBoard();
         makeSidePanel();
-        makeDiceRoll();
         createChooseBoard();
         createGameButtons();
         makeScoreBoard();
@@ -336,26 +335,6 @@ public class GameControls {
         }
     }
 
-    private void makeDiceRoll() {
-        Button button = new Button();
-        button.setText("Roll Dice");
-        button.setLayoutX(800);
-        button.setLayoutY(20);
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                int[] resource_state = new int[]{1, 1, 1, 1, 1, 1};
-                rollDice(4, resource_state); // The array should be the current resources
-                for (var a : resource_state) {
-                    System.out.print(a + ", ");
-                }
-            }
-        });
-
-        this.controls.getChildren().add(button);
-        pane1.setCenter(button);
-        controls.getChildren().add(button);
-    }
 
     public class GameButtonsBoard extends StackPane {
         public String name;

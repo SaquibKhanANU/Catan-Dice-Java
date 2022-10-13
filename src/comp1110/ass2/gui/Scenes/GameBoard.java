@@ -847,7 +847,7 @@ public class GameBoard extends Pane {
             int points = buildableStructure.getPoint();
             gameControls.catanPlayer.score = gameControls.catanPlayer.score  + points;
             scoreCounter.getChildren().clear();
-            pointCounter.setText("Points for round " + gameControls.catanPlayer.turn_num + ": " + gameControls.catanPlayer.score);
+            pointCounter.setText("Points for round " + (gameControls.catanPlayer.turn_num + 1) + ": " + gameControls.catanPlayer.score);
             pointCounter.setFill(Color.WHITE);
             pointCounter.setFont(Font.font("times new roman", FontWeight.BOLD, FontPosture.REGULAR, 20));
             pointCounter.setX(250);
