@@ -1,9 +1,6 @@
 package comp1110.ass2.CatanStructure;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import static java.util.Collections.sort;
 
@@ -95,6 +92,25 @@ public class BoardStateTree extends GameTree {
         }
     }
 
+
+
+
+    public HashMap<String, String> makeProblems(){
+        HashMap<String, String> problems = new HashMap();
+        problems.put("R1", "C7");
+        problems.put("R2", "S4");
+        problems.put("R4", "C12");
+        problems.put("R5", "S5");
+        problems.put("R7", "S7");
+        problems.put("R9", "S9");
+        problems.put("R11", "S11");
+        problems.put("R13", "C20");
+        problems.put("R15", "C30");
+        return problems;
+    }
+
+
+
     /**
      * This method removes the given structure from the BoardStateTree.
      * A structure can only be removed iff it is at the end of a tree or list.
@@ -111,7 +127,9 @@ public class BoardStateTree extends GameTree {
             if (this.roads == null){return false;}
             else if (this.roads.node == id){return false;} // Cannot remove "RI"
             else {
-                if (this.roads.canPrune(id)){
+                HashMap<String,String> problems = makeProblems();
+                String problem_structure = problems.get(id);
+                if (this.roads.canPrune(id) && !(this.board_state.contains(problem_structure))){
                     // Remove any null branches from this move
                     GameTree new_tree = new GameTree();
                     new_tree.node = "RI";
@@ -144,6 +162,16 @@ public class BoardStateTree extends GameTree {
                 return true;
             }
         };
+        if (remove_structure.type == 'J'){
+            // A Joker can be removed if the corresponding knight has not been built
+            // That is if we canPrune the GameTree from jokers and knights
+            if (this.jokersAndKnights.canPrune(id)){
+                GameTree new_tree = new GameTree();
+                new_tree.node = "J1";
+                this.jokersAndKnights = this.jokersAndKnights.removeNulls(new_tree);
+                return true;
+                }
+            }
         return false;
     }
 
@@ -171,17 +199,17 @@ public class BoardStateTree extends GameTree {
     };
 
     public static void main(String[] args) {
-        ArrayList<String> test = new ArrayList<>();
-        test.add("R5");
-        test.add("J1");
-        test.add("K6");
-        test.add("K1");
-        test.add("J1");
-        test.add("R7");
-        test.add("R1");
-        System.out.println(test);
-        sort(test, Structure_Ordering);
-        System.out.println(test);
+//        ArrayList<String> test = new ArrayList<>();
+//        test.add("R5");
+//        test.add("J1");
+//        test.add("K6");
+//        test.add("K1");
+//        test.add("J1");
+//        test.add("R7");
+//        test.add("R1");
+//        System.out.println(test);
+//        sort(test, Structure_Ordering);
+//        System.out.println(test);
 
 
         BoardStateTree board = new BoardStateTree(entire_board);
