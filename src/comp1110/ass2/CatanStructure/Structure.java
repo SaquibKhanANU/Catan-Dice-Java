@@ -55,7 +55,8 @@ public class Structure {
         if (id.charAt(1) == 'I'){this.value = 0;}
         else{this.value = Integer.parseInt(id.substring(1));}
         if (type == 'R'){
-            this.resource_cost = new int[]{0, 0, 0, 1, 1, 0};
+            if (!(id.equals("RI"))){this.resource_cost = new int[]{0, 0, 0, 1, 1, 0};}
+            else {this.resource_cost = new int[]{0,0,0,0,0,0};}
         } else if (type == 'S'){
             this.resource_cost = new int[]{0, 1, 1, 1, 1, 0};
         } else if (type == 'C'){

@@ -153,8 +153,9 @@ public class CatanBoard {
         }
     }
 
-    //TODO: Fix this function.
-    public boolean canDoRemove(){return true;}
+    //TODO: Fix this function
+    public boolean canDoRemove(){
+        return true;}
 
     // TESTING
     public String boardToString() {
