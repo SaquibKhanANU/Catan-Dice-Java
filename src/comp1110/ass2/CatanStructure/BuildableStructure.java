@@ -37,12 +37,12 @@ public class BuildableStructure {
         this.id = id;
         this.point = point;
         switch (id) {
-                case "K1" -> this.resourceType = ResourceType.ORE;
-                case "K2" -> this.resourceType = ResourceType.GRAIN;
-                case "K3" -> this.resourceType = ResourceType.WOOL;
-                case "K4" -> this.resourceType = ResourceType.TIMBER;
-                case "K5" -> this.resourceType = ResourceType.BRICKS;
-                case "K6" -> this.resourceType = ResourceType.ANY;
+                case "J1" -> this.resourceType = ResourceType.ORE;
+                case "J2" -> this.resourceType = ResourceType.GRAIN;
+                case "J3" -> this.resourceType = ResourceType.WOOL;
+                case "J4" -> this.resourceType = ResourceType.TIMBER;
+                case "J5" -> this.resourceType = ResourceType.BRICKS;
+                case "J6" -> this.resourceType = ResourceType.ANY;
                 default -> this.resourceType = null;
         }
     }

@@ -49,12 +49,12 @@ public class CatanBoard {
         structureBlocksMap.put("S9", new BuildableStructure(14, 6, StructureType.SETTLEMENT, "S9", 9));
         structureBlocksMap.put("S11", new BuildableStructure(14, 2, StructureType.SETTLEMENT, "S11", 11));
         //KNIGHTS
-        structureBlocksMap.put("K1", new BuildableStructure(4, 4, StructureType.KNIGHT, "K1", 1));
-        structureBlocksMap.put("K2", new BuildableStructure(4, 8, StructureType.KNIGHT, "K2", 2));
-        structureBlocksMap.put("K3", new BuildableStructure(10, 10, StructureType.KNIGHT, "K3", 3));
-        structureBlocksMap.put("K4", new BuildableStructure(16, 8, StructureType.KNIGHT, "K4", 4));
-        structureBlocksMap.put("K5", new BuildableStructure(16, 4, StructureType.KNIGHT, "K5", 5));
-        structureBlocksMap.put("K6", new BuildableStructure(10, 2, StructureType.KNIGHT, "K6", 6));
+        structureBlocksMap.put("J1", new BuildableStructure(4, 4, StructureType.JOKER, "J1", 1));
+        structureBlocksMap.put("J2", new BuildableStructure(4, 8, StructureType.JOKER, "J2", 2));
+        structureBlocksMap.put("J3", new BuildableStructure(10, 10, StructureType.JOKER, "J3", 3));
+        structureBlocksMap.put("J4", new BuildableStructure(16, 8, StructureType.JOKER, "J4", 4));
+        structureBlocksMap.put("J5", new BuildableStructure(16, 4, StructureType.JOKER, "J5", 5));
+        structureBlocksMap.put("J6", new BuildableStructure(10, 2, StructureType.JOKER, "J6", 6));
     }
 
     public void makeStructureBlocks() {
@@ -107,7 +107,7 @@ public class CatanBoard {
             case YBUILT_CITY -> type == StructureType.CITY;
             case TBUILT_SETTLEMENT -> type == StructureType.SETTLEMENT;
             case DBUILT_ROAD -> type == StructureType.ROAD;
-            case JOKER -> type == StructureType.KNIGHT;
+            case KNIGHT -> type == StructureType.JOKER;
             default ->
                     throw new IllegalStateException("Unexpected value: " + structure.getBuildableStructure().getStructureType());
         };
@@ -135,7 +135,7 @@ public class CatanBoard {
             case DBUILT_ROAD -> type = StructureType.ROAD;
             case YBUILT_CITY -> type = StructureType.CITY;
             case TBUILT_SETTLEMENT -> type = StructureType.SETTLEMENT;
-            case JOKER -> type = StructureType.KNIGHT;
+            case KNIGHT -> type = StructureType.JOKER;
         }
         setBuildableStructure(bStructure.getX(), bStructure.getY(), type); // ID AND POINT WILL REVERT
         structure.setIsBuilt(false);

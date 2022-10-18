@@ -72,8 +72,7 @@ public class GameControls {
     Pane swapResourcePane = new Pane();
     public Scene swapResourceScene = new Scene(swapResourcePane);
     public Stage swapResourceStage = new Stage();
-    Random random  = new Random();
-    int n = 6;
+
     public GameControls(CatanPlayer catanPlayer) {
         this.diceRolled = false;
         this.catanPlayer = catanPlayer;
@@ -86,6 +85,7 @@ public class GameControls {
         action = new Action(ActionType.NONE);
     }
 
+    Random random  = new Random();
     public int diceRoll() {
         return random.nextInt(6) + 1;
     }
@@ -94,7 +94,6 @@ public class GameControls {
     GridPane gridPane;
     public void diceRollButton() {
         diceRollGroup.getChildren().clear();
-        action.setActionType(ActionType.ROLL);
 
         gridPane = new GridPane();
         gridPane.setPadding(new Insets(10, 10, 10, 10));
@@ -186,7 +185,7 @@ public class GameControls {
 
     // Highlights all possible knights that can be swapped and sets them to swappable.
     public void swapButton() {
-        String[] knightId = new String[]{"K1", "K2", "K3", "K4", "K5", "K6"};
+        String[] knightId = new String[]{"J1", "J2", "J3", "J4", "J5", "J6"};
         int index = 0;
         countSwapPress.getAndIncrement();
         if (countSwapPress.get() == 1) {
@@ -194,11 +193,10 @@ public class GameControls {
             for (GameBoard.KnightShape knightShape : knightsList) {
                 int x = catanBoard.getStructureBlocksMap().get(knightId[index]).getX();
                 int y = catanBoard.getStructureBlocksMap().get(knightId[index]).getY();
-                if (catanBoard.getBuildableStructure(x, y).getStructureType() == StructureType.JOKER) {
+                if (catanBoard.getBuildableStructure(x, y).getStructureType() == StructureType.KNIGHT) {
                     knightShape.setFill(Color.GOLD);
                     knightShape.setEffect(new DropShadow(30, Color.YELLOW));
                     knightShape.setSwappable(true);
-                    action.setActionType(ActionType.SWAP);
                 }
                 index++;
             }
@@ -224,7 +222,7 @@ public class GameControls {
         swapped = false;
         traded = false;
         catanPlayer.setCurrentTurn(false);
-        catanPlayer.resource_state = new int[]{0, 0, 0 , 0 ,0,0};
+        catanPlayer.resource_state = new int[]{0, 0, 0 , 0 ,0, 0};
         currentResourceState(catanPlayer.resource_state);
         diceRolled = false;
         diceRollCount = 0;
@@ -260,6 +258,7 @@ public class GameControls {
             catanPlayer.setCurrentTurn(true);
             Game.gameState.round++;
             if (Game.gameState.round == 16) {
+                catanPlayer.setCurrentTurn(false);
                 ArrayList<CatanPlayer> catanPlayers = new ArrayList<>();
                 catanPlayers.add(Game.playerOne);
                 Game.winner = new Winner(1, catanPlayers);
@@ -275,6 +274,7 @@ public class GameControls {
                 Game.playerOne.setCurrentTurn(true);
                 Game.scenes.activate("PLAYER ONE");
                 if (Game.gameState.round == 16) {
+                    catanPlayer.setCurrentTurn(false);
                     ArrayList<CatanPlayer> catanPlayers = new ArrayList<>();
                     catanPlayers.add(Game.playerOne);
                     catanPlayers.add(Game.playerTwo);
@@ -296,12 +296,13 @@ public class GameControls {
                 Game.playerOne.setCurrentTurn(true);
                 Game.scenes.activate("PLAYER ONE");
                 if (Game.gameState.round == 16) {
+                    catanPlayer.setCurrentTurn(false);
                     ArrayList<CatanPlayer> catanPlayers = new ArrayList<>();
                     catanPlayers.add(Game.playerOne);
                     catanPlayers.add(Game.playerTwo);
                     catanPlayers.add(Game.playerThree);
                     catanPlayer.calculateFinalScore();
-                    Game.winner = new Winner(2, catanPlayers);
+                    Game.winner = new Winner(3, catanPlayers);
                     Game.scenes.addScreen("WINNER", Game.winner);
                     Game.scenes.activate("WINNER");
                 }
@@ -321,13 +322,14 @@ public class GameControls {
                 Game.playerOne.setCurrentTurn(true);
                 Game.scenes.activate("PLAYER ONE");
                 if (Game.gameState.round == 16) {
+                    catanPlayer.setCurrentTurn(false);
                     ArrayList<CatanPlayer> catanPlayers = new ArrayList<>();
                     catanPlayers.add(Game.playerOne);
                     catanPlayers.add(Game.playerTwo);
                     catanPlayers.add(Game.playerThree);
                     catanPlayers.add(Game.playerFour);
                     catanPlayer.calculateFinalScore();
-                    Game.winner = new Winner(2, catanPlayers);
+                    Game.winner = new Winner(4, catanPlayers);
                     Game.scenes.addScreen("WINNER", Game.winner);
                     Game.scenes.activate("WINNER");
                 }
@@ -407,7 +409,6 @@ public class GameControls {
                     case "TRADE" -> {
                         if (diceRolled) {
                             if (catanPlayer.resource_state[5] >= 2) {
-                                action.setActionType(ActionType.TRADE);
                                 tradeButton();
                             } else {
                                 new Warning("NOT ENOUGH GOLD");
@@ -476,12 +477,12 @@ public class GameControls {
                             resourceState.getChildren().clear();
                             swapped = true;
                             int index = 0;
-                            String[] knightId = new String[]{"K1", "K2", "K3", "K4", "K5", "K6"};
+                            String[] knightId = new String[]{"J1", "J2", "J3", "J4", "J5", "J6"};
                             for (GameBoard.KnightShape knightShape : knightsList) {
                                 int x2 = catanBoard.getStructureBlocksMap().get(knightId[index]).getX();
                                 int y2 = catanBoard.getStructureBlocksMap().get(knightId[index]).getY();
                                 StructureType checkType = catanBoard.getBuildableStructure(x2, y2).getStructureType();
-                                if (checkType == StructureType.JOKER || checkType == StructureType.USED) {
+                                if (checkType == StructureType.KNIGHT || checkType == StructureType.USED) {
                                     action.setActionType(ActionType.NONE);
                                     knightShape.setFill(Color.WHITE);
                                     knightShape.setEffect(null);
@@ -593,12 +594,12 @@ public class GameControls {
                         }
                         System.out.println(this);
                         int index = 0;
-                        String[] knightId = new String[]{"K1", "K2", "K3", "K4", "K5", "K6"};
+                        String[] knightId = new String[]{"J1", "J2", "J3", "J4", "J5", "J6"};
                         for (GameBoard.KnightShape knightShape : knightsList) {
                             int x2 = catanBoard.getStructureBlocksMap().get(knightId[index]).getX();
                             int y2 = catanBoard.getStructureBlocksMap().get(knightId[index]).getY();
                             StructureType checkType = catanBoard.getBuildableStructure(x2, y2).getStructureType();
-                            if (checkType == StructureType.JOKER || checkType == StructureType.USED) {
+                            if (checkType == StructureType.KNIGHT || checkType == StructureType.USED) {
                                 action.setActionType(ActionType.NONE);
                                 knightShape.setFill(Color.WHITE);
                                 knightShape.setEffect(null);
@@ -654,19 +655,19 @@ public class GameControls {
 
         if (type == ActionType.SWAP) {
             switch (id) {
-                case "K1" -> catanPlayer.changeResourceState(0, 1);
-                case "K2" -> catanPlayer.changeResourceState(1, 1);
-                case "K3" -> catanPlayer.changeResourceState(2, 1);
-                case "K4" -> catanPlayer.changeResourceState(3, 1);
-                case "K5" -> catanPlayer.changeResourceState(4, 1);
+                case "J1" -> catanPlayer.changeResourceState(0, 1);
+                case "J2" -> catanPlayer.changeResourceState(1, 1);
+                case "J3" -> catanPlayer.changeResourceState(2, 1);
+                case "J4" -> catanPlayer.changeResourceState(3, 1);
+                case "J5" -> catanPlayer.changeResourceState(4, 1);
             }
         } else if (type == ActionType.UNDO_SWAP) {
             switch (id) {
-                case "K1" -> catanPlayer.changeResourceState(0, -1);
-                case "K2" -> catanPlayer.changeResourceState(1, -1);
-                case "K3" -> catanPlayer.changeResourceState(2, -1);
-                case "K4" -> catanPlayer.changeResourceState(3, -1);
-                case "K5" -> catanPlayer.changeResourceState(4, -1);
+                case "J1" -> catanPlayer.changeResourceState(0, -1);
+                case "J2" -> catanPlayer.changeResourceState(1, -1);
+                case "J3" -> catanPlayer.changeResourceState(2, -1);
+                case "J4" -> catanPlayer.changeResourceState(3, -1);
+                case "J5" -> catanPlayer.changeResourceState(4, -1);
             }
         }
         swapResourcePane.setPrefSize(170, 100);
