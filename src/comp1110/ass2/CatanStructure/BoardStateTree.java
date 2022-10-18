@@ -11,15 +11,15 @@ public class BoardStateTree extends GameTree {
     // Encode the current jokers, knights
     GameTree jokersAndKnights = new GameTree();
     // Encode the cities
-    ArrayList<String> cities = new ArrayList<>();
+    public ArrayList<String> cities = new ArrayList<>();
     // Encode the settlements
-    ArrayList<String> settlements = new ArrayList<>();
+    public ArrayList<String> settlements = new ArrayList<>();
     // Encode the roads
     GameTree roads = new GameTree();
 
-    String board_state = new String();
+    public String board_state = new String();
 
-    static String entire_board = "RI,R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13,R14,R15,S3,S4,S5,S7,S9,S11,C7,C12,C20,C30,J1,J2,J3,J4,J5,J6,K1,K2,K3,K4,K5,K6";
+    public static String entire_board = "RI,R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13,R14,R15,S3,S4,S5,S7,S9,S11,C7,C12,C20,C30,J1,J2,J3,J4,J5,J6,K1,K2,K3,K4,K5,K6";
 
     // This constructor will create four GameTrees given a string encoding of the board state
     public BoardStateTree(String board_state) {
@@ -73,7 +73,7 @@ public class BoardStateTree extends GameTree {
         }
 
         // Add roads to the game tree, roads_list always contains RI.
-        System.out.println("CONSTRUCTOR IS " + roads_list.stream().toList());
+        //System.out.println("CONSTRUCTOR IS " + roads_list.stream().toList());
         roads.node = roads_list.get(0);
         for (int i = 1; i < roads_list.size(); i++){
             Structure current_road = new Structure(roads_list.get(i));
@@ -157,6 +157,8 @@ public class BoardStateTree extends GameTree {
                 return true;
             }
             else if (this.cities.get(this.cities.size()-1).equals(id)){
+                System.out.println("CODE IS HERE");
+                System.out.println(this.cities);
                 // Remove the last city
                 this.cities.remove(this.cities.size()-1);
                 return true;

@@ -200,9 +200,13 @@ public class GameBoard extends Pane {
                                                 if (CatanDice.canDoAction(gameControls.catanPlayer.action, gameControls.catanPlayer.board_state, gameControls.catanPlayer.resource_state)) { // GET ACTION, GET BOARD_STATE, GET RESOURCE.
                                                     draggableStructureBlock.updateBoardState();
 
-                                                    // Adding code.
-                                                    // TODO: John: Finish this here.
-                                                    boardStateTree = new BoardStateTree(gameControls.catanPlayer.board_state);
+
+//                                                    // Adding code.
+//                                                    // TODO: John: Finish this here.
+//                                                    boardStateTree = new BoardStateTree(gameControls.catanPlayer.board_state);
+//                                                    boardStateTree.canRemove(draggableStructureBlock.getId());
+//                                                    // Update the board state for the remove
+//                                                    gameControls.catanPlayer.board_state = boardStateTree.board_state;
 
 
                                                     System.out.println(gameControls.catanPlayer.board_state);
@@ -916,7 +920,7 @@ public class GameBoard extends Pane {
         }
     }
 
-    class DraggableStructureBlock extends StructureBlock {
+    public class DraggableStructureBlock extends StructureBlock {
         double homeX, homeY;
         DraggableStructureBlock(String id) {
             super(id);

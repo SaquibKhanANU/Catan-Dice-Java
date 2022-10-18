@@ -59,8 +59,13 @@ assets:
     licence: filled
 
  - comment: ArrayList
-    url: https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html
+   url: https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html
+   licence: filled
+
+  - comment: Array to ArrayList
+    url: https://www.geeksforgeeks.org/conversion-of-array-to-arraylist-in-java/
     licence: filled
+
 
 
 # Sign *your* name and uids here. (Remove entries if you have fewer

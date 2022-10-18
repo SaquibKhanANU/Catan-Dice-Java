@@ -1,12 +1,10 @@
 package comp1110.ass2;
 
+import comp1110.ass2.CatanStructure.BoardStateTree;
 import comp1110.ass2.CatanStructure.GameTree;
 import comp1110.ass2.CatanStructure.Structure;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
 import static comp1110.ass2.CatanStructure.GameTree.createCatanGameTree;
@@ -582,38 +580,96 @@ public class CatanDice {
     public static String[] buildPlan(String target_structure,
                                      String board_state,
                                      int[] resource_state) {
-        String[] res = new String[1];
-        String[] roads_to_build_array = pathTo(target_structure, board_state);
-        ArrayList<String> roads_to_build = new ArrayList<>();
-        for (int k = 0; k < roads_to_build_array.length; k++) {
-            roads_to_build.add(roads_to_build_array[k]);
-        }
+        ArrayList<String> board_state_list = requiredStructures(target_structure, board_state);
+        board_state_list.add(target_structure);
+        // Now the board_state_list contains all the structures that need to be built including the target structure
+        int[] total_cost = buildCost(board_state_list);
+        // Check resource_state against the cost, need to consider trades and swaps
 
-        ArrayList<String> actions = new ArrayList<>();
-        // look at the game tree and find the target_structure
-        // Find out what roads need to be built to reach the structure
-        // Build those roads if possible, if not then try trading and swapping
-        // Build the target structure if possible
-
-        // First do case with no trades or swaps, assuming the structure is a settlement or a city.
-        for (int i = 0; i < roads_to_build.size(); i++) {
-            Structure road = new Structure(roads_to_build.get(i));
-            actions.set(i, road.toBuildString());
-        }
-        // Now add build target structure to the actions
-        Structure target = new Structure(target_structure);
-        actions.add(target.toBuildString());
-        Object[] object_array = actions.toArray();
-        String[] result = new String[object_array.length];
-        for (int j = 0; j < object_array.length; j++) {
-            result[j] = object_array[j].toString();
-        }
-        if (canDoSequence(result, board_state, resource_state)) {
-            return result;
-        }
 
         return null; // FIXME: Task #14
     }
 
 
+    /**
+     * Return the necessary structures needed to reach the target structure,
+     * Assumes the board state is valid.
+     * @param target_structure
+     * @param board_state
+     * @return An arraylist with only the necessary structures to build the target structure.
+     * The result does not include the target structure.
+     * The result only contains the roads, settlements and cities needed
+     */
+    public static ArrayList<String> requiredStructures(String target_structure,
+                                                       String board_state) {
+        ArrayList<String> res = new ArrayList<>();
+        // Generate the entire board in a gametree
+        BoardStateTree entire_tree = new BoardStateTree(BoardStateTree.entire_board);
+        String[] current_state = board_state.split(",");
+        List<String> current_state_list = asList(current_state);
+
+        // To build the target structure, you need the roads to get there.
+        // This is given in pathTo
+        String[] roads = pathTo(target_structure, board_state);
+        Collections.addAll(res, roads);
+        // Now we need to add any required structures according to the building constraints
+        Structure target = new Structure(target_structure);
+        if (target.type == 'S') {
+            for (int i = 0; i < entire_tree.settlements.size(); i++) {
+                Structure current = new Structure(entire_tree.settlements.get(i));
+                if (current.value == target.value) {
+                    break;
+                } else {
+                    if (!(current_state_list.contains(entire_tree.settlements.get(i)))){res.add(entire_tree.settlements.get(i));}
+                }
+            }
+        }
+        if (target.type == 'C') {
+            for (int i = 0; i < entire_tree.cities.size(); i++) {
+                Structure current = new Structure(entire_tree.cities.get(i));
+                // R1 must be built for C7
+                if (current.value == 7){
+                    if (!(current_state_list.contains("R1"))){res.add("R1");}
+                }
+                if (current.value == 12){
+                    if (!(current_state_list.contains("R4"))){res.add("R4");}
+                }
+                if (current.value == target.value) {
+                    break;
+                } else {
+                    if (!(current_state_list.contains(entire_tree.cities.get(i)))){res.add(entire_tree.cities.get(i));}
+                }
+            }
+        }
+            return res;}
+
+
+    /**
+     * Find the cost of building the specified structures in the ArrayList
+     * @param structures: The structures to build
+     * @return the resource cost of building all of these structures in an integer array
+     */
+    public static int[] buildCost(ArrayList<String> structures){
+        int[] res = new int[6];
+        for (int i = 0; i < structures.size(); i++){
+            Structure current = new Structure(structures.get(i));
+            int[] current_cost = current.getResourceCost();
+            for (int j = 0; j < res.length; j++){
+                res[j] += current_cost[j];
+            }
+        }
+        return res;
+    }
+
+    public static void main(String[] args) {
+        ArrayList<String> res = requiredStructures("C20","RI,R0,S3,R2,S4,R1,C7");
+        System.out.println(res);
+
+        ArrayList<String> test_cost = new ArrayList<>();
+        test_cost.add("RI");
+        test_cost.add("S7");
+
+        int[] out = buildCost(test_cost);
+        System.out.println(out[0] + " " + out[1] + " " + out[2] + " " +out[3] + " " + out[4] + " " + out[5]);
+    }
 }
