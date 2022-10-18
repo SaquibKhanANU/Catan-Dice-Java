@@ -74,7 +74,8 @@ public class BoardStateTree extends GameTree {
 
         // Add roads to the game tree, roads_list always contains RI.
         //System.out.println("CONSTRUCTOR IS " + roads_list.stream().toList());
-        roads.node = roads_list.get(0);
+        //roads.node = roads_list.get(0);
+        roads.node = "RI";
         for (int i = 1; i < roads_list.size(); i++){
             Structure current_road = new Structure(roads_list.get(i));
             if (current_road.value == 1){
