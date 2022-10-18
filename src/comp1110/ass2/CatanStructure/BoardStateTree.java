@@ -78,6 +78,7 @@ public class BoardStateTree extends GameTree {
         roads.node = "RI";
         if (roads_list.size() == 1){roads.add("RI", null, "R0");}
         else {
+            roads.add("RI", null, "R0");
         for (int i = 1; i < roads_list.size(); i++) {
             Structure current_road = new Structure(roads_list.get(i));
             if (current_road.value == 1) {
@@ -91,6 +92,9 @@ public class BoardStateTree extends GameTree {
                 }
             }
         }
+        System.out.println("AFTER CONSTRUCTION " + roads_list);
+        ArrayList<Object> test = new ArrayList<>();
+        System.out.println("Folded is " + roads.fold(test));
     }
 
 
@@ -130,7 +134,11 @@ public class BoardStateTree extends GameTree {
             else {
                 HashMap<String,String> problems = makeProblems();
                 String problem_structure = problems.get(id);
-                if (this.roads.canPrune(id) && !(board_state_array.contains(problem_structure))){
+                Boolean test = this.roads.canPrune(id);
+                ArrayList<Object> testing = new ArrayList<>();
+                System.out.println(this.roads.fold(testing));
+                System.out.println("Test is " + test);
+                if (test && !(board_state_array.contains(problem_structure))){
                     // Remove any null branches from this move
                     GameTree new_tree = new GameTree();
                     new_tree.node = "RI";
@@ -212,10 +220,10 @@ public class BoardStateTree extends GameTree {
 //        test.add("R1");
 //        System.out.println(test);
 //        sort(test, Structure_Ordering);
-//        System.out.println(test);
-
-
-        BoardStateTree board = new BoardStateTree(entire_board);
+////        System.out.println(test);
+//
+//
+//        BoardStateTree board = new BoardStateTree(entire_board);
 //        ArrayList<Object> res = new ArrayList<>();
 //        System.out.println(board.jokersAndKnights.fold(res));
 
@@ -227,14 +235,14 @@ public class BoardStateTree extends GameTree {
 //        System.out.println(board2.cities);
 //        System.out.println(board2.settlements);
 
-        ArrayList<Object> res1 = new ArrayList<>();
-        System.out.println(board.roads.fold(res1));
-        System.out.println(board.canRemove("R11"));
-        ArrayList<Object> res2 = new ArrayList<>();
-        System.out.println(board.roads.fold(res2));
+//        ArrayList<Object> res1 = new ArrayList<>();
+//        System.out.println(board.roads.fold(res1));
+//        System.out.println(board.canRemove("R11"));
+//        ArrayList<Object> res2 = new ArrayList<>();
+//        System.out.println(board.roads.fold(res2));
 
-        BoardStateTree small = new BoardStateTree("S3,R0");
-        System.out.println(small.canRemove("R0"));
+        BoardStateTree small = new BoardStateTree("R0,J1,J2,R1,S3,J3,R2,R3,C7,S4,R4");
+        System.out.println(small.canRemove("R4"));
     }
 }
 
