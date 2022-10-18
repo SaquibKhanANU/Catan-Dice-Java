@@ -76,19 +76,19 @@ public class BoardStateTree extends GameTree {
         //System.out.println("CONSTRUCTOR IS " + roads_list.stream().toList());
         //roads.node = roads_list.get(0);
         roads.node = "RI";
-        for (int i = 1; i < roads_list.size(); i++){
+        if (roads_list.size() == 1){roads.add("RI", null, "R0");}
+        else {
+        for (int i = 1; i < roads_list.size(); i++) {
             Structure current_road = new Structure(roads_list.get(i));
-            if (current_road.value == 1){
+            if (current_road.value == 1) {
                 roads.add("R0", "R1", null);
-            }
-            else if (current_road.value == 4){
+            } else if (current_road.value == 4) {
                 roads.add("R3", "R4", null);
-            }
-            else if (current_road.value == 12){
+            } else if (current_road.value == 12) {
                 roads.add("R7", "R12", null);
-            }
-            else {
-                roads.add(roads_list.get(i-1), null, roads_list.get(i));
+            } else {
+                roads.add(roads_list.get(i - 1), null, roads_list.get(i));
+                }
             }
         }
     }
@@ -232,6 +232,9 @@ public class BoardStateTree extends GameTree {
         System.out.println(board.canRemove("R11"));
         ArrayList<Object> res2 = new ArrayList<>();
         System.out.println(board.roads.fold(res2));
+
+        BoardStateTree small = new BoardStateTree("S3,R0");
+        System.out.println(small.canRemove("R0"));
     }
 }
 
