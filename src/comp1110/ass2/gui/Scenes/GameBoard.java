@@ -64,7 +64,6 @@ public class GameBoard extends Pane {
         makeStructures();
         makeBlocks();
         gameControls.swapResourceStage.initModality(Modality.APPLICATION_MODAL);
-        gameControls.sidePanel.toBack();
         blocks.toFront();
         getChildren().addAll(hexagonBoard, structuresBoard, resources, scoreCounter, gameControls.allControls, blocks);
     }
@@ -162,12 +161,13 @@ public class GameBoard extends Pane {
                                                     draggableStructureBlock.removePoint();
                                                     draggableStructureBlock.removeBoardState();
                                                 System.out.println("BOARD STATE IN IF IS " + gameControls.catanPlayer.board_state);
-                                                    gameControls.catanBoard.removeStructureBlock(draggableStructureBlock.structure);
-                                                    gameControls.catanPlayer.structures.remove(draggableStructureBlock.structure);
-                                                    draggableStructureBlock.increaseResourceState();
-                                                    gameControls.currentResourceState(gameControls.catanPlayer.resource_state);
-                                                    System.out.println(Arrays.toString(gameControls.catanPlayer.resource_state));
-                                                    blocks.getChildren().remove(event.getTarget());
+                                                gameControls.catanBoard.removeStructureBlock(draggableStructureBlock.structure);
+                                                gameControls.catanPlayer.structures.remove(draggableStructureBlock.structure);
+                                                gameControls.catanPlayer.structuresForRound.remove(draggableStructureBlock.structure);
+                                                draggableStructureBlock.increaseResourceState();
+                                                gameControls.currentResourceState(gameControls.catanPlayer.resource_state);
+                                                System.out.println(Arrays.toString(gameControls.catanPlayer.resource_state));
+                                                blocks.getChildren().remove(event.getTarget());
                                             } else {
                                                 System.out.println("REMOVE STRUCTURES FURTHER OF HIGHER POINT VALUE");
                                             }
@@ -310,31 +310,40 @@ public class GameBoard extends Pane {
                                 new Warning("RIGHT CLICK TO REMOVE");
                             }
                         } else if (event.getButton() == MouseButton.SECONDARY) {
-                            if (draggableStructureBlock.structure.getRemovable()) {
-                                if (draggableStructureBlock.structure.isBuilt()) {
-                                    if (gameControls.catanBoard.canDoRemove()) {
-                                        if (gameControls.catanPlayer.currentTurn) {
+                            if (gameControls.catanPlayer.currentTurn){
+                                if (draggableStructureBlock.structure.getRemovable()) {
+                                    if (draggableStructureBlock.structure.isBuilt()) {
+                                        System.out.println("BOARD STATE IS " + gameControls.catanPlayer.board_state);
+                                        boardStateTree = new BoardStateTree(gameControls.catanPlayer.board_state);
+                                        System.out.println("BOARD STATE AFTER IS " + gameControls.catanPlayer.board_state);
+                                        // Update the board state for the remove
+                                        // System.out.println("Boolean is " + boardStateTree.canRemove(draggableStructureBlock.getKnightId()));
+                                        if (boardStateTree.canRemove(draggableStructureBlock.getKnightId())) {
+                                            draggableStructureBlock.snapToHome();
+                                            // Remove was possible so update the board_state
+                                            System.out.println("Inside the if statement ");
+                                            // gameControls.catanPlayer.board_state = boardStateTree.board_state;
                                             draggableStructureBlock.removePoint();
                                             draggableStructureBlock.removeBoardState();
+                                            System.out.println("BOARD STATE IN IF IS " + gameControls.catanPlayer.board_state);
                                             gameControls.catanBoard.removeStructureBlock(draggableStructureBlock.structure);
                                             gameControls.catanPlayer.structures.remove(draggableStructureBlock.structure);
+                                            gameControls.catanPlayer.structuresForRound.remove(draggableStructureBlock.structure);
                                             draggableStructureBlock.increaseResourceState();
                                             gameControls.currentResourceState(gameControls.catanPlayer.resource_state);
                                             System.out.println(Arrays.toString(gameControls.catanPlayer.resource_state));
                                             blocks.getChildren().remove(event.getTarget());
                                         } else {
-                                            new Warning("NOT YOUR TURN");
+                                            System.out.println("REMOVE STRUCTURES FURTHER OF HIGHER POINT VALUE");
                                         }
-                                    } else {
-                                        System.out.println("REMOVE STRUCTURES FURTHER OF HIGHER POINT VALUE");
                                     }
+                                } else {
+                                    gameControls.warningTextGroup.getChildren().clear();
+                                    new Warning("NOT REMOVABLE");
                                 }
-                                if (draggableStructureBlock.isOnBoard() && gameControls.catanPlayer.currentTurn) {
-                                    draggableStructureBlock.snapToHome();
-                                }
-                            } else {
-                                gameControls.warningTextGroup.getChildren().clear();
-                                new Warning("NOT REMOVABLE");
+                            }
+                            else {
+                                new Warning("NOT YOUR TURN");
                             }
                             event.consume();
                         }
@@ -368,6 +377,16 @@ public class GameBoard extends Pane {
                                             draggableStructureBlock.updateAction();
                                             if (CatanDice.canDoAction(gameControls.catanPlayer.action, gameControls.catanPlayer.board_state, gameControls.catanPlayer.resource_state)) { // GET ACTION, GET BOARD_STATE, GET RESOURCE.
                                                 draggableStructureBlock.updateBoardState();
+
+
+//                                                    // Adding code.
+//                                                    // TODO: John: Finish this here.
+//                                                    boardStateTree = new BoardStateTree(gameControls.catanPlayer.board_state);
+//                                                    boardStateTree.canRemove(draggableStructureBlock.getId());
+//                                                    // Update the board state for the remove
+//                                                    gameControls.catanPlayer.board_state = boardStateTree.board_state;
+
+
                                                 System.out.println(gameControls.catanPlayer.board_state);
                                                 System.out.println(gameControls.catanPlayer.action);
                                                 draggableStructureBlock.snapToGrid();
@@ -436,7 +455,7 @@ public class GameBoard extends Pane {
             setStrokeWidth(2);
             if (structureBlock instanceof DraggableStructureBlock draggableStructureBlock) {
                 this.setOnMouseEntered(event -> {
-                    if (gameControls.catanPlayer.currentTurn && draggableStructureBlock.structure.getRemovable() && gameControls.catanBoard.canDoRemove() &&
+                    if (gameControls.catanPlayer.currentTurn && draggableStructureBlock.structure.getRemovable() &&
                     draggableStructureBlock.structure.getBuildableStructure().getStructureType() != StructureType.USED) {
                         setFill(Color.TAN);
                         setEffect(new DropShadow(10, Color.SADDLEBROWN));
@@ -452,15 +471,14 @@ public class GameBoard extends Pane {
                     if (gameControls.diceRolled) {
                         if (event.getButton() == MouseButton.PRIMARY) {
                             if (swappable && draggableStructureBlock.isOnBoard() && !draggableStructureBlock.structure.isUsed()) {
-                                gameControls.action.setActionType(ActionType.SWAP);
                                 if (gameControls.swapResourceStage.isShowing()) {
                                     gameControls.swapResourceStage.toFront();
                                 } else {
                                     if (draggableStructureBlock.getKnightId().equals("J6")) {
-                                        gameControls.action.setActionType(ActionType.SWAP);
                                         gameControls.WildCardPopUp(ActionType.SWAP);
                                         setOpacity(1);
-                                        gameControls. swapResourceStage.setOnCloseRequest(e2 -> {
+                                        draggableStructureBlock.setUsed();
+                                        gameControls.swapResourceStage.setOnCloseRequest(e2 -> {
                                             gameControls.swapResourceStage.close();
                                             draggableStructureBlock.setUnused();
                                             gameControls.action.setActionType(ActionType.NONE);
@@ -480,6 +498,7 @@ public class GameBoard extends Pane {
                                     } else {
                                         gameControls.swapAndTradePopUp(draggableStructureBlock.getKnightId(), ActionType.SWAP);
                                         setOpacity(1);
+                                        draggableStructureBlock.setUsed();
                                         gameControls.swapResourceStage.setOnCloseRequest(
                                                 e -> {
                                                     e.consume();
@@ -490,7 +509,6 @@ public class GameBoard extends Pane {
                                                     setOpacity(0.3);
                                                 });
                                     }
-                                    draggableStructureBlock.setUsed();
                                 }
 
                             } else {
@@ -510,6 +528,7 @@ public class GameBoard extends Pane {
                                             draggableStructureBlock.removeBoardState();
                                             gameControls.catanBoard.removeStructureBlock(draggableStructureBlock.structure);
                                             gameControls.catanPlayer.structures.remove(draggableStructureBlock.structure);
+                                            gameControls.catanPlayer.structuresForRound.remove(draggableStructureBlock.structure);
                                             draggableStructureBlock.increaseResourceState();
                                             gameControls.currentResourceState(gameControls.catanPlayer.resource_state);
                                             System.out.println(Arrays.toString(gameControls.catanPlayer.resource_state));
@@ -655,31 +674,40 @@ public class GameBoard extends Pane {
                                 new Warning("RIGHT CLICK TO REMOVE");
                             }
                         } else if (event.getButton() == MouseButton.SECONDARY) {
-                            if (draggableStructureBlock.structure.getRemovable()) {
-                                if (draggableStructureBlock.structure.isBuilt()) {
-                                    if (gameControls.catanBoard.canDoRemove()) {
-                                        if (gameControls.catanPlayer.currentTurn) {
+                            if (gameControls.catanPlayer.currentTurn){
+                                if (draggableStructureBlock.structure.getRemovable()) {
+                                    if (draggableStructureBlock.structure.isBuilt()) {
+                                        System.out.println("BOARD STATE IS " + gameControls.catanPlayer.board_state);
+                                        boardStateTree = new BoardStateTree(gameControls.catanPlayer.board_state);
+                                        System.out.println("BOARD STATE AFTER IS " + gameControls.catanPlayer.board_state);
+                                        // Update the board state for the remove
+                                        // System.out.println("Boolean is " + boardStateTree.canRemove(draggableStructureBlock.getKnightId()));
+                                        if (boardStateTree.canRemove(draggableStructureBlock.getKnightId())) {
+                                            draggableStructureBlock.snapToHome();
+                                            // Remove was possible so update the board_state
+                                            System.out.println("Inside the if statement ");
+                                            // gameControls.catanPlayer.board_state = boardStateTree.board_state;
                                             draggableStructureBlock.removePoint();
                                             draggableStructureBlock.removeBoardState();
+                                            System.out.println("BOARD STATE IN IF IS " + gameControls.catanPlayer.board_state);
                                             gameControls.catanBoard.removeStructureBlock(draggableStructureBlock.structure);
                                             gameControls.catanPlayer.structures.remove(draggableStructureBlock.structure);
+                                            gameControls.catanPlayer.structuresForRound.remove(draggableStructureBlock.structure);
                                             draggableStructureBlock.increaseResourceState();
                                             gameControls.currentResourceState(gameControls.catanPlayer.resource_state);
                                             System.out.println(Arrays.toString(gameControls.catanPlayer.resource_state));
                                             blocks.getChildren().remove(event.getTarget());
                                         } else {
-                                            new Warning("NOT YOUR TURN");
+                                            System.out.println("REMOVE STRUCTURES FURTHER OF HIGHER POINT VALUE");
                                         }
-                                    } else {
-                                        System.out.println("REMOVE STRUCTURES FURTHER OF HIGHER POINT VALUE");
                                     }
+                                } else {
+                                    gameControls.warningTextGroup.getChildren().clear();
+                                    new Warning("NOT REMOVABLE");
                                 }
-                                if (draggableStructureBlock.isOnBoard() && gameControls.catanPlayer.currentTurn) {
-                                    draggableStructureBlock.snapToHome();
-                                }
-                            } else {
-                                gameControls.warningTextGroup.getChildren().clear();
-                                new Warning("NOT REMOVABLE");
+                            }
+                            else {
+                                new Warning("NOT YOUR TURN");
                             }
                             event.consume();
                         }
@@ -714,9 +742,13 @@ public class GameBoard extends Pane {
                                             if (CatanDice.canDoAction(gameControls.catanPlayer.action, gameControls.catanPlayer.board_state, gameControls.catanPlayer.resource_state)) { // GET ACTION, GET BOARD_STATE, GET RESOURCE.
                                                 draggableStructureBlock.updateBoardState();
 
-                                                // Adding code.
-                                                // TODO: John: Finish this here.
-                                                boardStateTree = new BoardStateTree(gameControls.catanPlayer.board_state);
+
+//                                                    // Adding code.
+//                                                    // TODO: John: Finish this here.
+//                                                    boardStateTree = new BoardStateTree(gameControls.catanPlayer.board_state);
+//                                                    boardStateTree.canRemove(draggableStructureBlock.getId());
+//                                                    // Update the board state for the remove
+//                                                    gameControls.catanPlayer.board_state = boardStateTree.board_state;
 
 
                                                 System.out.println(gameControls.catanPlayer.board_state);
@@ -1117,7 +1149,7 @@ public class GameBoard extends Pane {
     private void makeBoard() {
         int[] translationY = {2, -2, -1, -1, 1, 1};
         int[] translationX = {0, 0, 1, -1, -1, 1};
-        Color[] hexagonColors = {Color.TAN, Color.TAN, Color.TAN, Color.TAN, Color.TAN, Color.TAN};
+        Color[] hexagonColors = {Color.web("#b2985c"), Color.web("#b2985c"), Color.web("#8d744e"), Color.web("#8d744e"), Color.web("#605028"), Color.web("#745e34")};
         Hexagon hexagon1 = new Hexagon(hexagonRadius, Color.WHITE);
         hexagonBoard.setTranslateX(BOARD_offsetX);
         hexagonBoard.setTranslateY(BOARD_offsetY);
