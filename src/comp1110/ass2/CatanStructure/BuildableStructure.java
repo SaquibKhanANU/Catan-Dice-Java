@@ -123,16 +123,8 @@ public class BuildableStructure {
         return point;
     }
 
-    public void setPoint(int point) {
-        this.point = point;
-    }
-
     public ResourceType getResourceType() {
         return resourceType;
-    }
-
-    public void setResourceType(ResourceType resourceType) {
-        this.resourceType = resourceType;
     }
 
     /**

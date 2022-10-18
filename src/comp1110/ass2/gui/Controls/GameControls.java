@@ -62,19 +62,37 @@ public class GameControls {
     public CatanBoard catanBoard;
 
     public Action action = new Action(ActionType.NONE);
+    // counts how many times a die has been rolled in a turn
     int diceRollCount;
+    // counts how many times swap button has been pressed
     AtomicInteger countSwapPress = new AtomicInteger();
+    // Stores the visual score texts of the player
     HashMap<Integer, Score> scores = new HashMap<>();
+    // Stores the image of the dice that is being re-rolled.
     ArrayList<ResourceImage> reRollDice = new ArrayList<>();
+    //Stores all the knights from GameBoard
     public ArrayList<GameBoard.KnightShape> knightsList = new ArrayList<>();
+    //contains all the dice
     ArrayList<ImageView> diceArrayList = new ArrayList<>(6);
+    // Stores the index of the dice chosen
     ArrayList<Integer> indexOfDice = new ArrayList<>(6);
+    // stores the image that has been clicked
     public ArrayList<ResourceImage> clickedAlready = new ArrayList<>();
+    // checks if dice has been rolled
     public boolean diceRolled = false;
+    // checks if a trade has occurred
     boolean traded = false;
+    // checks if a swap has occurred
     boolean swapped = false;
+    // checks if a image hsa been click.
     public boolean imageClickOff;
 
+    /**
+     * Constructs an instance of the game controls (all the buttons and visuals assocciated with them)
+     * for each catan player. GameControls creates the game controls.
+     *
+     * @param catanPlayer
+     */
     public GameControls(CatanPlayer catanPlayer) {
         this.catanPlayer = catanPlayer;
         this.catanBoard = new CatanBoard();
@@ -85,11 +103,19 @@ public class GameControls {
         currentResourceState(catanPlayer.resource_state);
     }
 
+    /**
+     * simple dice roll producing number 1 - 6.
+     * @return
+     */
     private int diceRoll() {
         Random random  = new Random();
         return random.nextInt(6) + 1;
     }
 
+    /**
+     * The dice roll button, rolls the dice using rollDice from catanDice and produced images based on what has
+     * been rolled.
+     */
     private void diceRollButton() {
         diceRollGroup.getChildren().clear();
 
@@ -124,6 +150,10 @@ public class GameControls {
         diceRollGroup.getChildren().add(diceRollGridPane);
     }
 
+    /**
+     * dice roll button second, computes the roll after the first dice roll, changes any dice in reRollDice
+     * (rolls the dice selected by user).
+     */
     private void diceRollButtonSecond() {
         ResourceType resourceType;
         for (ResourceImage ri : reRollDice) {
@@ -175,7 +205,11 @@ public class GameControls {
         indexOfDice.clear();
     }
 
-    // Highlights all possible knights that can be swapped and sets them to swappable.
+
+    /**
+     * Highlights all possible knights that can be swapped and sets them to swappable.
+     * If clicked twice it reverts.
+     */
     private void swapButton() {
         String[] knightId = new String[]{"J1", "J2", "J3", "J4", "J5", "J6"};
         int index = 0;
@@ -203,12 +237,19 @@ public class GameControls {
         }
     }
 
+    /**
+     * Trade button pops up the trade stage, where a trade can be done.
+     */
     private void tradeButton() {
         swapAndTradePopUp(null, ActionType.TRADE);
         swapResourceStage.show();
         System.out.println("TRADE");
     }
 
+    /**
+     * End turn button, ends the turn and resets every back to default, switches player turn if more than 1 player
+     * and ends the game at round 15.
+     */
     private void endTurn() {
         swapped = false;
         traded = false;
@@ -252,6 +293,7 @@ public class GameControls {
                 catanPlayer.setCurrentTurn(false);
                 ArrayList<CatanPlayer> catanPlayers = new ArrayList<>();
                 catanPlayers.add(Game.playerOne);
+                Game.playerOne.calculateFinalScore();
                 Game.winner = new Winner(1, catanPlayers);
                 Game.scenes.addScreen("WINNER", Game.winner);
                 Game.scenes.activate("WINNER");
@@ -269,7 +311,8 @@ public class GameControls {
                     ArrayList<CatanPlayer> catanPlayers = new ArrayList<>();
                     catanPlayers.add(Game.playerOne);
                     catanPlayers.add(Game.playerTwo);
-                    catanPlayer.calculateFinalScore();
+                    Game.playerOne.calculateFinalScore();
+                    Game.playerTwo.calculateFinalScore();
                     Game.winner = new Winner(2, catanPlayers);
                     Game.scenes.addScreen("WINNER", Game.winner);
                     Game.scenes.activate("WINNER");
@@ -292,7 +335,9 @@ public class GameControls {
                     catanPlayers.add(Game.playerOne);
                     catanPlayers.add(Game.playerTwo);
                     catanPlayers.add(Game.playerThree);
-                    catanPlayer.calculateFinalScore();
+                    Game.playerOne.calculateFinalScore();
+                    Game.playerTwo.calculateFinalScore();
+                    Game.playerThree.calculateFinalScore();
                     Game.winner = new Winner(3, catanPlayers);
                     Game.scenes.addScreen("WINNER", Game.winner);
                     Game.scenes.activate("WINNER");
@@ -319,7 +364,10 @@ public class GameControls {
                     catanPlayers.add(Game.playerTwo);
                     catanPlayers.add(Game.playerThree);
                     catanPlayers.add(Game.playerFour);
-                    catanPlayer.calculateFinalScore();
+                    Game.playerOne.calculateFinalScore();
+                    Game.playerTwo.calculateFinalScore();
+                    Game.playerThree.calculateFinalScore();
+                    Game.playerFour.calculateFinalScore();
                     Game.winner = new Winner(4, catanPlayers);
                     Game.scenes.addScreen("WINNER", Game.winner);
                     Game.scenes.activate("WINNER");

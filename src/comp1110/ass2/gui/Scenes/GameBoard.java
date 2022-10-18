@@ -1149,7 +1149,7 @@ public class GameBoard extends Pane {
     private void makeBoard() {
         int[] translationY = {2, -2, -1, -1, 1, 1};
         int[] translationX = {0, 0, 1, -1, -1, 1};
-        Color[] hexagonColors = {Color.web("#b2985c"), Color.web("#b2985c"), Color.web("#8d744e"), Color.web("#8d744e"), Color.web("#605028"), Color.web("#745e34")};
+        Color[] hexagonColors = {Color.web("#b2985c"), Color.web("#b2985c"), Color.web("#8d744e"), Color.web("#8d744e"), Color.web("#605028"), Color.web("#605028")};
         Hexagon hexagon1 = new Hexagon(hexagonRadius, Color.WHITE);
         hexagonBoard.setTranslateX(BOARD_offsetX);
         hexagonBoard.setTranslateY(BOARD_offsetY);

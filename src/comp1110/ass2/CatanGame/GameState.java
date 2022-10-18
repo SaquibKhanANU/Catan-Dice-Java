@@ -17,17 +17,12 @@ public class GameState {
     // The number of players, between 2 and 4.
     public int num;
 
-    // The index of the current players turn
-    public int turn_num;
-
-    // The number of completed rounds (for example if each player
     // has had one turn then it is has been one round.
     public int round;
 
     public GameState(int num){
         // Initialise the values
         this.num = num;
-        this.turn_num = 0;
         this.round = 0;
 
         // Use the CatanPlayer constructor to construct num players.

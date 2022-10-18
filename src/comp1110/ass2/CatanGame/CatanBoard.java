@@ -14,7 +14,6 @@ public class CatanBoard {
     public BuildableStructure[][] boardArray;
     public final static int CATAN_HEIGHT = 21;
     public final static int CATAN_WIDTH = 12;
-    public GameState gameState;
     public final HashMap<String, Structure> structureBlocks = new HashMap<>();
     public  final HashMap<String, BuildableStructure> structureBlocksMap = new HashMap<>();
     public void makeMap() {
@@ -57,11 +56,11 @@ public class CatanBoard {
         structureBlocksMap.put("J6", new BuildableStructure(10, 2, StructureType.JOKER, "J6", 6));
     }
 
-    public void makeStructureBlocks() {
-        structureBlocks.put("R", new CatanRoad("R", new int[2]));
-        structureBlocks.put("C", new CatanCity("C", new int[2]));
-        structureBlocks.put("K", new CatanKnight("K", new int[2]));
-        structureBlocks.put("S", new CatanSettlement("S", new int[2]));
+    public void makeStructureBlocksTest() {
+        structureBlocks.put("R", new Structure("R", new int[2]));
+        structureBlocks.put("C", new Structure("C", new int[2]));
+        structureBlocks.put("K", new Structure("K", new int[2]));
+        structureBlocks.put("S", new Structure("S", new int[2]));
     }
 
     public CatanBoard() {
@@ -89,7 +88,7 @@ public class CatanBoard {
     }
 
     public  HashMap<String, Structure> getStructureBlocks() {
-        makeStructureBlocks();
+        makeStructureBlocksTest();
         return this.structureBlocks;
     }
 
