@@ -30,9 +30,9 @@ public class TestPlaceRemoveStructureBlocks {
     };
 
     private static final Structure[] ICE_BLOCKS = new Structure[]{
-            new CatanRoad("R", new int[]{4,0}),
-            new CatanSettlement("S", new int[]{3,1}),
-            new CatanCity("C", new int[]{2,1}),
+            new Structure("R", new int[]{4,0}),
+            new Structure("S", new int[]{3,1}),
+            new Structure("C", new int[]{2,1}),
     };
 
     private static final ArrayList<StructureType> c = new ArrayList<>();

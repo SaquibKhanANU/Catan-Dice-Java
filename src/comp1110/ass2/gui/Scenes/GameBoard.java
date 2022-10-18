@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static java.util.Arrays.sort;
 
 public class GameBoard extends Pane {
     public static final double BOARD_WIDTH = 618;
@@ -49,7 +50,7 @@ public class GameBoard extends Pane {
     Group knights = new Group();
     Group blocks = new Group();
     Group resources = new Group();
-    Group structuresBoard = new Group(hexagonBoard, roads, cities, settlements, knights);
+    Group structuresBoard = new Group(roads, cities, settlements, knights);
     Group scoreCounter = new Group();
     public GameControls gameControls;
     public BoardStateTree boardStateTree;
@@ -1201,6 +1202,94 @@ public class GameBoard extends Pane {
             setX(430);
             setY(40);
             gameControls.warningTextGroup.getChildren().add(this);
+        }
+    }
+
+
+    // VIEWER
+    public void makeStructuresViewer(List<String> b_array) {
+        roads.getChildren().clear();
+        settlements.getChildren().clear();
+        knights.getChildren().clear();
+        cities.getChildren().clear();
+        makeStructures();
+        gameControls.catanBoard.makeMap();
+        if (b_array == null || b_array.isEmpty()) {
+            System.out.println("NUK");
+        } else {
+            for (var id : b_array) {
+                String id_copy = id;
+                double x = 0;
+                double y = 0;
+                if (id.charAt(0) == 'K') {
+                    switch (id) {
+                        case "K1" -> id = "J1";
+                        case "K2" -> id = "J2";
+                        case "K3" -> id = "J3";
+                        case "K4" -> id = "J4";
+                        case "K5" -> id = "J5";
+                        case "K6" -> id = "J6";
+                    }
+                }
+                BuildableStructure structure = gameControls.catanBoard.getStructureBlocksMap().get(id);
+                x = structure.getX() * (BOARD_WIDTH / 20);
+                y = structure.getY() * (BOARD_HEIGHT / 12);
+                Label label = new Label();
+                label.toFront();
+                label.setTextFill(Color.web("#439527"));
+                label.setText(id);
+                label.setFont(Font.font("times new roman", FontWeight.BOLD, FontPosture.REGULAR, 10));
+                if (id.charAt(0) == 'R') {
+                    label.setLayoutX(x + 3);
+                    label.setLayoutY(y + 24);
+                    int rotation;
+                    String[] thirtyDegrees = new String[]{"R0", "R3", "R7", "R9", "R11", "R15", "R13"};
+                    String[] ninetyDegrees = new String[]{"R1", "R4", "R6", "R12"};
+                    if (Arrays.asList(ninetyDegrees).contains(id)) {
+                        rotation = 90;
+                    } else if (Arrays.asList(thirtyDegrees).contains(id)) {
+                        rotation = 30;
+                    } else {
+                        rotation = -30;
+                    }
+                    RoadShape roadShape = new RoadShape(x, y, rotation, null);
+                    roadShape.setFill(Color.SADDLEBROWN);
+                    if (id.equals("RI")) {
+                        roadShape.setFill(Color.PURPLE);
+                    }
+                    roads.getChildren().add(roadShape);
+                } else if (id.charAt(0) == 'C') {
+                    label.setLayoutX(x - 3);
+                    label.setLayoutY(y + 24);
+                    CityShape cityShape = new CityShape(x + 5, y + 30, null);
+                    cityShape.setFill(Color.SADDLEBROWN);
+                    cities.getChildren().add(cityShape);
+                } else if (id.charAt(0) == 'S') {
+                    label.setLayoutX(x + 3);
+                    label.setLayoutY(y + 24);
+                    SettlementShape settlementShape = new SettlementShape(x + 10, y + 20, null);
+                    settlementShape.setFill(Color.SADDLEBROWN);
+                    settlements.getChildren().add(settlementShape);
+                } else if (id.charAt(0) == 'J' || id.charAt(0) == 'K') {
+                    KnightImage resource = new KnightImage(gameControls.catanBoard.getStructureBlocksMap().get(id).getResourceType(), x - 5, y + 15);
+                    resource.toFront();
+                    label.setLayoutX(x + 3);
+                    label.setLayoutY(y - 7);
+                    KnightShape knightShape = new KnightShape(x + 10, y + 30, null);
+                    knightShape.setFill(Color.SADDLEBROWN);
+                    knightShape.setOpacity(0.7);
+                    if (id_copy.charAt(0) == 'K') {
+                        knightShape.setFill(Color.BLACK);
+                        knightShape.setOpacity(1);
+                    }
+                    knights.getChildren().addAll(knightShape, resource);
+                    gameControls.knightsList.add(knightShape);
+                } else {
+                    System.out.println("ERROR");
+                }
+            }
+            structuresBoard.setLayoutX(BOARD_offsetX - 330 + 10);
+            structuresBoard.setLayoutY(BOARD_offsetY - (hexagonRadius * 2.1 + 116.91 - 30));
         }
     }
 }
