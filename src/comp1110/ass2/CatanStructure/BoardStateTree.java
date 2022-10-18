@@ -129,7 +129,14 @@ public class BoardStateTree extends GameTree {
             else {
                 HashMap<String,String> problems = makeProblems();
                 String problem_structure = problems.get(id);
-                if (this.roads.canPrune(id) && !(this.board_state.contains(problem_structure))){
+                if (problem_structure == null){
+                    // Remove any null branches from this move
+                    GameTree new_tree = new GameTree();
+                    new_tree.node = "RI";
+                    this.roads = this.roads.removeNulls(new_tree);
+                    return true;
+                }
+                else if (this.roads.canPrune(id) && !(this.board_state.contains(problem_structure))){
                     // Remove any null branches from this move
                     GameTree new_tree = new GameTree();
                     new_tree.node = "RI";
