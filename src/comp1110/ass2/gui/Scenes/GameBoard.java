@@ -27,7 +27,12 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static java.util.Arrays.asList;
 
 public class GameBoard extends Pane {
     public static final double BOARD_WIDTH = 618;
@@ -141,31 +146,39 @@ public class GameBoard extends Pane {
                                     new Warning("RIGHT CLICK TO REMOVE");
                                 }
                             } else if (event.getButton() == MouseButton.SECONDARY) {
-                                if (draggableStructureBlock.structure.getRemovable()) {
-                                    if (draggableStructureBlock.structure.isBuilt()) {
-                                        if (gameControls.catanBoard.canDoRemove()) {
-                                            if (gameControls.catanPlayer.currentTurn) {
-                                                draggableStructureBlock.removePoint();
-                                                draggableStructureBlock.removeBoardState();
-                                                gameControls.catanBoard.removeStructureBlock(draggableStructureBlock.structure);
-                                                gameControls.catanPlayer.structures.remove(draggableStructureBlock.structure);
-                                                draggableStructureBlock.increaseResourceState();
-                                                gameControls.currentResourceState(gameControls.catanPlayer.resource_state);
-                                                System.out.println(Arrays.toString(gameControls.catanPlayer.resource_state));
-                                                blocks.getChildren().remove(event.getTarget());
+                                if (gameControls.catanPlayer.currentTurn){
+                                    if (draggableStructureBlock.structure.getRemovable()) {
+                                        if (draggableStructureBlock.structure.isBuilt()) {
+                                            System.out.println("BOARD STATE IS " + gameControls.catanPlayer.board_state);
+                                            boardStateTree = new BoardStateTree(gameControls.catanPlayer.board_state);
+                                            System.out.println("BOARD STATE AFTER IS " + gameControls.catanPlayer.board_state);
+                                                // Update the board state for the remove
+                                            // System.out.println("Boolean is " + boardStateTree.canRemove(draggableStructureBlock.getKnightId()));
+                                            if (boardStateTree.canRemove(draggableStructureBlock.getKnightId())) {
+                                                draggableStructureBlock.snapToHome();
+                                                // Remove was possible so update the board_state
+                                                System.out.println("Inside the if statement ");
+                                                    // gameControls.catanPlayer.board_state = boardStateTree.board_state;
+                                                    draggableStructureBlock.removePoint();
+                                                    draggableStructureBlock.removeBoardState();
+                                                System.out.println("BOARD STATE IN IF IS " + gameControls.catanPlayer.board_state);
+                                                    gameControls.catanBoard.removeStructureBlock(draggableStructureBlock.structure);
+                                                    gameControls.catanPlayer.structures.remove(draggableStructureBlock.structure);
+                                                    draggableStructureBlock.increaseResourceState();
+                                                    gameControls.currentResourceState(gameControls.catanPlayer.resource_state);
+                                                    System.out.println(Arrays.toString(gameControls.catanPlayer.resource_state));
+                                                    blocks.getChildren().remove(event.getTarget());
                                             } else {
-                                                new Warning("NOT YOUR TURN");
+                                                System.out.println("REMOVE STRUCTURES FURTHER OF HIGHER POINT VALUE");
                                             }
-                                        } else {
-                                            System.out.println("REMOVE STRUCTURES FURTHER OF HIGHER POINT VALUE");
                                         }
+                                    } else {
+                                        gameControls.warningTextGroup.getChildren().clear();
+                                        new Warning("NOT REMOVABLE");
                                     }
-                                    if (draggableStructureBlock.isOnBoard() && gameControls.catanPlayer.currentTurn) {
-                                        draggableStructureBlock.snapToHome();
-                                    }
-                                } else {
-                                    gameControls.warningTextGroup.getChildren().clear();
-                                    new Warning("NOT REMOVABLE");
+                                }
+                                else {
+                                    new Warning("NOT YOUR TURN");
                                 }
                                 event.consume();
                             }
@@ -855,9 +868,9 @@ public class GameBoard extends Pane {
             BuildableStructure test = gameControls.catanBoard.getBuildableStructure(this.x, this.y);
             String[] thirtyDegrees = new String[]{"R0", "R3", "R7", "R9", "R11", "R15", "R13"};
             String[] negThirtyDegrees = new String[]{"R1", "R4", "R6", "R12"};
-            if (Arrays.asList(negThirtyDegrees).contains(test.getId())) {
+            if (asList(negThirtyDegrees).contains(test.getId())) {
                 this.roadShape.setRotate(90);
-            } else if (Arrays.asList(thirtyDegrees).contains(test.getId())) {
+            } else if (asList(thirtyDegrees).contains(test.getId())) {
                 this.roadShape.setRotate(30);
             } else {
                 this.roadShape.setRotate(-30);
@@ -902,10 +915,28 @@ public class GameBoard extends Pane {
             }
         }
         protected void removeBoardState() {
-            if (gameControls.catanPlayer.board_state.equals("," + gameControls.catanBoard.getBuildableStructure(this.x, this.y).getId())) {
-                gameControls.catanPlayer.board_state = gameControls.catanPlayer.board_state.replace(gameControls.catanBoard.getBuildableStructure(this.x, this.y).getId(), "");
+            String[] board_state = gameControls.catanPlayer.board_state.split(",");
+            ArrayList<String> board_state_list = new ArrayList<>();
+            Collections.addAll(board_state_list, board_state);
+            String res = "";
+            board_state_list.remove(gameControls.catanBoard.getBuildableStructure(this.x, this.y).getId());
+            if (board_state_list != null) {
+                for (int i = 0; i < board_state_list.size(); i++) {
+                    if (i == 0) {
+                        res = board_state_list.get(i);
+                    } else {
+                        res += "," + board_state_list.get(i);
+                    }
+                }
+
             }
-            gameControls.catanPlayer.board_state = gameControls.catanPlayer.board_state.replace(gameControls.catanBoard.getBuildableStructure(this.x, this.y).getId(), "");
+            gameControls.catanPlayer.board_state = res;
+
+
+//            if (gameControls.catanPlayer.board_state.equals("," + gameControls.catanBoard.getBuildableStructure(this.x, this.y).getId())) {
+//                gameControls.catanPlayer.board_state = gameControls.catanPlayer.board_state.replace(gameControls.catanBoard.getBuildableStructure(this.x, this.y).getId(), "");
+//            }
+//            gameControls.catanPlayer.board_state = gameControls.catanPlayer.board_state.replace(gameControls.catanBoard.getBuildableStructure(this.x, this.y).getId(), "");
         }
         protected void updateAction() {
             gameControls.catanPlayer.action = "build" + " " + gameControls.catanBoard.getBuildableStructure(this.x, this.y).getId();
@@ -1043,9 +1074,9 @@ public class GameBoard extends Pane {
                 int rotation;
                 String[] thirtyDegrees = new String[]{"R0", "R3", "R7", "R9", "R11", "R15", "R13"};
                 String[] ninetyDegrees = new String[]{"R1", "R4", "R6", "R12"};
-                if (Arrays.asList(ninetyDegrees).contains(id)) {
+                if (asList(ninetyDegrees).contains(id)) {
                     rotation = 90;
-                } else if (Arrays.asList(thirtyDegrees).contains(id)) {
+                } else if (asList(thirtyDegrees).contains(id)) {
                     rotation = 30;
                 } else {
                     rotation = -30;
