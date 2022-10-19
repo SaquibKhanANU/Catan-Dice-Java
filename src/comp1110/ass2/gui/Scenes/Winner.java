@@ -38,7 +38,7 @@ public class Winner extends Pane {
 
     class WinnerBoard extends Rectangle {
         WinnerBoard(ArrayList<CatanPlayer> catanPlayers) {
-            setHeight(120 + (20 + players));
+            setHeight(120 + (20 * players));
             setWidth(300);
             setX(450);
             setY(150);

@@ -106,9 +106,8 @@ public class Viewer extends Application  {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Board State Viewer");
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
-        playerViewer = new CatanPlayer(1);
         Game.gameState = new GameState(1);
-        viewerBoard = new GameBoard(playerViewer);
+        viewerBoard = new GameBoard();
         scene.setRoot(viewerBoard);
         root.getChildren().add(controls);
         makeControls();

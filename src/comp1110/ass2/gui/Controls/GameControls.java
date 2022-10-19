@@ -50,6 +50,7 @@ public class GameControls {
     Group sidePanel = new Group();
     Group scoreBoard = new Group();
     Group diceRollGroup = new Group();
+    Group currentTurnTextGroup = new Group();
     public Group warningTextGroup = new Group();
     Group resourceStateGroup = new Group();
     Pane swapResourcePane = new Pane();
@@ -57,7 +58,7 @@ public class GameControls {
     GridPane diceRollGridPane;
     Scene swapResourceScene = new Scene(swapResourcePane);
     public Stage swapResourceStage = new Stage();
-    public Group allControls = new Group(controls, chooseBoard, sidePanel, scoreBoard, diceRollGroup, warningTextGroup, resourceStateGroup);
+    public Group allControls = new Group(controls, chooseBoard, sidePanel, scoreBoard, diceRollGroup, warningTextGroup, resourceStateGroup, currentTurnTextGroup);
     public CatanPlayer catanPlayer;
     public CatanBoard catanBoard;
 
@@ -118,7 +119,8 @@ public class GameControls {
      */
     private void diceRollButton() {
         diceRollGroup.getChildren().clear();
-
+        reRollDice.clear();
+        indexOfDice.clear();
         diceRollGridPane = new GridPane();
         diceRollGridPane.setPadding(new Insets(10, 10, 10, 10));
         diceRollGridPane.setVgap(30);
@@ -248,7 +250,7 @@ public class GameControls {
 
     /**
      * End turn button, ends the turn and resets every back to default, switches player turn if more than 1 player
-     * and ends the game at round 15.
+     * and ends the game at round 15 to activate winner page.
      */
     private void endTurn() {
         swapped = false;
@@ -354,10 +356,10 @@ public class GameControls {
                 Game.playerFour.setCurrentTurn(true);
                 Game.scenes.activate("PLAYER FOUR");
             } else {
-                Game.gameState.round++;
+                Game.gameState.round+=20;
                 Game.playerOne.setCurrentTurn(true);
                 Game.scenes.activate("PLAYER ONE");
-                if (Game.gameState.round == 16) {
+                if (Game.gameState.round >= 16) {
                     catanPlayer.setCurrentTurn(false);
                     ArrayList<CatanPlayer> catanPlayers = new ArrayList<>();
                     catanPlayers.add(Game.playerOne);
@@ -374,11 +376,15 @@ public class GameControls {
                 }
             }
         }
+        currentTurnText();
     }
 
-
     private class GameButtonsBoard extends StackPane {
-        public String name;
+        /**
+         * Constructs a button based on a name. The button also performs an action based on its name.
+         * This constructor contains the visuals and checks if action can be performed before performing it.
+         * @param name
+         */
         public GameButtonsBoard(String name) {
             Rectangle bg;
             bg = new Rectangle(200, 30);
@@ -477,10 +483,23 @@ public class GameControls {
 
     // Creates the clickable images for trading and swapping.
     public class ResourceImage extends ImageView {
+        // Some resources aren't clickable, e.g. the ones displayed in current resource state.
         public boolean clickable = true;
+        // Resource type of the image.
         ResourceType resourceType;
-        AtomicInteger countRollClick = new AtomicInteger();
+        // Counts how many times a image is clicked (0 is off) (1 is on)
+        AtomicInteger countClick = new AtomicInteger();
 
+        /**
+         * Resource image is a clickable image used to perform an action done through the image
+         * depending on which type of action it is. Undos an action when an image is clicked again,
+         * A clcik will highlight or unhighlight an image.
+         *
+         * @param name path from source root
+         * @param x the x position of the image on a pane
+         * @param y the y position of the image on a pane
+         * @param resourceType the type of resource this resource image represents.
+         */
         private ResourceImage(String name, int x, int y, ResourceType resourceType) {
             this.resourceType = resourceType;
             Image c = new Image(name);
@@ -545,8 +564,8 @@ public class GameControls {
                         }
                     } else {
                         if (diceRollCount < 3) {
-                            countRollClick.getAndIncrement();
-                            if (countRollClick.get() == 1) {
+                            countClick.getAndIncrement();
+                            if (countClick.get() == 1) {
                                 imageClickOff = false;
                                 Blend blend = new Blend();
                                 blend.setMode(BlendMode.ADD);
@@ -562,7 +581,7 @@ public class GameControls {
                             } else {
                                 imageClickOff = true;
                                 setEffect(null);
-                                countRollClick.set(0);
+                                countClick.set(0);
                                 indexOfDice.remove((Object) diceArrayList.indexOf(this));
                                 reRollDice.remove(this);
                             }
@@ -573,6 +592,18 @@ public class GameControls {
                 }
             });
         }
+
+        /**
+         * Same as above, used for wild card. Wildcard will contain two resource image sets,
+         * one of which is being swapped in and one which is swapped out. Constructor differentiates them
+         * through boolean swap.
+         *
+         * @param name path from source root
+         * @param x the x position of the image on a pane
+         * @param y the y position of the image on a pane
+         * @param resourceType the type of resource this resource image represents.
+         * @param swap
+         */
         private ResourceImage(String name, int x, int y, ResourceType resourceType, boolean swap) {
             this.resourceType = resourceType;
             Image c = new Image(name);
@@ -590,8 +621,8 @@ public class GameControls {
             setOnMousePressed(e -> {
                 if (swap) {
                     if (clickedAlready.size() < 1) {
-                        countRollClick.getAndIncrement();
-                        if (countRollClick.get() == 1) {
+                        countClick.getAndIncrement();
+                        if (countClick.get() == 1) {
                             setEffect(new Glow(0.9));
                             imageClickOff = false;
                             clickedAlready.add(this);
@@ -607,13 +638,13 @@ public class GameControls {
                         } else {
                             imageClickOff = true;
                             setEffect(null);
-                            countRollClick.set(0);
+                            countClick.set(0);
                             clickedAlready.remove(this);
                         }
                     } else {
                         imageClickOff = true;
                         setEffect(null);
-                        countRollClick.set(0);
+                        countClick.set(0);
                         clickedAlready.remove(this);
                     }
                 } else {
@@ -649,9 +680,15 @@ public class GameControls {
 
             });
         }
+        /**
+         * gets the resource type of the image
+         */
         public ResourceType getResourceType() {
             return resourceType;
         }
+        /**
+         * sets if the imgae is clickable or not
+         */
         public void setClickable(boolean clickable) {
             this.clickable = clickable;
         }
@@ -661,11 +698,19 @@ public class GameControls {
             return "ResourceImage{" +
                     "clickable=" + clickable +
                     ", resourceType=" + resourceType +
-                    ", countRollClick=" + countRollClick +
+                    ", countRollClick=" + countClick +
                     '}';
         }
     }
 
+    /**
+     * Swap and trade pop up shows the visual pop for user interaction to swap or trade.
+     * Contains the resources that can be swapped, and all resources are displayed for trade.
+     * Sets the action type to the type provided.
+     *
+     * @param id The id of the knight being swapped.
+     * @param type The type of action being perforemd (undo_swap, swap or trade)
+     */
     // creates stage for clickable images for trading and swapping as a popup.
     public void swapAndTradePopUp(String id, ActionType type) {
         action.setActionType(type);
@@ -715,9 +760,18 @@ public class GameControls {
             });
         }
     }
+
+    /**
+     * Makes the pop-up for J6, wildcard gives the option to swap anyting available including gold for anything.
+     * This shows the popup for player interaction.
+     * @param actionType the action type being perfomed to set action to this type.
+     */
     public void WildCardPopUp(ActionType actionType) {
+        // Group to store resource images player currently has
         Group resourceImagesGroup = new Group();
+        // text storing instructions for wildcard
         Group wildCardText = new Group();
+        // Group storing all resources images
         Group resourceImagesGroup2 = new Group();
 
         action.setActionType(actionType);
@@ -766,13 +820,22 @@ public class GameControls {
         swapResourceStage.show();
     }
 
+
     public class CurrentResourceState extends GridPane {
+        // All the resources possible in a list.
         ArrayList<ResourceImage> resourceArrayList = new ArrayList<>();
+        // All the resources obtained from a die roll, including duplicates.
         ArrayList<ResourceImage> resourceImageArrayList = new ArrayList<>();
+        // Index counter
         int index = 0;
-        int[] resource_state;
+
+        /**
+         * Constructs the grid that the resource images of the resources in current resource_state of the player will
+         * be displayed in and adds the images.
+         *
+         * @param resource_state the current resource state that is going to be displayed.
+         */
         public CurrentResourceState(int[] resource_state) {
-            this.resource_state = resource_state;
             setPadding(new Insets(10, 10, 10, 10));
             setVgap(30);
             setHgap(20);
@@ -791,6 +854,13 @@ public class GameControls {
             }
         }
     }
+
+    /**
+     * Current resource state shows the visuals of the current resource state.
+     * Used to change resource visuals when dice roll, build, swap or trade takes place.
+     *
+     * @param resource_state the current resource state that is going to be displayed.
+     */
     public void currentResourceState(int[] resource_state) {
         resourceStateGroup.getChildren().clear();
         Rectangle r = new Rectangle();
@@ -810,6 +880,9 @@ public class GameControls {
         resourceStateGroup.setLayoutX(900);
     }
 
+    /**
+     * Constructs a side panel with rectangle for visuals
+     */
     static class SidePanel extends Rectangle {
         double height;
         double width;
@@ -828,20 +901,32 @@ public class GameControls {
     }
 
     class Score extends Text {
-        int test;
-        Score(double x, double y, int test) {
-            setText(test + "");
+        // the score being displayed
+        int score;
+
+        /**
+         * Constructs a score text according to a given score.
+         *
+         * @param x x-cooridnate position
+         * @param y y-coordinate postion
+         * @param score the score value being represented by the score text.
+         */
+        Score(double x, double y, int score) {
+            setText(score + "");
             setFont(Font.font("cambria", FontWeight.BOLD, FontPosture.REGULAR, 20));
             setFill(Color.DARKGREEN);
             setTranslateX(x);
             setTranslateY(y);
             toFront();
         }
-        public void setScore(int test) {
-            this.test = test;
+        public void setScore(int score) {
+            this.score = score;
         }
     }
-
+    /**
+     * makes all the scores a player can get for a game of Catan Dice and
+     * positions them on the score board pane.
+     */
     private void makeScores() {
         scores.put(0, new Score(12, 45, catanPlayer.score));
         scores.put(1, new Score(50, 45, catanPlayer.score));
@@ -861,6 +946,9 @@ public class GameControls {
         scores.put(15, new Score(40 + 110, 123 + 78, catanPlayer.finalScore));
     }
 
+    /**
+     * Makes two green side panels containing two images for visuals
+     */
     private void makeSidePanel() {
         SidePanel rightPanel = new SidePanel(700, 300, 899, 0);
         SidePanel leftPanel = new SidePanel(700, 200, 1, 0);
@@ -885,6 +973,9 @@ public class GameControls {
         sidePanel.getChildren().addAll(rightPanel, leftPanel, iv1, iv2);
     }
 
+    /**
+     * Makes a score board with a image for visuals.
+     */
     private void makeScoreBoard() {
         Image scoreBoardImage = new Image("comp1110/ass2/assets/CatanScoreBoard.JPG");
         ImageView scoreBoardView = new ImageView();
@@ -909,6 +1000,34 @@ public class GameControls {
         scoreBoardPane.setBackground(new Background(new BackgroundFill(Color.web("#439527"), CornerRadii.EMPTY, Insets.EMPTY)));
 
         scoreBoard.getChildren().add(scoreBoardPane);
+    }
+
+    public void currentTurnText() {
+        Text text = new Text();
+        if (catanPlayer.currentTurn && Game.gameState.num != 1) {
+            text.setText("CURRENT TURN");
+            text.setFont(Font.font("cambria", FontWeight.BOLD, FontPosture.REGULAR, 30));
+            text.setFill(Color.WHITE);
+            text.setX(250);
+            text.setY(50);
+        }
+        currentTurnTextGroup.getChildren().add(text);
+    }
+    public class Warning extends Text {
+        /**
+         * Constructs an warning text according to a given warning.
+         * @param warning A string of text representing the warning.
+         */
+        public Warning(String warning) {
+            setText(warning);
+            setText(warning);
+            toFront();
+            setFill(Color.RED);
+            setFont(Font.font("times new roman", FontWeight.BOLD, FontPosture.REGULAR, 20));
+            setX(430);
+            setY(40);
+            warningTextGroup.getChildren().add(this);
+        }
     }
 
     private void createGameButtons() {
@@ -973,19 +1092,6 @@ public class GameControls {
             sep.setEndX(205);
             sep.setStroke(Color.TAN);
             return sep;
-        }
-    }
-
-    public class Warning extends Text {
-        public Warning(String warning) {
-            setText(warning);
-            setText(warning);
-            toFront();
-            setFill(Color.RED);
-            setFont(Font.font("times new roman", FontWeight.BOLD, FontPosture.REGULAR, 20));
-            setX(430);
-            setY(40);
-            warningTextGroup.getChildren().add(this);
         }
     }
 }
