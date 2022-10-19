@@ -13,15 +13,6 @@ declaration: >-
   I submit the work below for assessment as my best work. I declare that this
   is entirely my own work, with the following documented exceptions:
 
-# Use this to list names of people who you collaborated with, and a
-# comment about what you collaborated on.
-#
-# Add as many "name+comment" entries as necessary
-# (or remove it altogether if you haven't collaborated with anyone)
-collaboration:
-  - name:
-    comment: >-
-
 # Use this to list any code that you used that you did not write,
 # aside from code provided by the lecturer.  Provide a comment
 # explaining your use and the URL to that code and the licence for
@@ -44,7 +35,7 @@ code:
 # you want to just submit methods):
 class:
    - https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/gui/Controls/GameControls.java#L769-793
-   - 
+   - https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/gui/Scenes/GameBoard.java#L431-624
 
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):
