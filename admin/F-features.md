@@ -16,7 +16,7 @@ specification that you have added, if any.
 
 To re-roll dice, click on the images that the roll dice button displayed, the images should glow indicating its clickable.
 You can undo structure build as long as it is a valid remove (the structure will highlight tan if valid).
-The swap button will make Knights (the jokers that are on the board) glow yellow click on the glowing knight to swap, click swap again to undo the remove yellow highlight.
+The swap button will make Knights (the jokers that are on the board) glow yellow click on the glowing knight to swap, click swap again to the remove yellow highlight.
 If it glows/highlights its interactive.
 
 This section is optional.
