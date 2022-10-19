@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+import comp1110.ass2.CatanStructure.Action;
 import comp1110.ass2.CatanStructure.BoardStateTree;
 import comp1110.ass2.CatanStructure.GameTree;
 import comp1110.ass2.CatanStructure.Structure;
@@ -8,7 +9,6 @@ import java.util.*;
 
 
 import static comp1110.ass2.CatanStructure.GameTree.createCatanGameTree;
-import static comp1110.ass2.CatanStructure.Structure.boardStateToStructures;
 import static java.lang.reflect.Array.setInt;
 import static java.util.Arrays.asList;
 

@@ -3,6 +3,7 @@ package comp1110.ass2.CatanStructure;
 import comp1110.ass2.CatanEnum.ResourceType;
 import comp1110.ass2.CatanEnum.StructureType;
 
+// Author: Saquib Khan
 public class BuildableStructure {
     // The x-cord of the BuildableStructure
     private int x;
@@ -63,35 +64,36 @@ public class BuildableStructure {
     }
 
     /**
-     *
-     * @return x
+     * @return x gets the x-coordiante of buildable structure
      */
     public int getX(){
         return this.x;
     }
 
     /**
-     *
-     * @return y
+     * @return y gets the y-coordiante of buildable structure
      */
     public int getY(){
         return this.y;
     }
 
     /**
-     *
-     * @return structure_type
+     * @return structure_type gets the type of buildable structure
      */
     public StructureType getStructureType(){
         return this.structure_type;
     }
 
+    /**
+     *
+     * @return gets the id of the buildable structure
+     */
     public String getId(){
         return this.id;
     }
 
     /**
-     *
+     * sets the x to new coordinate
      * @param x int
      */
     public void setX(int x){
@@ -99,7 +101,7 @@ public class BuildableStructure {
     }
 
     /**
-     *
+     * sets the y to new coordinate
      * @param y int
      */
     public void setY(int y){
@@ -107,32 +109,22 @@ public class BuildableStructure {
     }
 
     /**
-     *
+     * sets the structure type to new structure type
      * @param structure_type StructureType
      */
     public void setStructureType(StructureType structure_type){
         this.structure_type = structure_type;
     }
 
-
-    public void setId(String id){
-        this.id = id;
-    }
-
+    /**
+     * @return returns the point value of the buildable structure.
+     */
     public int getPoint() {
         return point;
     }
 
-    public void setPoint(int point) {
-        this.point = point;
-    }
-
     public ResourceType getResourceType() {
         return resourceType;
-    }
-
-    public void setResourceType(ResourceType resourceType) {
-        this.resourceType = resourceType;
     }
 
     /**

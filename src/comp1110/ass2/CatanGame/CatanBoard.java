@@ -9,14 +9,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+// Author: Saquib Khan
 public class CatanBoard {
+    // the board array where structures can be placed
     public BuildableStructure[][] boardArray;
+
+    // the height of catan board
     public final static int CATAN_HEIGHT = 21;
-    public final static int CATAN_WIDTH = 12;
-    public GameState gameState;
+    // the width of catan board
+    public final static int CATAN_WIDTH = 13;
+    // Hashmap giving each structure a id as a key
     public final HashMap<String, Structure> structureBlocks = new HashMap<>();
+    // Hashmap giving each buildable structure a id as a key
     public  final HashMap<String, BuildableStructure> structureBlocksMap = new HashMap<>();
+
+    // Adds all the structures to a hashmap
     public void makeMap() {
         //ROADS
         structureBlocksMap.put("RI", new BuildableStructure(7, 3, StructureType.DBUILT_ROAD, "RI", 0));
@@ -56,21 +63,27 @@ public class CatanBoard {
         structureBlocksMap.put("J5", new BuildableStructure(16, 4, StructureType.JOKER, "J5", 5));
         structureBlocksMap.put("J6", new BuildableStructure(10, 2, StructureType.JOKER, "J6", 6));
     }
-
+    // adds all the structures to a hashmap
     public void makeStructureBlocks() {
-        structureBlocks.put("R", new CatanRoad("R", new int[2]));
-        structureBlocks.put("C", new CatanCity("C", new int[2]));
-        structureBlocks.put("K", new CatanKnight("K", new int[2]));
-        structureBlocks.put("S", new CatanSettlement("S", new int[2]));
+        structureBlocks.put("R", new Structure("R", new int[2]));
+        structureBlocks.put("C", new Structure("C", new int[2]));
+        structureBlocks.put("K", new Structure("K", new int[2]));
+        structureBlocks.put("S", new Structure("S", new int[2]));
     }
 
+    /**
+     * Constructs the Catan Board
+     */
     public CatanBoard() {
         this.initialiseBoard();
     }
 
+    /**
+     * adds a buildable structure to a part of the array
+     */
     public void initialiseBoard() {
         makeMap();
-        this.boardArray = new BuildableStructure[CATAN_HEIGHT][CATAN_HEIGHT];
+        this.boardArray = new BuildableStructure[CATAN_HEIGHT][CATAN_WIDTH];
         for (BuildableStructure structure : structureBlocksMap.values()) {
             this.boardArray[structure.getX()][structure.getY()] = structure;
         }
@@ -96,8 +109,8 @@ public class CatanBoard {
 
     /**
      * Check if the structure can be placed on the buildable structure at that point.
-     * @param structure
-     * @return
+     * @param structure the structure being checked for valid placement
+     * @return boolean of if the structure can be removed
      */
     public boolean isStructurePlacementValid(Structure structure) {
         int x = structure.getBuildableStructure().getX();
@@ -115,7 +128,7 @@ public class CatanBoard {
 
     /**
      * place a structure at the specific point, replacing the current buildable structure with new structure.
-     * @param structure
+     * @param structure The structure being placed
      */
 
     public void placeStructureBlock(Structure structure){
@@ -126,7 +139,7 @@ public class CatanBoard {
 
     /**
      * remove a structure at the specific point, replacing the current structure with previous buildable structure.
-     * @param structure
+     * @param structure the structure being removed
      */
     public void removeStructureBlock(Structure structure){
         BuildableStructure bStructure = structure.getBuildableStructure();
@@ -152,10 +165,6 @@ public class CatanBoard {
             }
         }
     }
-
-    //TODO: Fix this function
-    public boolean canDoRemove(){
-        return true;}
 
     // TESTING
     public String boardToString() {

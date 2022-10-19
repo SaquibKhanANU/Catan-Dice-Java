@@ -31,7 +31,9 @@ public class CatanPlayer {
 
     // structures for current round, clears at end of each round.
     public ArrayList<Structure> structuresForRound;
+    // Players board_state
     public String board_state;
+    // Player action
     public String action;
     public CatanPlayer(int index){
         // Initialise the values associated to this player
