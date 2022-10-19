@@ -291,11 +291,10 @@ public class GameControls {
             Game.scenes.activate("PLAYER ONE");
             catanPlayer.setCurrentTurn(true);
             Game.gameState.round++;
-            if (Game.gameState.round == 16) {
+            if (Game.gameState.round >= 15) {
                 catanPlayer.setCurrentTurn(false);
                 ArrayList<CatanPlayer> catanPlayers = new ArrayList<>();
                 catanPlayers.add(Game.playerOne);
-                Game.playerOne.calculateFinalScore();
                 Game.winner = new Winner(1, catanPlayers);
                 Game.scenes.addScreen("WINNER", Game.winner);
                 Game.scenes.activate("WINNER");
@@ -308,13 +307,11 @@ public class GameControls {
                 Game.gameState.round++;
                 Game.playerOne.setCurrentTurn(true);
                 Game.scenes.activate("PLAYER ONE");
-                if (Game.gameState.round == 16) {
+                if (Game.gameState.round >= 15) {
                     catanPlayer.setCurrentTurn(false);
                     ArrayList<CatanPlayer> catanPlayers = new ArrayList<>();
                     catanPlayers.add(Game.playerOne);
                     catanPlayers.add(Game.playerTwo);
-                    Game.playerOne.calculateFinalScore();
-                    Game.playerTwo.calculateFinalScore();
                     Game.winner = new Winner(2, catanPlayers);
                     Game.scenes.addScreen("WINNER", Game.winner);
                     Game.scenes.activate("WINNER");
@@ -331,15 +328,12 @@ public class GameControls {
                 Game.gameState.round++;
                 Game.playerOne.setCurrentTurn(true);
                 Game.scenes.activate("PLAYER ONE");
-                if (Game.gameState.round == 16) {
+                if (Game.gameState.round >= 15) {
                     catanPlayer.setCurrentTurn(false);
                     ArrayList<CatanPlayer> catanPlayers = new ArrayList<>();
                     catanPlayers.add(Game.playerOne);
                     catanPlayers.add(Game.playerTwo);
                     catanPlayers.add(Game.playerThree);
-                    Game.playerOne.calculateFinalScore();
-                    Game.playerTwo.calculateFinalScore();
-                    Game.playerThree.calculateFinalScore();
                     Game.winner = new Winner(3, catanPlayers);
                     Game.scenes.addScreen("WINNER", Game.winner);
                     Game.scenes.activate("WINNER");
@@ -359,17 +353,13 @@ public class GameControls {
                 Game.gameState.round+=20;
                 Game.playerOne.setCurrentTurn(true);
                 Game.scenes.activate("PLAYER ONE");
-                if (Game.gameState.round >= 16) {
+                if (Game.gameState.round >= 15) {
                     catanPlayer.setCurrentTurn(false);
                     ArrayList<CatanPlayer> catanPlayers = new ArrayList<>();
                     catanPlayers.add(Game.playerOne);
                     catanPlayers.add(Game.playerTwo);
                     catanPlayers.add(Game.playerThree);
                     catanPlayers.add(Game.playerFour);
-                    Game.playerOne.calculateFinalScore();
-                    Game.playerTwo.calculateFinalScore();
-                    Game.playerThree.calculateFinalScore();
-                    Game.playerFour.calculateFinalScore();
                     Game.winner = new Winner(4, catanPlayers);
                     Game.scenes.addScreen("WINNER", Game.winner);
                     Game.scenes.activate("WINNER");
