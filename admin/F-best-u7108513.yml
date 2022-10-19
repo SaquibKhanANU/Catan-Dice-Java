@@ -29,23 +29,29 @@ collaboration:
 #
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external code)
-code:
-  - comment:
-    url:
+code: 
+  - comment: code is used to create buttons and the design for the menu
+    url: https://github.com/Siderim/video-game-menu
+    licence:
+  - comment: code is used to change between scenes in javafx
+    url: https://stackoverflow.com/questions/37200845/how-to-switch-scenes-in-javafx
+    licence:
+  - comment: helped make the roll dice visuals.
+    url: https://www.youtube.com/watch?v=sjOt0UFqX6c&ab_channel=LoganStrong
     licence:
 
 # I wish to submit the following classes as entirely my own (remove this if
 # you want to just submit methods):
 class:
-   - 
+   - https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/gui/Controls/GameControls.java#L769-793
    - 
 
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):
 method:
-   - 
-   - 
+   - https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/gui/Controls/GameControls.java#L119-151
+   - https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/gui/Controls/GameControls.java#L157-206
 
 # sign *your* name and uid here
-name:
-uid:
+name: Saquib Khan
+uid: u7108513
