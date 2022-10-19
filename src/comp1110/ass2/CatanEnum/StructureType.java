@@ -1,6 +1,10 @@
 package comp1110.ass2.CatanEnum;
 
+// Author: Saquib Khan and John Larkin
 public enum StructureType {
+    /**
+     * The following structure types are for the 6 structures when they are built, not built or used.
+     */
     CITY, SETTLEMENT, ROAD, KNIGHT, YBUILT_CITY, TBUILT_SETTLEMENT, DBUILT_ROAD, JOKER, USED;
 
     public static StructureType fromChar(char c) {

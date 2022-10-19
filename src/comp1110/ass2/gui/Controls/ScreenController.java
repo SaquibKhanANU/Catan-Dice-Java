@@ -6,6 +6,7 @@ import javafx.scene.layout.Pane;
 
 import java.util.HashMap;
 
+// Author: Saquib Khan, influenced by third party.
 public class ScreenController {
     // HashMap of name and their respective pane
     public final HashMap<String, Pane> screenMap = new HashMap<>();

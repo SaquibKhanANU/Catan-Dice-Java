@@ -1,18 +1,18 @@
-package comp1110.ass2;
+package comp1110.ass2.CatanStructure;
 import comp1110.ass2.CatanDice;
 import comp1110.ass2.CatanEnum.ActionType;
 
 public class Action {
-    ActionType actionType;
-    String type;
-    char structure;
-    char first;
-    String id;
-    int in;
-    int out;
+    public ActionType actionType;
+    public String type;
+    public char structure;
+    public char first;
+    public String id;
+    public int in;
+    public int out;
 
     // Assumes the action is well-formed
-    Action(String action_string){
+    public Action(String action_string){
         this.first = action_string.charAt(0);
         if (first == 'b'){
             this.type = "build";

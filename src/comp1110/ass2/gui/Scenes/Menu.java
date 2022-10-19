@@ -16,6 +16,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+// Author: Saquib Khan, influenced by third party.
 public class Menu {
 
     public Pane menuPane;

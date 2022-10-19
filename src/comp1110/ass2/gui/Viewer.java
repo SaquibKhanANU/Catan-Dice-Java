@@ -40,8 +40,6 @@ public class Viewer extends Application  {
     private TextField playerTextField;
     private TextField boardTextField;
     Group instructions = new Group();
-
-    CatanPlayer playerViewer;
     GameBoard viewerBoard;
 
     /**
@@ -57,15 +55,8 @@ public class Viewer extends Application  {
             instructions.getChildren().clear();
             viewerBoard.makeStructuresViewer(boardStateArrList);
         } else {
-            instructions.getChildren().clear();
+            viewerBoard.getChildren().remove(instructions);
             instructions();
-            Text text = new Text();
-            text.setText("Invalid board state string");
-            text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 12));
-            text.setFill(Color.RED);
-            text.setX(720);
-            text.setY(50);
-            instructions.getChildren().add(text);
             viewerBoard.getChildren().add(instructions);
         }
         // FIXME Task 5: implement the state viewer

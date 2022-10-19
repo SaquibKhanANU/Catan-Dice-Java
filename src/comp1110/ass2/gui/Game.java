@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 
 import java.util.Collection;
 
-
+// Author: Saquib Khan
 public class Game extends Application {
     private static final Group root = new Group();
     public static final int WINDOW_WIDTH = 1200;
@@ -38,7 +38,6 @@ public class Game extends Application {
     public static GameState gameState;
     public static Winner winner;
     public static Instructions instructions;
-
 
     @Override
     public void start(Stage stage) throws Exception {

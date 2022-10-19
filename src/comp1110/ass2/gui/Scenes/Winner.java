@@ -24,6 +24,7 @@ import javax.print.DocFlavor;
 import javax.swing.text.html.ImageView;
 import java.util.ArrayList;
 
+// Author: Saquib Khan
 public class Winner extends Pane {
     ArrayList<CatanPlayer> catanPlayers;
     int players;
@@ -35,7 +36,7 @@ public class Winner extends Pane {
         this.setBackground(new Background(new BackgroundFill(Color.web("#439527"), CornerRadii.EMPTY, Insets.EMPTY)));
         getChildren().addAll(new WinnerBoard(catanPlayers), board);
     }
-
+    // Author: Saquib Khan
     class WinnerBoard extends Rectangle {
         WinnerBoard(ArrayList<CatanPlayer> catanPlayers) {
             setHeight(120 + (20 * players));

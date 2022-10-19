@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+import comp1110.ass2.CatanStructure.Action;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;

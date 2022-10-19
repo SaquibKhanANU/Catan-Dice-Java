@@ -2,6 +2,7 @@ package comp1110.ass2.CatanStructure;
 
 import comp1110.ass2.CatanEnum.StructureType;
 
+// Author: Saquib Khan and John Larkin
 public class Structure {
 
     // The buildable structure of a specific type (VARIABLE)
@@ -18,10 +19,16 @@ public class Structure {
     protected int[] resource_cost;
     // Check if the structure is built (VARIABLE)
     protected boolean isBuilt;
+    // Check if structure is removable
     protected boolean removable;
+    // check is structure has been used (for knights and jokers)
     protected boolean used;
 
-
+    /**
+     * Constructs a structure with the property of a buildable structure and gives it a resource cost
+     * @param id String id of the structure
+     * @param coordinate int[] coordinate of structures position
+     */
     public Structure(String id, int[] coordinate){
         this.id = id;
         this.type = id.charAt(0);
@@ -86,6 +93,7 @@ public class Structure {
         }
         return res;
     }
+
     public BuildableStructure getBuildableStructure(){
         return this.buildable_structure;
     }

@@ -1,24 +1,19 @@
 package comp1110.ass2.gui.Controls;
 
-import comp1110.ass2.Action;
+import comp1110.ass2.CatanStructure.Action;
 import comp1110.ass2.CatanEnum.ActionType;
 import comp1110.ass2.CatanEnum.ResourceType;
 import comp1110.ass2.CatanEnum.StructureType;
 import comp1110.ass2.CatanGame.CatanBoard;
 import comp1110.ass2.CatanGame.CatanPlayer;
-import comp1110.ass2.CatanGame.GameState;
 import comp1110.ass2.CatanStructure.Structure;
 import comp1110.ass2.gui.Game;
 import comp1110.ass2.gui.Scenes.GameBoard;
 import comp1110.ass2.gui.Scenes.Winner;
-import gittest.A;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -44,6 +39,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static comp1110.ass2.CatanDice.rollDice;
 
+// Author: Saquib Khan
 public class GameControls {
     Group controls = new Group();
     Group chooseBoard = new Group();
@@ -92,7 +88,7 @@ public class GameControls {
      * Constructs an instance of the game controls (all the buttons and visuals assocciated with them)
      * for each catan player. GameControls creates the game controls.
      *
-     * @param catanPlayer
+     * @param catanPlayer the catan player the game controls belong to
      */
     public GameControls(CatanPlayer catanPlayer) {
         this.catanPlayer = catanPlayer;
@@ -106,7 +102,7 @@ public class GameControls {
 
     /**
      * simple dice roll producing number 1 - 6.
-     * @return
+     * @return a random number 1 -6
      */
     private int diceRoll() {
         Random random  = new Random();
@@ -267,15 +263,19 @@ public class GameControls {
         catanPlayer.structuresForRound.clear();
 
         try {
-            if (Game.gameState.round == 14) {
+            if (catanPlayer.turn_num >= 14) {
                 catanPlayer.calculateFinalScore();
+                scores.clear();
+                makeScores();
+                scores.get(15).setScore(catanPlayer.finalScore);
+                scoreBoardPane.getChildren().add(scores.get(15));
             }
             scores.clear();
             makeScores();
             scores.get(Game.gameState.round).setScore(catanPlayer.score);
             scoreBoardPane.getChildren().add(scores.get(Game.gameState.round));
             catanPlayer.score = 0;
-            System.out.println(Game.playerOne.scoreTotal);
+
 
             // CHANGE ROUND
             catanPlayer.turn_num++;
@@ -366,14 +366,13 @@ public class GameControls {
                 }
             }
         }
-        currentTurnText();
     }
-
+    // Author: Saquib Khan, visuals influenced by third party.
     private class GameButtonsBoard extends StackPane {
         /**
          * Constructs a button based on a name. The button also performs an action based on its name.
          * This constructor contains the visuals and checks if action can be performed before performing it.
-         * @param name
+         * @param name the string name of the button
          */
         public GameButtonsBoard(String name) {
             Rectangle bg;
@@ -453,6 +452,8 @@ public class GameControls {
                             } else {
                                 new Warning("ROLL DICE FIRST");
                             }
+                        } else {
+                            new Warning("NOT YOUR TURN");
                         }
                     }
                     case "END TURN" -> {
@@ -462,6 +463,8 @@ public class GameControls {
                             } else {
                                 new Warning("ROLL DICE FIRST");
                             }
+                        } else {
+                            new Warning("NOT YOUR TURN");
                         }
                     }
                     default -> Game.scenes.activate(name);
@@ -470,7 +473,7 @@ public class GameControls {
         }
     }
 
-
+    // Author: Saquib Khan
     // Creates the clickable images for trading and swapping.
     public class ResourceImage extends ImageView {
         // Some resources aren't clickable, e.g. the ones displayed in current resource state.
@@ -592,7 +595,7 @@ public class GameControls {
          * @param x the x position of the image on a pane
          * @param y the y position of the image on a pane
          * @param resourceType the type of resource this resource image represents.
-         * @param swap
+         * @param swap boolean for checking it is a swap image
          */
         private ResourceImage(String name, int x, int y, ResourceType resourceType, boolean swap) {
             this.resourceType = resourceType;
@@ -745,9 +748,7 @@ public class GameControls {
         swapResourceStage.show();
 
         if (action.getActionType() == ActionType.TRADE) {
-            swapResourceStage.setOnCloseRequest(e -> {
-                action.setActionType(ActionType.NONE);
-            });
+            swapResourceStage.setOnCloseRequest(e -> action.setActionType(ActionType.NONE));
         }
     }
 
@@ -810,7 +811,7 @@ public class GameControls {
         swapResourceStage.show();
     }
 
-
+    // Author: Saquib Khan
     public class CurrentResourceState extends GridPane {
         // All the resources possible in a list.
         ArrayList<ResourceImage> resourceArrayList = new ArrayList<>();
@@ -870,6 +871,7 @@ public class GameControls {
         resourceStateGroup.setLayoutX(900);
     }
 
+    // Author: Saquib Khan
     /**
      * Constructs a side panel with rectangle for visuals
      */
@@ -889,7 +891,7 @@ public class GameControls {
             setStrokeWidth(3);
         }
     }
-
+    // Author: Saquib Khan
     class Score extends Text {
         // the score being displayed
         int score;
@@ -992,17 +994,7 @@ public class GameControls {
         scoreBoard.getChildren().add(scoreBoardPane);
     }
 
-    public void currentTurnText() {
-        Text text = new Text();
-        if (catanPlayer.currentTurn && Game.gameState.num != 1) {
-            text.setText("CURRENT TURN");
-            text.setFont(Font.font("cambria", FontWeight.BOLD, FontPosture.REGULAR, 30));
-            text.setFill(Color.WHITE);
-            text.setX(250);
-            text.setY(50);
-        }
-        currentTurnTextGroup.getChildren().add(text);
-    }
+    // Author: Saquib Khan
     public class Warning extends Text {
         /**
          * Constructs an warning text according to a given warning.
@@ -1068,7 +1060,7 @@ public class GameControls {
         vbox.setTranslateY(270);
         this.chooseBoard.getChildren().addAll(vbox);
     }
-
+    // Author: Saquib Khan, Heavily influenced by third party.
     private class ChooseBoardBox extends VBox {
         public ChooseBoardBox(GameButtonsBoard... items) {
             getChildren().add(createSeperator());
