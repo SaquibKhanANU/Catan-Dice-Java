@@ -598,7 +598,7 @@ public class CatanDice {
      * @param board_state
      * @return An arraylist with only the necessary structures to build the target structure.
      * The result does not include the target structure.
-     * The result only contains the roads, settlements and cities needed
+     * The result only contains the roads, settlements and cities needed and not structures already built
      */
     public static ArrayList<String> requiredStructures(String target_structure,
                                                        String board_state) {
@@ -628,12 +628,12 @@ public class CatanDice {
             for (int i = 0; i < entire_tree.cities.size(); i++) {
                 Structure current = new Structure(entire_tree.cities.get(i));
                 // R1 must be built for C7
-                if (current.value == 7){
-                    if (!(current_state_list.contains("R1"))){res.add("R1");}
-                }
-                if (current.value == 12){
-                    if (!(current_state_list.contains("R4"))){res.add("R4");}
-                }
+//                if (current.value == 7){
+//                    if (!(current_state_list.contains("R1"))){res.add("R1");}
+//                }
+//                if (current.value == 12){
+//                    if (!(current_state_list.contains("R4"))){res.add("R4");}
+//                }
                 if (current.value == target.value) {
                     break;
                 } else {
@@ -661,15 +661,62 @@ public class CatanDice {
         return res;
     }
 
+    /**
+     * costPossible determines if the current players resource_state is potentially sufficient to build the required
+     * structures (considering swaps and trades). Suppose we have a cost (an int[] representing all the resources
+     *  we need) that needs to be met for a build and a current resource_state of the player.
+     * Consider that the number of non gold resources in the resource_state is almost invariant.
+     * Consider a player with no gold. The only actions they can take to better their resource_state to reach the cost
+     * is swapping, which does not change the number of resources they have.
+     * Consider a player with 2n or 2n+1 gold for n>=1. They can trade to increase their non-gold resources by n.
+     * Therefore if the cost is less than what can potentially be added to the players resource_state
+     * then building all the structures may be possible.
+     *
+     * @param target_structure The target structure to build
+     * @param board_state The board state
+     * @param resource_state The resource state
+     * @return True iff the resource state could potentially be changed (through trades and swaps) to have enough resources
+     */
+    public static boolean costPossible(String target_structure,
+                                       String board_state,
+                                       int[] resource_state) {
+        ArrayList<String> board_state_list = requiredStructures(target_structure, board_state);
+        board_state_list.add(target_structure);
+        // Now the board_state_list contains all the structures that need to be built including the target structure
+        int[] total_cost = buildCost(board_state_list);
+        int additions_from_trade = 0;
+        if (resource_state[5] != 0) {
+            additions_from_trade = resource_state[5] / 2;
+        }
+        int total_cost_invariant = 0;
+        for (int i = 0; i < total_cost.length; i++) {
+            total_cost_invariant += total_cost[i];
+        }
+        int total_resource_state_invariant = 0;
+        // Do not consider how many gold are in the resource state, this is covered in a trade
+        for (int i = 0; i < resource_state.length - 1; i++) {
+            total_resource_state_invariant += resource_state[i];
+        }
+        // If the board state contains J6 but not K6 then we can add one to the total_resource_state_invariant
+
+
+
+        total_resource_state_invariant += additions_from_trade;
+        if (total_cost_invariant <= total_resource_state_invariant){return true;}
+        return false;
+    }
+
+
+
     public static void main(String[] args) {
-        ArrayList<String> res = requiredStructures("C20","RI,R0,S3,R2,S4,R1,C7");
-        System.out.println(res);
+        String target = "C7";
+        ArrayList<String> res = requiredStructures(target, "RI,R0,S3,R2,S4,R3");
+        res.add(target);
+        System.out.println("Must build " + res );
 
-        ArrayList<String> test_cost = new ArrayList<>();
-        test_cost.add("RI");
-        test_cost.add("S7");
+        int[] out = buildCost(res);
+        System.out.println("Cost is " + Arrays.toString(out));
 
-        int[] out = buildCost(test_cost);
-        System.out.println(out[0] + " " + out[1] + " " + out[2] + " " +out[3] + " " + out[4] + " " + out[5]);
+        System.out.println(costPossible(target, "RI,R0,S3,R2,S4,R3", new int[]{3,1,0,1,1,2}));
     }
 }

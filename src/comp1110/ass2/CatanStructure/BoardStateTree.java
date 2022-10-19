@@ -92,9 +92,9 @@ public class BoardStateTree extends GameTree {
                 }
             }
         }
-        System.out.println("AFTER CONSTRUCTION " + roads_list);
-        ArrayList<Object> test = new ArrayList<>();
-        System.out.println("Folded is " + roads.fold(test));
+//        System.out.println("AFTER CONSTRUCTION " + roads_list);
+//        ArrayList<Object> test = new ArrayList<>();
+//        System.out.println("Folded is " + roads.fold(test));
     }
 
 
@@ -136,8 +136,8 @@ public class BoardStateTree extends GameTree {
                 String problem_structure = problems.get(id);
                 Boolean test = this.roads.canPrune(id);
                 ArrayList<Object> testing = new ArrayList<>();
-                System.out.println(this.roads.fold(testing));
-                System.out.println("Test is " + test);
+//                System.out.println(this.roads.fold(testing));
+//                System.out.println("Test is " + test);
                 if (test && !(board_state_array.contains(problem_structure))){
                     // Remove any null branches from this move
                     GameTree new_tree = new GameTree();
