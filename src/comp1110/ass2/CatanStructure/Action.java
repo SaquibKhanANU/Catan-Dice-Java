@@ -13,6 +13,7 @@ public class Action {
     public int out;
 
     // Assumes the action is well-formed
+    // Author: John Larkin
     public Action(String action_string){
         this.first = action_string.charAt(0);
         if (first == 'b'){

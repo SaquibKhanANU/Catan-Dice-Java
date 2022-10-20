@@ -6,7 +6,7 @@ import comp1110.ass2.gui.Game;
 import java.util.ArrayList;
 import java.util.List;
 
-// Author: Saquib Khan and John Larkin (check this)
+// Author: Saquib Khan and John Larkin
 public class CatanPlayer {
 
     // The index distinguishes the player, either 0,1,2,3

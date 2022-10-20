@@ -186,7 +186,9 @@ public class CatanDice {
      * otherwise.
      */
 
-// Author: John Larkin
+    static String[] ORDERED_LIST = new String[]{"RI", "R0", "R2", "R3", "R5", "R6", "R7", "R8", "R9", "R10", "R11", "R1", "R4", "R12", "R13", "R14", "R15", "S3", "S4", "S5", "S7", "S9", "S11", "C7", "C12", "C20", "C30", "J1", "J2", "J3", "J4", "J5", "J6", "K1", "K2", "K3", "K4", "K5", "K6"};
+
+    // Author: John Larkin
     public static boolean checkBuildConstraints(String structure, String board_state) {
         String[] boardStateArray = board_state.split(",");
         List<String> boardStateList = asList(boardStateArray);
@@ -216,10 +218,14 @@ public class CatanDice {
             if (value == 3) {
                 return true;
             }
+            String previous_structure = null;
+            for (int i = 0 ; i < ORDERED_LIST.length; i++){
+                if (structure.equals(ORDERED_LIST[i])){previous_structure = ORDERED_LIST[i-1];}
+            }
             if (value == 4) {
-                return boardStateList.contains("R" + 2);
+                return boardStateList.contains("R" + 2) && boardStateList.contains(previous_structure);
             } else {
-                return boardStateList.contains("R" + value);
+                return boardStateList.contains("R" + value) && boardStateList.contains(previous_structure);
             }
         }
         // structure is a city
@@ -227,14 +233,19 @@ public class CatanDice {
             if (value == 7) {
                 return boardStateList.contains("R" + 1);
             }
+            String previous_structure = null;
+            for (int i = 0 ; i < ORDERED_LIST.length; i++){
+                if (structure.equals(ORDERED_LIST[i])){previous_structure = ORDERED_LIST[i-1];}
+            }
+
             if (value == 12) {
-                return boardStateList.contains("R" + 4);
+                return boardStateList.contains("R" + 4) && boardStateList.contains(previous_structure);
             }
             if (value == 20) {
-                return boardStateList.contains("R" + 13);
+                return boardStateList.contains("R" + 13) && boardStateList.contains(previous_structure);
             }
             if (value == 30) {
-                return boardStateList.contains("R" + 15);
+                return boardStateList.contains("R" + 15) &&  boardStateList.contains(previous_structure);
             }
         }
         // structure is a joker
@@ -248,11 +259,13 @@ public class CatanDice {
         // structure is a knight
         if (current_structure.type == 'K') {
             {
-                return boardStateList.contains("J" + (value));
+                if (value == 1){return boardStateList.contains("J" + (value));}
+                else {return boardStateList.contains("J" + (value))&& boardStateList.contains("K" + (value-1));}
             }
         }
         return false; // Task #8
     }
+
 
 
     /**
