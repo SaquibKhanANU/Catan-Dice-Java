@@ -2,7 +2,7 @@ package comp1110.ass2.CatanStructure;
 import comp1110.ass2.CatanDice;
 import comp1110.ass2.CatanEnum.ActionType;
 
-// Author: John Larkin and Saquib Khan? (check this)
+// Author: John Larkin and Saquib Khan
 public class Action {
     public ActionType actionType;
     public String type;
