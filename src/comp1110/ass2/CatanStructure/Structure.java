@@ -26,6 +26,8 @@ public class Structure {
 
     /**
      * Constructs a structure with the property of a buildable structure and gives it a resource cost
+     *
+     * @Author John Larkin and Saquib khan
      * @param id String id of the structure
      * @param coordinate int[] coordinate of structures position
      */

@@ -87,7 +87,7 @@ public class GameControls {
     /**
      * Constructs an instance of the game controls (all the buttons and visuals assocciated with them)
      * for each catan player. GameControls creates the game controls.
-     *
+     * @Author Saquib Khan
      * @param catanPlayer the catan player the game controls belong to
      */
     public GameControls(CatanPlayer catanPlayer) {
@@ -372,6 +372,7 @@ public class GameControls {
         /**
          * Constructs a button based on a name. The button also performs an action based on its name.
          * This constructor contains the visuals and checks if action can be performed before performing it.
+         * @Author Saquib Khan
          * @param name the string name of the button
          */
         public GameButtonsBoard(String name) {
@@ -488,6 +489,7 @@ public class GameControls {
          * depending on which type of action it is. Undos an action when an image is clicked again,
          * A clcik will highlight or unhighlight an image.
          *
+         * @Author Saquib Khan
          * @param name path from source root
          * @param x the x position of the image on a pane
          * @param y the y position of the image on a pane
@@ -824,6 +826,7 @@ public class GameControls {
          * Constructs the grid that the resource images of the resources in current resource_state of the player will
          * be displayed in and adds the images.
          *
+         * @Author Saquib Khan
          * @param resource_state the current resource state that is going to be displayed.
          */
         public CurrentResourceState(int[] resource_state) {
@@ -872,12 +875,13 @@ public class GameControls {
     }
 
     // Author: Saquib Khan
-    /**
-     * Constructs a side panel with rectangle for visuals
-     */
     static class SidePanel extends Rectangle {
         double height;
         double width;
+        /**
+         * Constructs a side panel with rectangle for visuals
+         * @Author Saquib Khan
+         */
         SidePanel(double height, double width, double x, double y) {
             this.height = height;
             this.width = width;
@@ -899,6 +903,7 @@ public class GameControls {
         /**
          * Constructs a score text according to a given score.
          *
+         * @Author Saquib Khan
          * @param x x-cooridnate position
          * @param y y-coordinate postion
          * @param score the score value being represented by the score text.
@@ -997,7 +1002,9 @@ public class GameControls {
     // Author: Saquib Khan
     public class Warning extends Text {
         /**
-         * Constructs an warning text according to a given warning.
+         * Constructs a warning text according to a given warning.
+         *
+         * @Author Saquib Khan
          * @param warning A string of text representing the warning.
          */
         public Warning(String warning) {
@@ -1012,6 +1019,9 @@ public class GameControls {
         }
     }
 
+    /**
+     * Creates the visuals for the clickable buttons of catan dice
+     */
     private void createGameButtons() {
         ChooseBoardBox gameButtons;
         GameButtonsBoard rollDice = new GameButtonsBoard("ROLL DICE");
@@ -1029,6 +1039,9 @@ public class GameControls {
         controls.getChildren().addAll(gameButtons);
     }
 
+    /**
+     * Creates the buttons to switch between player boards
+     */
     private void createChooseBoard() {
         ChooseBoardBox vbox;
         GameButtonsBoard playerOne = new GameButtonsBoard("PLAYER ONE");

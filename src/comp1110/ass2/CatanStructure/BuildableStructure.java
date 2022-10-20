@@ -24,9 +24,10 @@ public class BuildableStructure {
     private ResourceType resourceType;
 
     /**
-     * Constructor for the BuildableStructure class that allows for specifying the structure's
+     * Constructor for the Buildable Structure class that allows for specifying the structure's
      * coordinates and its type on a specific players board.
      *
+     * @Author Saquib Khan
      * @param x int
      * @param y int
      * @param structure_type StructureType
