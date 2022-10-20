@@ -29,7 +29,7 @@ public class TestPlaceRemoveStructureBlocks {
             "RRRCCCSYSRRSSCCSRRSC", // replace a different structure with another should fail
     };
 
-    private static final Structure[] ICE_BLOCKS = new Structure[]{
+    private static final Structure[] STRUCTURES = new Structure[]{
             new Structure("R", new int[]{4,0}),
             new Structure("S", new int[]{3,1}),
             new Structure("C", new int[]{2,1}),
@@ -44,11 +44,11 @@ public class TestPlaceRemoveStructureBlocks {
     @Test
     public void testPlacement() {
         makeArrayList();
-        for (int i = 0; i < ICE_BLOCKS.length; i++) {
+        for (int i = 0; i < STRUCTURES.length; i++) {
             CatanBoard catanBoard = new CatanBoard(STATES[i]);
             CatanBoard expected = new CatanBoard(EXPECTED_STATES[i]);
             String boardString = catanBoard.boardToString();
-            catanBoard.placeStructureBlock(ICE_BLOCKS[i]);
+            catanBoard.placeStructureBlock(STRUCTURES[i]);
             for (int y = 0; y < 4; y++) {
                 for (int x = 0; x < 5; x++) {
                     BuildableStructure actual = catanBoard.getBuildableStructure(x, y);
@@ -65,11 +65,11 @@ public class TestPlaceRemoveStructureBlocks {
     @Test
     public void testRemoveIceBlock() {
         testPlacement();
-        for (int i = 0; i < ICE_BLOCKS.length; i++) {
+        for (int i = 0; i < STRUCTURES.length; i++) {
             CatanBoard catanBoard = new CatanBoard(STATES[i]);
             CatanBoard expected = new CatanBoard(STATES[i]);
-            catanBoard.placeStructureBlock(ICE_BLOCKS[i]);
-            catanBoard.removeStructureBlock(ICE_BLOCKS[i]);
+            catanBoard.placeStructureBlock(STRUCTURES[i]);
+            catanBoard.removeStructureBlock(STRUCTURES[i]);
             for (int y = 0; y < 4; y++) {
                 for (int x = 0; x < 5; x++) {
                     BuildableStructure exp = expected.getBuildableStructure(x, y);
