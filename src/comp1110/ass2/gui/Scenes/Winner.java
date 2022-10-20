@@ -6,14 +6,16 @@ import comp1110.ass2.gui.Controls.GameControls;
 import comp1110.ass2.gui.Game;
 import gittest.B;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -32,7 +34,7 @@ public class Winner extends Pane {
     public Winner(int players, ArrayList<CatanPlayer> catanPlayers) {
         this.players = players;
         this.catanPlayers = catanPlayers;
-        goBack();
+        Buttons();
         this.setBackground(new Background(new BackgroundFill(Color.web("#439527"), CornerRadii.EMPTY, Insets.EMPTY)));
         getChildren().addAll(new WinnerBoard(catanPlayers), board);
     }
@@ -59,14 +61,73 @@ public class Winner extends Pane {
         }
     }
 
-    private void goBack() {
-        Button goBack = new Button();
-        goBack.setText("GO BACK");
-        goBack.setLayoutX(100);
-        goBack.setLayoutY(500);
-        goBack.setOnMousePressed(e -> {
-            Game.scenes.activate("PLAYER ONE");
-        });
-        board.getChildren().add(goBack);
+    private void Buttons() {
+        WinnerPageButton goBack = new WinnerPageButton("GO BACK");
+        WinnerPageButton restart = new WinnerPageButton("RESTART");
+        ButtonBox buttonBox = new ButtonBox(
+                goBack,
+                restart
+        );
+        buttonBox.setTranslateX(100);
+        buttonBox.setTranslateY(600);
+        board.getChildren().add(buttonBox);
+    }
+
+    private static class ButtonBox extends VBox {
+        public ButtonBox(WinnerPageButton... items) {
+            getChildren().add(createSeperator());
+
+            for (WinnerPageButton item : items) {
+                getChildren().addAll(item, createSeperator());
+            }
+        }
+        private Line createSeperator() {
+            Line sep = new Line();
+            sep.setEndX(210);
+            sep.setStroke(Color.TAN);
+            return sep;
+        }
+    }
+
+    private class WinnerPageButton extends StackPane {
+        public WinnerPageButton(String name) {
+            LinearGradient gradient = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, new Stop(0, Color.TAN),
+                    new Stop(0.1, Color.BLACK),
+                    new Stop(0.9, Color.BLACK),
+                    new Stop(1, null));
+
+            Rectangle bg = new Rectangle(200, 30);
+            bg.setOpacity(0.4);
+
+            Text text = new Text(name);
+            text.setFill(Color.SANDYBROWN);
+            text.setFont(Font.font("Times New Roman", FontWeight.SEMI_BOLD, 20));
+
+            setAlignment(Pos.CENTER);
+            getChildren().addAll(bg, text);
+
+            setOnMouseEntered(event -> {
+                bg.setFill(gradient);
+                text.setFill(Color.WHITE);
+            });
+
+            setOnMouseExited(event -> {
+                bg.setFill(Color.BLACK);
+                text.setFill(Color.SANDYBROWN);
+            });
+
+            setOnMouseReleased(event -> {
+                bg.setFill(gradient);
+            });
+            if (name.equals("RESTART")) {
+                setOnMousePressed(e -> {
+                    Game.scenes.activate("Menu");
+                });
+            } else {
+                setOnMousePressed(e->{
+                    Game.scenes.activate("PLAYER ONE");
+                });
+            }
+        }
     }
 }

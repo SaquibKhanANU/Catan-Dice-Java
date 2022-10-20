@@ -244,7 +244,6 @@ public class GameControls {
     private void tradeButton() {
         swapAndTradePopUp(null, ActionType.TRADE);
         swapResourceStage.show();
-        System.out.println("TRADE");
     }
 
     /**
@@ -283,7 +282,7 @@ public class GameControls {
             // CHANGE ROUND
             catanPlayer.turn_num++;
         } catch (NullPointerException e) {
-            System.out.println("GAME END");
+            new Warning("GAME END");
         }
         // UPDATE STRUCTURES
         for (Structure c : catanPlayer.structures) {
@@ -298,6 +297,7 @@ public class GameControls {
                 catanPlayer.setCurrentTurn(false);
                 ArrayList<CatanPlayer> catanPlayers = new ArrayList<>();
                 catanPlayers.add(Game.playerOne);
+                Game.oneBoard.getChildren().add(createReturnButton());
                 Game.winner = new Winner(1, catanPlayers);
                 Game.scenes.addScreen("WINNER", Game.winner);
                 Game.scenes.activate("WINNER");
@@ -311,10 +311,13 @@ public class GameControls {
                 Game.playerOne.setCurrentTurn(true);
                 Game.scenes.activate("PLAYER ONE");
                 if (Game.gameState.round >= 15) {
+                    Game.playerOne.setCurrentTurn(false);
                     catanPlayer.setCurrentTurn(false);
                     ArrayList<CatanPlayer> catanPlayers = new ArrayList<>();
                     catanPlayers.add(Game.playerOne);
                     catanPlayers.add(Game.playerTwo);
+                    Game.oneBoard.getChildren().add(createReturnButton());
+                    Game.twoBoard.getChildren().add(createReturnButton());
                     Game.winner = new Winner(2, catanPlayers);
                     Game.scenes.addScreen("WINNER", Game.winner);
                     Game.scenes.activate("WINNER");
@@ -332,11 +335,15 @@ public class GameControls {
                 Game.playerOne.setCurrentTurn(true);
                 Game.scenes.activate("PLAYER ONE");
                 if (Game.gameState.round >= 15) {
+                    Game.playerOne.setCurrentTurn(false);
                     catanPlayer.setCurrentTurn(false);
                     ArrayList<CatanPlayer> catanPlayers = new ArrayList<>();
                     catanPlayers.add(Game.playerOne);
                     catanPlayers.add(Game.playerTwo);
                     catanPlayers.add(Game.playerThree);
+                    Game.oneBoard.getChildren().add(createReturnButton());
+                    Game.twoBoard.getChildren().add(createReturnButton());
+                    Game.threeBoard.getChildren().add(createReturnButton());
                     Game.winner = new Winner(3, catanPlayers);
                     Game.scenes.addScreen("WINNER", Game.winner);
                     Game.scenes.activate("WINNER");
@@ -353,16 +360,21 @@ public class GameControls {
                 Game.playerFour.setCurrentTurn(true);
                 Game.scenes.activate("PLAYER FOUR");
             } else {
-                Game.gameState.round+=20;
+                Game.gameState.round++;
                 Game.playerOne.setCurrentTurn(true);
                 Game.scenes.activate("PLAYER ONE");
                 if (Game.gameState.round >= 15) {
+                    Game.playerOne.setCurrentTurn(false);
                     catanPlayer.setCurrentTurn(false);
                     ArrayList<CatanPlayer> catanPlayers = new ArrayList<>();
                     catanPlayers.add(Game.playerOne);
                     catanPlayers.add(Game.playerTwo);
                     catanPlayers.add(Game.playerThree);
                     catanPlayers.add(Game.playerFour);
+                    Game.oneBoard.getChildren().add(createReturnButton());
+                    Game.twoBoard.getChildren().add(createReturnButton());
+                    Game.threeBoard.getChildren().add(createReturnButton());
+                    Game.fourBoard.getChildren().add(createReturnButton());
                     Game.winner = new Winner(4, catanPlayers);
                     Game.scenes.addScreen("WINNER", Game.winner);
                     Game.scenes.activate("WINNER");
@@ -475,6 +487,10 @@ public class GameControls {
                         Game.boardName.add(catanPlayer.name);
                         Game.scenes.activate("INSTRUCTIONS");
                     }
+                    case "RESTART" -> {
+
+                        Game.scenes.activate("Menu");
+                    }
                     default -> Game.scenes.activate(name);
                 }
             });
@@ -490,6 +506,8 @@ public class GameControls {
         ResourceType resourceType;
         // Counts how many times a image is clicked (0 is off) (1 is on)
         AtomicInteger countClick = new AtomicInteger();
+        // if Image has been clicked
+        boolean imageClick = false;
 
         /**
          * Resource image is a clickable image used to perform an action done through the image
@@ -511,10 +529,10 @@ public class GameControls {
             setY(y);
             setImage(c);
             setOnMouseEntered(e -> {
-                if (clickable && imageClickOff) setEffect(new Glow(1));
+                if (clickable && imageClickOff && !imageClick) setEffect(new Glow(1));
             });
             setOnMouseExited(e -> {
-                if (clickable && imageClickOff) setEffect(null);
+                if (clickable && imageClickOff && !imageClick) setEffect(null);
             });
             setOnMousePressed(event -> {
                 System.out.println(catanPlayer.board_state);
@@ -568,6 +586,7 @@ public class GameControls {
                         if (diceRollCount < 3) {
                             countClick.getAndIncrement();
                             if (countClick.get() == 1) {
+                                imageClick = true;
                                 imageClickOff = false;
                                 Blend blend = new Blend();
                                 blend.setMode(BlendMode.ADD);
@@ -577,10 +596,9 @@ public class GameControls {
                                 blend.setTopInput(dropShadow);
                                 setEffect(blend);
                                 indexOfDice.add(diceArrayList.indexOf(this));
-                                System.out.println(this);
                                 reRollDice.add(this);
-                                System.out.println("ADDED");
                             } else {
+                                imageClick = false;
                                 imageClickOff = true;
                                 setEffect(null);
                                 countClick.set(0);
@@ -636,7 +654,6 @@ public class GameControls {
                                 case BRICKS -> catanPlayer.changeResourceState(4, -1);
                                 case GOLD -> catanPlayer.changeResourceState(5, -1);
                             }
-                            System.out.println(clickedAlready);
                         } else {
                             imageClickOff = true;
                             setEffect(null);
@@ -659,7 +676,6 @@ public class GameControls {
                             case BRICKS -> catanPlayer.changeResourceState(4, +1);
                             case GOLD -> catanPlayer.changeResourceState(5, +1);
                         }
-                        System.out.println(this);
                         int index = 0;
                         String[] knightId = new String[]{"J1", "J2", "J3", "J4", "J5", "J6"};
                         for (GameBoard.KnightShape knightShape : knightsList) {
@@ -1081,13 +1097,23 @@ public class GameControls {
         this.chooseBoard.getChildren().addAll(vbox);
     }
     public void createInstructionsButton() {
-        GameButtonsBoard insturctionsButton = new GameButtonsBoard("INSTRUCTIONS");
+        GameButtonsBoard instructionsButton = new GameButtonsBoard("INSTRUCTIONS");
         ChooseBoardBox vbox = new ChooseBoardBox(
-                insturctionsButton
+                instructionsButton
         );
         vbox.setTranslateX(-3);
         vbox.setTranslateY(630);
         instructions.getChildren().add(vbox);
+    }
+
+    public ChooseBoardBox createReturnButton() {
+        GameButtonsBoard returnButton = new GameButtonsBoard("RESTART");
+        ChooseBoardBox vbox = new ChooseBoardBox(
+                returnButton
+        );
+        vbox.setTranslateX(435);
+        vbox.setTranslateY(330);
+        return vbox;
     }
     // Author: Saquib Khan, Heavily influenced by third party.
     private class ChooseBoardBox extends VBox {
