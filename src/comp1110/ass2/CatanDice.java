@@ -580,12 +580,14 @@ public class CatanDice {
     public static String[] buildPlan(String target_structure,
                                      String board_state,
                                      int[] resource_state) {
-        ArrayList<String> board_state_list = requiredStructures(target_structure, board_state);
-        board_state_list.add(target_structure);
-        // Now the board_state_list contains all the structures that need to be built including the target structure
-        int[] total_cost = buildCost(board_state_list);
-        // Check resource_state against the cost, need to consider trades and swaps
 
+        ArrayList<String[]> all_actions = allActionSequences(target_structure, board_state, resource_state);
+        for (int i = 0; i < all_actions.size(); i++){
+            String[] current_action_sequence = all_actions.get(i);
+            if (canDoSequence(current_action_sequence, board_state, resource_state)){
+                return current_action_sequence;
+            }
+        }
 
         return null; // FIXME: Task #14
     }
@@ -595,7 +597,6 @@ public class CatanDice {
      * Return the necessary structures needed to reach the target structure,
      * Assumes the board state is valid.
      * @param target_structure
-     * @param board_state
      * @return An arraylist with only the necessary structures to build the target structure.
      * The result does not include the target structure.
      * The result only contains the roads, settlements and cities needed and not structures already built
@@ -640,6 +641,20 @@ public class CatanDice {
                     if (!(current_state_list.contains(entire_tree.cities.get(i)))){res.add(entire_tree.cities.get(i));}
                 }
             }
+        }
+        if (target.type == 'J'){
+            ArrayList<Object> jokers_list = new ArrayList<>();
+            entire_tree.jokersAndKnights.fold(jokers_list);
+            for (int i = 0; i < jokers_list.size() ; i++){
+                Structure current = new Structure((String) jokers_list.get(i));
+                if (current.value == target.value){break;}
+                else {
+                    if (!(current_state_list.contains(jokers_list.get(i))) && current.type == 'J'){
+                        if (!(current_state_list.contains("K" + current.value))){res.add((String) jokers_list.get(i));}
+                    }
+                }
+            }
+
         }
             return res;}
 
@@ -697,26 +712,211 @@ public class CatanDice {
         for (int i = 0; i < resource_state.length - 1; i++) {
             total_resource_state_invariant += resource_state[i];
         }
-        // If the board state contains J6 but not K6 then we can add one to the total_resource_state_invariant
 
-
+        if (total_cost_invariant <= total_resource_state_invariant){
+            System.out.println("Possible without trading for gold");
+            return true;}
 
         total_resource_state_invariant += additions_from_trade;
-        if (total_cost_invariant <= total_resource_state_invariant){return true;}
+        if (total_cost_invariant <= total_resource_state_invariant){
+            System.out.println("Possible but gold must be traded");
+            return true;}
+
         return false;
     }
 
+    static String[] trade_array = new String[]{"trade 0","trade 1","trade 2","trade 3","trade 4"};
+
+    public static String[] makeSwaps(){
+        ArrayList<String> res = new ArrayList<>();
+        for (int i = 0; i <= 5; i++){
+            for (int j = 0; j <=5; j++){
+                if (i != j){res.add("swap " + i + " " + j);}
+            }
+        }
+        String[] res_array = new String[0];
+        res_array = res.toArray(res_array);
+    return res_array;
+    }
+
+    /**
+     * Generate all possible action sequences to build the target structure. Does not consider if
+     * the sequence is possible.
+     * @param target_structure
+     * @param board_state
+     * @param resource_state
+     * @return A Set of ArrayLists that contain the action sequences.
+     */
+    public static ArrayList<String[]> allActionSequences(String target_structure,
+                                                                String board_state,
+                                                                int[] resource_state){
+        ArrayList<String[]> res = new ArrayList<>();
+        // Generate all possible action sequences to build the target structure
+        ArrayList<String> board_state_list = requiredStructures(target_structure, board_state);
+        board_state_list.add(target_structure);
+        // Now the board_state_list contains all the structures that need to be built including the target structure
+        // The total cost of these buildings
+        int[] total_cost = buildCost(board_state_list);
+        // All of the structure actions, for example build R1, build R2, ...
+        ArrayList<String> structure_actions = new ArrayList<>();
+        for (int i = 0; i < board_state_list.size(); i++){
+            structure_actions.add(toAction(board_state_list.get(i)));
+        }
+        // Now structure_actions contains all the actions related to the structures that need to be built
+        System.out.println("TEST, these are the structure_actions " + structure_actions);
+        // We can either try to build the structures straight way or do trades and swaps beforehand.
+        // Add these actions to the set, this corresponds to trying to build without trades and swaps
+        String[] structure_actions_array = new String[0];
+        structure_actions_array = structure_actions.toArray(structure_actions_array);
+        res.add(structure_actions_array);
+        // The structure_actions_array is now not changed
+        // Now consider trades and swaps
+        // WLOG all of the trades can be done at the start, swaps may need to be intertwined with the builds if there are jokers
+        int number_of_trades = resource_state[5]/2;
+
+        // look at only doing one trade
+        for (int i = 0; i < trade_array.length; i++){
+            ArrayList<String> to_add = new ArrayList<>();
+            // Add the structure_actions_array elements to the to_add arraylist
+            Collections.addAll(to_add ,structure_actions_array);
+            to_add.add(0,trade_array[i]);
+            // Convert to_add to an array
+            String[] to_add_array = new String[0];
+            to_add_array = to_add.toArray(to_add_array);
+            res.add(to_add_array);
+        }
+        // Two trades
+        for (int i = 0; i < trade_array.length; i++){
+            for (int j = 0; j < trade_array.length; j++) {
+                ArrayList<String> to_add = new ArrayList<>();
+                // Add the structure_actions_array elements to the to_add arraylist
+                Collections.addAll(to_add, structure_actions_array);
+                to_add.add(0, trade_array[i]);
+                to_add.add(0, trade_array[j]);
+                // Convert to_add to an array
+                String[] to_add_array = new String[0];
+                to_add_array = to_add.toArray(to_add_array);
+                res.add(to_add_array);
+            }
+        }
+        String[] allSwaps = makeSwaps();
+        // look at only doing one swap
+        for (int i = 0; i < allSwaps.length; i++){
+            ArrayList<String> to_add = new ArrayList<>();
+            // Add the structure_actions_array elements to the to_add arraylist
+            Collections.addAll(to_add ,structure_actions_array);
+            to_add.add(0,allSwaps[i]);
+            // Convert to_add to an array
+            String[] to_add_array = new String[0];
+            to_add_array = to_add.toArray(to_add_array);
+            res.add(to_add_array);
+        }
+        // look at only doing one swap after build
+        for (int i = 0; i < allSwaps.length; i++){
+            ArrayList<String> to_add = new ArrayList<>();
+            // Add the structure_actions_array elements to the to_add arraylist
+            Collections.addAll(to_add ,structure_actions_array);
+            to_add.add(1,allSwaps[i]);
+            // Convert to_add to an array
+            String[] to_add_array = new String[0];
+            to_add_array = to_add.toArray(to_add_array);
+            res.add(to_add_array);
+        }
+        // one trade and one swap
+        for (int i = 0; i < allSwaps.length; i++){
+            for (int j = 0; j < trade_array.length; j++) {
+                ArrayList<String> to_add = new ArrayList<>();
+                // Add the structure_actions_array elements to the to_add arraylist
+                Collections.addAll(to_add, structure_actions_array);
+                to_add.add(0, allSwaps[i]);
+                to_add.add(0, trade_array[j]);
+                // Convert to_add to an array
+                String[] to_add_array = new String[0];
+                to_add_array = to_add.toArray(to_add_array);
+                res.add(to_add_array);
+            }
+        }
+        // Two swaps
+        for (int i = 0; i < allSwaps.length; i++){
+            for (int j = 0; j < allSwaps.length; j++) {
+                ArrayList<String> to_add = new ArrayList<>();
+                // Add the structure_actions_array elements to the to_add arraylist
+                Collections.addAll(to_add, structure_actions_array);
+                to_add.add(0, allSwaps[j]);
+                to_add.add(0, allSwaps[i]);
+                // Convert to_add to an array
+                String[] to_add_array = new String[0];
+                to_add_array = to_add.toArray(to_add_array);
+                res.add(to_add_array);
+            }
+        }
+
+        return res;
+    }
+
+    // Given a structure to build, for example R1, return "build R1".
+    public static String toAction(String structure){
+        return "build " + structure;
+    }
 
 
     public static void main(String[] args) {
-        String target = "C7";
-        ArrayList<String> res = requiredStructures(target, "RI,R0,S3,R2,S4,R3");
-        res.add(target);
-        System.out.println("Must build " + res );
+//        String target = "J3";
+//        ArrayList<String> res = requiredStructures(target, "RI,R0,J1");
+//        res.add(target);
+//        System.out.println("Must build " + res );
+//
+//        int[] out = buildCost(res);
+//        System.out.println("Cost is " + Arrays.toString(out));
 
-        int[] out = buildCost(res);
-        System.out.println("Cost is " + Arrays.toString(out));
+        for (int i = 0; i < trivial_board.length; i++){
+            System.out.println(Arrays.toString(buildPlan(trivial_target[i], trivial_board[i], trivial_resources[i])));
+        }
 
-        System.out.println(costPossible(target, "RI,R0,S3,R2,S4,R3", new int[]{3,1,0,1,1,2}));
+
+        //System.out.println(allActionSequences("R3", "RI,R0,R1", new int[]{0,0,0,2,2,2}));
+        //System.out.println(makeSwaps());
     }
+
+
+    static String[] trivial_board = {
+            "R0,S3,R1",
+            "R0,S3,R1,J1,J2",
+            "R0,S3,R1,C7,R2,S4,R3,R4,R5,R6",
+            "R0,S3,R1,C7,R2,S4,R3,R4,R5,R6,K1,K2,K3",
+            "R0,S3,R1",
+            "R0,S3,R1,C7,R2,S4,R3,R4,R5,R6",
+            "R0,S3,R1",
+            "R0,S3,R1,C7,R2,S4,R3,R4,R5,R6"
+    };
+    static int[][] trivial_resources = {
+            { 1,1,1,0,0,3 } ,
+            { 1,2,2,0,0,1 } ,
+            { 3,2,1,0,0,0 } ,
+            { 1,1,1,1,1,1 } ,
+            { 2,0,1,2,1,0 } ,
+            { 0,1,1,2,2,0 } ,
+            { 4,2,0,0,0,0 } ,
+            { 0,0,1,1,1,3 }
+    };
+    static String[] trivial_target = {
+            "J1",
+            "J3",
+            "C12",
+            "J4",
+            "R2",
+            "S5",
+            "C7",
+            "R7"
+    };
+//    static String[][][] trivial_plans = {
+//            {{"build J1"}},
+//            {{"build J3"}},
+//            {{"build C12"}},
+//            {{"build J4"}},
+//            {{"build R2"}},
+//            {{"build S5"}},
+//            {{"build C7"}},
+//            {{"build R7"}}
+//    };
 }

@@ -9,13 +9,13 @@ public class BoardStateTree extends GameTree {
 
     // A BoardStateTree encodes the ordering in which structures need to be built
     // Encode the current jokers, knights
-    GameTree jokersAndKnights = new GameTree();
+    public GameTree jokersAndKnights = new GameTree();
     // Encode the cities
     public ArrayList<String> cities = new ArrayList<>();
     // Encode the settlements
     public ArrayList<String> settlements = new ArrayList<>();
     // Encode the roads
-    GameTree roads = new GameTree();
+    public GameTree roads = new GameTree();
 
     public String board_state = new String();
 
