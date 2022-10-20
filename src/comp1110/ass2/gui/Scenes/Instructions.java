@@ -19,12 +19,12 @@ import javafx.scene.text.Text;
 public class Instructions extends Pane {
     static String dice_roll_instruction =
             "Roll dice to gain resources. \n" +
-            "You have six dice to roll on your turn. \n" +
-            "1. Select 'Roll Dice' in the top right to roll the dice.\n " +
-            "Your resources will appear in the resource bank. \n"+
+                    "You have six dice to roll on your turn. \n" +
+                    "1. Select 'Roll Dice' in the top right to roll the dice.\n " +
+                    "Your resources will appear in the resource bank. \n"+
                     "2. Click the resources in the top row to re-roll those dice.\n " +
-           "Select roll dice to re-roll. \n" +
-            "3. Re-roll the dice up to two times.";
+                    "Select roll dice to re-roll. \n" +
+                    "3. Re-roll the dice up to two times.";
 
     static String build_instruction = "Build Settlements, Cities and Knights on your turn \n" +
             "1. Check the cost card for the cost of the item.\n " +
@@ -183,3 +183,4 @@ public class Instructions extends Pane {
         }
     }
 }
+
