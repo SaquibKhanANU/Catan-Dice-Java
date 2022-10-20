@@ -17,6 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 // Author: Saquib Khan
@@ -39,10 +40,10 @@ public class Game extends Application {
     public static GameState gameState;
     public static Winner winner;
     public static Instructions instructions;
+    public static ArrayList<String> boardName = new ArrayList<>();
 
     @Override
     public void start(Stage stage) throws Exception {
-        scene.setFill(Color.NAVAJOWHITE);
         stage.setResizable(false);
 
         this.menu = new Menu();

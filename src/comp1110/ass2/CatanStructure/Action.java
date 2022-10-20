@@ -31,7 +31,7 @@ public class Action {
             this.out = Integer.parseInt(action_string.substring(5,6));
         }
     }
-
+    
     public Action(ActionType actionType) {
         this.actionType = actionType;
     }
