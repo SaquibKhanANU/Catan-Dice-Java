@@ -4,6 +4,7 @@ import java.util.*;
 
 import static java.util.Collections.sort;
 
+// Author: John Larkin
 public class BoardStateTree extends GameTree {
 
 

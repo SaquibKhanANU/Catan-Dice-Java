@@ -4,6 +4,7 @@ import comp1110.ass2.gui.Game;
 
 import java.util.ArrayList;
 
+// Author: John Larkin
 public class GameTree {
 
     Object node;

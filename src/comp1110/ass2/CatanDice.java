@@ -63,7 +63,7 @@ public class CatanDice {
      * @return true iff the string is a well-formed representation of
      * a board state, false otherwise.
      */
-    // John Larkin
+    // Author: John Larkin
     public static boolean isActionWellFormed(String action) { // Task #4
         // The strings to check. Strings contain a space at the end.
         String build = "build ";
@@ -141,6 +141,7 @@ public class CatanDice {
         return false;
     }
 
+    // Author: John Larkin
     /**
      * Roll the specified number of dice and add the result to the
      * resource state.
@@ -185,7 +186,7 @@ public class CatanDice {
      * otherwise.
      */
 
-// John Larkin
+// Author: John Larkin
     public static boolean checkBuildConstraints(String structure, String board_state) {
         String[] boardStateArray = board_state.split(",");
         List<String> boardStateList = asList(boardStateArray);
@@ -294,7 +295,7 @@ public class CatanDice {
      * @return true iff the structure can be built with the available
      * resources, false otherwise.
      */
-    // John Larkin
+    // Author: John Larkin
     public static boolean checkResourcesWithTradeAndSwap(String structure,
                                                          String board_state,
                                                          int[] resource_state) {
@@ -373,6 +374,7 @@ public class CatanDice {
         return true;
     }
 
+    // Author: John Larkin
     /**
      * Check if a player action (build, trade or swap) is executable in the
      * given board and resource state.
@@ -416,6 +418,7 @@ public class CatanDice {
         return false; //Task #9
     }
 
+    // Author: John Larkin
     /**
      * Check if the specified sequence of player actions is executable
      * from the given board and resource state.
@@ -488,7 +491,7 @@ public class CatanDice {
         return res;
     }
 
-
+    // Author: John Larkin
     // Given array1 and array 2 assumed to be of the same length and not empty
     // Return an array that is a componentwise subtraction of array1 - array2
     public static int[] subtractArray(int[] array1, int[] array2) {
@@ -499,6 +502,7 @@ public class CatanDice {
         return res;
     }
 
+    // Author: John Larkin
     /**
      * Find the path of roads that need to be built to reach a specified
      * (unbuilt) structure in the current board state. The roads should
@@ -551,9 +555,10 @@ public class CatanDice {
         for (int l = 0; l < res_array.length; l++) {
             result[l] = res_array[l].toString();
         }
-        return result; // FIXME: Task #13
+        return result; // Task #13
     }
 
+    // Author: John Larkin
     /**
      * Generate a plan (sequence of player actions) to build the target
      * structure from the given board and resource state. The plan may
@@ -588,18 +593,17 @@ public class CatanDice {
                 return current_action_sequence;
             }
         }
-
-        return null; // FIXME: Task #14
+        return null; // Task #14
     }
 
-
+    // Author: John Larkin
     /**
      * Return the necessary structures needed to reach the target structure,
      * Assumes the board state is valid.
      * @param target_structure
      * @return An arraylist with only the necessary structures to build the target structure.
      * The result does not include the target structure.
-     * The result only contains the roads, settlements and cities needed and not structures already built
+     * The result only contains the roads, settlements, cities and jokers needed and not structures already built
      */
     public static ArrayList<String> requiredStructures(String target_structure,
                                                        String board_state) {
@@ -659,74 +663,10 @@ public class CatanDice {
             return res;}
 
 
-    /**
-     * Find the cost of building the specified structures in the ArrayList
-     * @param structures: The structures to build
-     * @return the resource cost of building all of these structures in an integer array
-     */
-    public static int[] buildCost(ArrayList<String> structures){
-        int[] res = new int[6];
-        for (int i = 0; i < structures.size(); i++){
-            Structure current = new Structure(structures.get(i));
-            int[] current_cost = current.getResourceCost();
-            for (int j = 0; j < res.length; j++){
-                res[j] += current_cost[j];
-            }
-        }
-        return res;
-    }
-
-    /**
-     * costPossible determines if the current players resource_state is potentially sufficient to build the required
-     * structures (considering swaps and trades). Suppose we have a cost (an int[] representing all the resources
-     *  we need) that needs to be met for a build and a current resource_state of the player.
-     * Consider that the number of non gold resources in the resource_state is almost invariant.
-     * Consider a player with no gold. The only actions they can take to better their resource_state to reach the cost
-     * is swapping, which does not change the number of resources they have.
-     * Consider a player with 2n or 2n+1 gold for n>=1. They can trade to increase their non-gold resources by n.
-     * Therefore if the cost is less than what can potentially be added to the players resource_state
-     * then building all the structures may be possible.
-     *
-     * @param target_structure The target structure to build
-     * @param board_state The board state
-     * @param resource_state The resource state
-     * @return True iff the resource state could potentially be changed (through trades and swaps) to have enough resources
-     */
-    public static boolean costPossible(String target_structure,
-                                       String board_state,
-                                       int[] resource_state) {
-        ArrayList<String> board_state_list = requiredStructures(target_structure, board_state);
-        board_state_list.add(target_structure);
-        // Now the board_state_list contains all the structures that need to be built including the target structure
-        int[] total_cost = buildCost(board_state_list);
-        int additions_from_trade = 0;
-        if (resource_state[5] != 0) {
-            additions_from_trade = resource_state[5] / 2;
-        }
-        int total_cost_invariant = 0;
-        for (int i = 0; i < total_cost.length; i++) {
-            total_cost_invariant += total_cost[i];
-        }
-        int total_resource_state_invariant = 0;
-        // Do not consider how many gold are in the resource state, this is covered in a trade
-        for (int i = 0; i < resource_state.length - 1; i++) {
-            total_resource_state_invariant += resource_state[i];
-        }
-
-        if (total_cost_invariant <= total_resource_state_invariant){
-            System.out.println("Possible without trading for gold");
-            return true;}
-
-        total_resource_state_invariant += additions_from_trade;
-        if (total_cost_invariant <= total_resource_state_invariant){
-            System.out.println("Possible but gold must be traded");
-            return true;}
-
-        return false;
-    }
-
+    // Author: John Larkin
+    // Array containing possible trades
     static String[] trade_array = new String[]{"trade 0","trade 1","trade 2","trade 3","trade 4"};
-
+    // Array containing possible swaps
     public static String[] makeSwaps(){
         ArrayList<String> res = new ArrayList<>();
         for (int i = 0; i <= 5; i++){
@@ -739,6 +679,7 @@ public class CatanDice {
     return res_array;
     }
 
+    // Author: John Larkin
     /**
      * Generate all possible action sequences to build the target structure. Does not consider if
      * the sequence is possible.
@@ -755,15 +696,13 @@ public class CatanDice {
         ArrayList<String> board_state_list = requiredStructures(target_structure, board_state);
         board_state_list.add(target_structure);
         // Now the board_state_list contains all the structures that need to be built including the target structure
-        // The total cost of these buildings
-        int[] total_cost = buildCost(board_state_list);
+
         // All of the structure actions, for example build R1, build R2, ...
         ArrayList<String> structure_actions = new ArrayList<>();
         for (int i = 0; i < board_state_list.size(); i++){
             structure_actions.add(toAction(board_state_list.get(i)));
         }
         // Now structure_actions contains all the actions related to the structures that need to be built
-        System.out.println("TEST, these are the structure_actions " + structure_actions);
         // We can either try to build the structures straight way or do trades and swaps beforehand.
         // Add these actions to the set, this corresponds to trying to build without trades and swaps
         String[] structure_actions_array = new String[0];
@@ -854,69 +793,11 @@ public class CatanDice {
         return res;
     }
 
+    // Author: John Larkin
     // Given a structure to build, for example R1, return "build R1".
     public static String toAction(String structure){
         return "build " + structure;
     }
 
 
-    public static void main(String[] args) {
-//        String target = "J3";
-//        ArrayList<String> res = requiredStructures(target, "RI,R0,J1");
-//        res.add(target);
-//        System.out.println("Must build " + res );
-//
-//        int[] out = buildCost(res);
-//        System.out.println("Cost is " + Arrays.toString(out));
-
-        for (int i = 0; i < trivial_board.length; i++){
-            System.out.println(Arrays.toString(buildPlan(trivial_target[i], trivial_board[i], trivial_resources[i])));
-        }
-
-
-        //System.out.println(allActionSequences("R3", "RI,R0,R1", new int[]{0,0,0,2,2,2}));
-        //System.out.println(makeSwaps());
-    }
-
-
-    static String[] trivial_board = {
-            "R0,S3,R1",
-            "R0,S3,R1,J1,J2",
-            "R0,S3,R1,C7,R2,S4,R3,R4,R5,R6",
-            "R0,S3,R1,C7,R2,S4,R3,R4,R5,R6,K1,K2,K3",
-            "R0,S3,R1",
-            "R0,S3,R1,C7,R2,S4,R3,R4,R5,R6",
-            "R0,S3,R1",
-            "R0,S3,R1,C7,R2,S4,R3,R4,R5,R6"
-    };
-    static int[][] trivial_resources = {
-            { 1,1,1,0,0,3 } ,
-            { 1,2,2,0,0,1 } ,
-            { 3,2,1,0,0,0 } ,
-            { 1,1,1,1,1,1 } ,
-            { 2,0,1,2,1,0 } ,
-            { 0,1,1,2,2,0 } ,
-            { 4,2,0,0,0,0 } ,
-            { 0,0,1,1,1,3 }
-    };
-    static String[] trivial_target = {
-            "J1",
-            "J3",
-            "C12",
-            "J4",
-            "R2",
-            "S5",
-            "C7",
-            "R7"
-    };
-//    static String[][][] trivial_plans = {
-//            {{"build J1"}},
-//            {{"build J3"}},
-//            {{"build C12"}},
-//            {{"build J4"}},
-//            {{"build R2"}},
-//            {{"build S5"}},
-//            {{"build C7"}},
-//            {{"build R7"}}
-//    };
 }

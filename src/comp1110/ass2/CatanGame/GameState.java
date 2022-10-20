@@ -12,7 +12,7 @@ package comp1110.ass2.CatanGame;
  * in the game. The GameState also keeps track of the round number,
  * and the current players turn (turn number between 0 and num-1 inclusive).
  */
-// John Larkin
+// Author: John Larkin
 public class GameState {
     // The number of players, between 2 and 4.
     public int num;
