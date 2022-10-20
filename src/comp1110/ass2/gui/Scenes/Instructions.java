@@ -20,6 +20,7 @@ public class Instructions extends Pane {
 
 //    Group board = new Group();
 //    public Instructions() {
+
 //        goBack();
 //        this.setBackground(new Background(new BackgroundFill(Color.web("#439527"), CornerRadii.EMPTY, Insets.EMPTY)));
 //        getChildren().addAll(new Instructions.InstructionsBoard(), board);
@@ -37,7 +38,7 @@ public class Instructions extends Pane {
 //            setStrokeWidth(3);
 //
 //                Text swap = new Text();
-//                swap.setText("catanPlayer.name + ");
+//                swap.setText(" ");
 //                swap.setX(460);
 //                swap.setY(140);
 //                swap.setFill(Color.DARKGREEN);
@@ -46,6 +47,13 @@ public class Instructions extends Pane {
 //
 //        }
 //    }
+
+    class InstructionText extends Text {
+        InstructionText(String instructions, String title, double x, double y) {
+
+
+        }
+    }
 //
 //    // TOD0: FIX THIS
 //    private void goBack() {

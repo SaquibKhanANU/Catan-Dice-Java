@@ -40,7 +40,6 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-// Author: Saquib Khan
 public class GameBoard extends Pane {
     public static final double BOARD_WIDTH = 618;
     public static final double BOARD_HEIGHT = 670;
@@ -64,6 +63,7 @@ public class GameBoard extends Pane {
     /**
      * Constructs a game board pane based on a player, makes all the properties of a game board including
      * game controls.
+     * @Author Saquib Khan
      * @param catanPlayer which player the game board belongs to.
      */
     public GameBoard(CatanPlayer catanPlayer) {
@@ -81,6 +81,7 @@ public class GameBoard extends Pane {
 
     /**
      * Used only for Task 5 viewer, does same thing as first constructor but removes visuals not required.
+     * @Author Saquib Khan
      */
     public GameBoard() {
         setBackground(new Background(new BackgroundFill(Color.web("#3399ff"), CornerRadii.EMPTY, Insets.EMPTY)));
@@ -90,7 +91,6 @@ public class GameBoard extends Pane {
         getChildren().addAll(hexagonBoard, structuresBoard);
     }
 
-    // Author: Saquib Khan
     static class Hexagon extends Polygon {
         private final double radius;
         private final double radianStep = (2 * Math.PI) / 6;
@@ -99,6 +99,7 @@ public class GameBoard extends Pane {
 
         /**
          * The hexagon shape for the board layout
+         * @Author Saquib Khan
          * @param radius radius of the hexagon
          * @param color color of the hexagon
          */
@@ -131,12 +132,29 @@ public class GameBoard extends Pane {
             return (Math.tan(radianStep) * radius) / 2;
         }
     }
+    class ImageHexagon extends ImageView {
+        private ImageHexagon(String name, double x, double y) {
+            Image c = new Image("comp1110/ass2/assets/HexagonImages/" + name + ".png");
+            if (name.equals("AnyHex")) {
+                setFitHeight(220);
+                setFitWidth(240);
+            } else {
+                setFitHeight(300);
+                setFitWidth(300);
+            }
+
+            setTranslateX(x);
+            setTranslateY(y);
+            setImage(c);
+        }
+    }
     // Author: Saquib Khan
     class RoadShape extends Rectangle {
         double mouseX, mouseY;
 
         /**
          * Constructs the road shape for the roaed structure.
+         * @Author Saquib khan
          * @param roadX x coordintae on a pane
          * @param roadY y coordiante on a pane
          * @param rotation rotation of the shape
@@ -200,7 +218,7 @@ public class GameBoard extends Pane {
                                             gameControls.catanPlayer.structuresForRound.remove(draggableStructureBlock.structure);
                                             draggableStructureBlock.increaseResourceState();
                                             gameControls.currentResourceState(gameControls.catanPlayer.resource_state);
-                                            blocks.getChildren().remove(event.getTarget());
+                                            blocks.getChildren().remove(this);
                                         } else {
                                             new Warning("CANNOT REMOVE THIS STRUCTURE GIVEN CURRENT BOARD STATE");
                                         }
@@ -284,6 +302,7 @@ public class GameBoard extends Pane {
         double mouseX, mouseY;
         /**
          * Constructs the settlement shape for the road structure.
+         * @Author Saquib Khan
          * @param x x coordintae on a pane
          * @param y y coordiante on a pane
          * @param structureBlock if settlement shape is a structure block or not
@@ -349,7 +368,7 @@ public class GameBoard extends Pane {
                                             gameControls.catanPlayer.structuresForRound.remove(draggableStructureBlock.structure);
                                             draggableStructureBlock.increaseResourceState();
                                             gameControls.currentResourceState(gameControls.catanPlayer.resource_state);
-                                            blocks.getChildren().remove(event.getTarget());
+                                            blocks.getChildren().remove(this);
                                         } else {
                                             new Warning("CANNOT REMOVE THIS STRUCTURE GIVEN CURRENT BOARD STATE");
                                         }
@@ -436,6 +455,7 @@ public class GameBoard extends Pane {
         public static boolean swappable;
         /**
          * Constructs the knight shape for the knight structure.
+         * @Author Saquib Khan
          * @param x x coordintae on a pane
          * @param y y coordiante on a pane
          * @param structureBlock if knight shape is a structure block or not
@@ -542,7 +562,7 @@ public class GameBoard extends Pane {
                                             draggableStructureBlock.increaseResourceState();
                                             gameControls.currentResourceState(gameControls.catanPlayer.resource_state);
                                             System.out.println(Arrays.toString(gameControls.catanPlayer.resource_state));
-                                            blocks.getChildren().remove(event.getTarget());
+                                            blocks.getChildren().remove(this);
                                         } else {
                                             System.out.println("REMOVE STRUCTURES FURTHER OF HIGHER POINT VALUE");
                                         }
@@ -634,6 +654,7 @@ public class GameBoard extends Pane {
         double mouseX, mouseY;
         /**
          * Constructs the city shape for the city structure.
+         * @Author Saquib Khan
          * @param x x coordintae on a pane
          * @param y y coordiante on a pane
          * @param structureBlock if city shape is a structure block or not
@@ -704,7 +725,7 @@ public class GameBoard extends Pane {
                                             gameControls.catanPlayer.structuresForRound.remove(draggableStructureBlock.structure);
                                             draggableStructureBlock.increaseResourceState();
                                             gameControls.currentResourceState(gameControls.catanPlayer.resource_state);
-                                            blocks.getChildren().remove(event.getTarget());
+                                            blocks.getChildren().remove(this);
                                         } else {
                                             new Warning("CANNOT REMOVE THIS STRUCTURE GIVEN CURRENT BOARD STATE");
                                         }
@@ -797,7 +818,7 @@ public class GameBoard extends Pane {
         /**
          * Constructs a structure block which makes the structure shapes have extra properties required
          * for it to be buildable.
-         *
+         * @Author Saquib khan
          * @param id String id of structure
          */
         StructureBlock(String id) {
@@ -1030,6 +1051,7 @@ public class GameBoard extends Pane {
 
         /**
          * Constructs a structure block and giving it all the properties for it to be draggable.
+         * @Author Saquib khan
          * @param id String id of the structure block
          */
         DraggableStructureBlock(String id) {
@@ -1144,13 +1166,11 @@ public class GameBoard extends Pane {
     }
 
 
-    /**
-     * used to get resource image for knight.
-     */
     // Author: Saquib Khan
     static class KnightImage extends ImageView {
         /**
          * Constructs the resource image for knights and their respective resource
+         * @Author Saquib Khan
          * @param resourceType the resource type
          * @param x x position on pane
          * @param y y postion on pane
@@ -1176,6 +1196,11 @@ public class GameBoard extends Pane {
     }
     // Author: Saquib Khan
     class Warning extends Text {
+        /**
+         * A warning text used to inform the user if a invalid action has taken place
+         * @Author Saquib khan
+         * @param warning a text of a specific warning
+         */
         public Warning(String warning) {
             setText(warning);
             setText(warning);
@@ -1188,6 +1213,9 @@ public class GameBoard extends Pane {
         }
     }
 
+    /**
+     * makes all the buildable structures spread out across the board
+     */
     private void makeStructures() {
         gameControls.catanBoard.makeMap();
         var keySet = gameControls.catanBoard.getStructureBlocksMap().keySet();
@@ -1243,10 +1271,14 @@ public class GameBoard extends Pane {
         structuresBoard.setLayoutY(BOARD_offsetY - (hexagonRadius * 2.1 + 116.91 - 30));
     }
 
+    /**
+     * Makes the 6 hexagons displayed for the board
+     */
     private void makeBoard() {
         int[] translationY = {2, -2, -1, -1, 1, 1};
         int[] translationX = {0, 0, 1, -1, -1, 1};
-        Color[] hexagonColors = {Color.web("#b2985c"), Color.web("#b2985c"), Color.web("#8d744e"), Color.web("#8d744e"), Color.web("#605028"), Color.web("#605028")};
+        Color[] hexagonColors = {Color.web("#b2985c"), Color.web("#b2985c"), Color.web("#b2985c"), Color.web("#b2985c"), Color.web("#b2985c"), Color.web("#b2985c")};
+        String[] hexNames = {"WoolHex", "AnyHex", "BricksHex", "OreHex", "GrainHex", "TimberHex"};
         Hexagon hexagon1 = new Hexagon(hexagonRadius, Color.WHITE);
         hexagonBoard.setTranslateX(BOARD_offsetX);
         hexagonBoard.setTranslateY(BOARD_offsetY);
@@ -1254,10 +1286,16 @@ public class GameBoard extends Pane {
             Hexagon hexagon = new Hexagon(hexagonRadius, hexagonColors[i]);
             hexagon.setTranslateX(hexagon1.getOffsetX() * translationX[i]);
             hexagon.setLayoutY(hexagon1.getOffsetY() * translationY[i]);
-            hexagonBoard.getChildren().add(hexagon);
+            double translateX = !hexNames[i].equals("AnyHex") ? (hexagon1.getOffsetX() * translationX[i]) - 150 : (hexagon1.getOffsetX() * translationX[i]) - 118;
+            double translateY = !hexNames[i].equals("AnyHex") ? (hexagon1.getOffsetY() * translationY[i]) - 150 : (hexagon1.getOffsetY() * translationY[i]) - 110;
+            ImageHexagon a = new ImageHexagon(hexNames[i], translateX , translateY);
+            hexagonBoard.getChildren().addAll(hexagon, a);
         }
     }
 
+    /**
+     * Makes the 4 draggable structure blocks
+     */
     private void makeBlocks() {
         this.blocks.getChildren().clear();
         var keySet = gameControls.catanBoard.getStructureBlocks().keySet();

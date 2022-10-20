@@ -31,7 +31,7 @@ public class Menu {
 
         this.menuPane.setPrefSize(1200,700);
 
-        ImageView img = new ImageView(new Image("comp1110/ass2/assets/CatanTitlePage.png"));
+        ImageView img = new ImageView(new Image("comp1110/ass2/assets/CatanDiceTitlePage.png"));
         img.setFitWidth(1205);
         img.setFitHeight(705);
         this.menuPane.getChildren().add(img);
