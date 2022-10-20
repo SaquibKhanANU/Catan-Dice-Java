@@ -167,7 +167,7 @@ public class CatanBoard {
         }
     }
 
-    // TESTING
+    // TESTING, from assignment 1
     public String boardToString() {
         StringBuilder s = new StringBuilder();
         for (int y = 0; y < 4; y++) {

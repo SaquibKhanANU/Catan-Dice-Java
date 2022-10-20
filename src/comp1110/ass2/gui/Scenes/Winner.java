@@ -31,6 +31,13 @@ public class Winner extends Pane {
     ArrayList<CatanPlayer> catanPlayers;
     int players;
     Group board = new Group();
+
+    /**
+     * Creates the winner board, showing each player's points
+     * @Author Saquib Khan
+     * @param players the number of players
+     * @param catanPlayers the players playing.
+     */
     public Winner(int players, ArrayList<CatanPlayer> catanPlayers) {
         this.players = players;
         this.catanPlayers = catanPlayers;
@@ -39,6 +46,11 @@ public class Winner extends Pane {
         getChildren().addAll(new WinnerBoard(catanPlayers), board);
     }
     // Author: Saquib Khan
+
+    /**
+     * Creates the winner board, showing each player's points
+     * @Author Saquib Khan
+     */
     class WinnerBoard extends Rectangle {
         WinnerBoard(ArrayList<CatanPlayer> catanPlayers) {
             setHeight(120 + (20 * players));
@@ -72,6 +84,7 @@ public class Winner extends Pane {
         buttonBox.setTranslateY(600);
         board.getChildren().add(buttonBox);
     }
+
 
     private static class ButtonBox extends VBox {
         public ButtonBox(WinnerPageButton... items) {

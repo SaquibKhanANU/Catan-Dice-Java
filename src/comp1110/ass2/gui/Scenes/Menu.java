@@ -22,6 +22,10 @@ public class Menu {
 
     public Pane menuPane;
 
+    /**
+     * Creates all the content for a menu
+     * @Author Saquib Khan
+     */
     public Menu() {
         this.createContent();
     }
@@ -55,6 +59,11 @@ public class Menu {
         this.menuPane.getChildren().addAll(title,vbox);
     }
 
+    /**
+     * Creates the title design on the menu page
+     *
+     * @Author Saquib Khan, Heavily influenced by third.
+     */
     private static class Title extends StackPane {
         public Title(String name) {
             Rectangle bg = new Rectangle(450, 60);
@@ -71,6 +80,10 @@ public class Menu {
         }
     }
 
+    /**
+     * Creates the button box design
+     * @Author Saquib Khan, heavily influenced by third party
+     */
     private static class MenuBox extends VBox {
         public MenuBox(MenuItem... items) {
             getChildren().add(createSeperator());
@@ -87,6 +100,11 @@ public class Menu {
         }
     }
 
+    /**
+     * Creates the button and gives them the ability to clickable
+     * initiates each game, and all the players
+     * @Author Saquib Khan, Heavily influenced by third party.
+     */
     private class MenuItem extends StackPane {
         public MenuItem(String name) {
             Game.instructions = new Instructions();
@@ -123,9 +141,6 @@ public class Menu {
             if ("ONE PLAYER".equals(name)) {
                 setOnMousePressed(event -> {
                     Game.playerOne = new CatanPlayer(1);
-                    Game.playerTwo = new CatanPlayer(2);
-                    Game.playerThree = new CatanPlayer(3);
-                    Game.playerFour = new CatanPlayer(4);
                     Game.gameState = new GameState(1);
                     Game.oneBoard = new GameBoard(Game.playerOne);
                     Game.scenes.addScreen("PLAYER ONE", Game.oneBoard);
@@ -137,8 +152,6 @@ public class Menu {
                 setOnMousePressed(event -> {
                     Game.playerOne = new CatanPlayer(1);
                     Game.playerTwo = new CatanPlayer(2);
-                    Game.playerThree = new CatanPlayer(3);
-                    Game.playerFour = new CatanPlayer(4);
                     Game.gameState = new GameState(2);
                     Game.oneBoard = new GameBoard(Game.playerOne);
                     Game.twoBoard = new GameBoard(Game.playerTwo);
@@ -153,7 +166,6 @@ public class Menu {
                     Game.playerOne = new CatanPlayer(1);
                     Game.playerTwo = new CatanPlayer(2);
                     Game.playerThree = new CatanPlayer(3);
-                    Game.playerFour = new CatanPlayer(4);
                     Game.gameState = new GameState(3);
                     Game.oneBoard = new GameBoard(Game.playerOne);
                     Game.twoBoard = new GameBoard(Game.playerTwo);
