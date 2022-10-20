@@ -19,14 +19,18 @@ import javafx.scene.text.Text;
 public class Instructions extends Pane {
 
     static String dice_roll_instruction = "some, text this is a placeholder for the text \n this is a test to see if it works";
+    static String build_instruction = "build";
+    static String trade_instruction = "trade";
+    static String swap_instruction = "swap";
+
 
     Group board = new Group();
     public Instructions() {
         goBack();
         InstructionsText instruction1 = new InstructionsText(dice_roll_instruction, "Dice Roll", 30, 60);
-        InstructionsText instruction2 = new InstructionsText(dice_roll_instruction, "Dice Roll", 30+550+20, 60);
-        InstructionsText instruction3 = new InstructionsText(dice_roll_instruction, "Dice Roll", 30, 60+350);
-        InstructionsText instruction4 = new InstructionsText(dice_roll_instruction, "Dice Roll", 30+550+20, 60+350);
+        InstructionsText instruction2 = new InstructionsText(build_instruction, "Build", 30+550+20, 60);
+        InstructionsText instruction3 = new InstructionsText(trade_instruction, "Trade", 30, 60+350);
+        InstructionsText instruction4 = new InstructionsText(swap_instruction, "Swap", 30+550+20, 60+350);
         this.setBackground(new Background(new BackgroundFill(Color.web("#439527"), CornerRadii.EMPTY, Insets.EMPTY)));
         getChildren().addAll(board, instruction1, instruction2, instruction3, instruction4);
     }
