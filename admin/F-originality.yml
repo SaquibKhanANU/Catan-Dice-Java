@@ -81,14 +81,13 @@ code:
   - comment: Ordering Elements
     url: https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html
     licence: filled
+  - comment: ArrayList
+    url: https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html
+    licence: filled
 
-   - comment: ArrayList
-     url: https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html
-     licence: filled
-
-   - comment: Array to ArrayList
-     url: https://www.geeksforgeeks.org/conversion-of-array-to-arraylist-in-java/
-     licence: filled
+  - comment: Array to ArrayList
+    url: https://www.geeksforgeeks.org/conversion-of-array-to-arraylist-in-java/
+    licence: filled
 
 
 # Use this to list any assets (artwork, sound, etc) that you used.
