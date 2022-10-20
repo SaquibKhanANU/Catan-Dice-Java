@@ -17,7 +17,6 @@ import javafx.scene.text.Text;
 
 // Author: John Larkin and Saquib Khan
 public class Instructions extends Pane {
-
     static String dice_roll_instruction = "some, text this is a placeholder for the text \n this is a test to see if it works";
 
     Group board = new Group();
@@ -53,7 +52,12 @@ public class Instructions extends Pane {
         goBack.setLayoutX(1200-68);
         goBack.setLayoutY(700-35);
         goBack.setOnMousePressed(e -> {
-            Game.scenes.activate("Menu");
+            if (Game.boardName.size() > 0) {
+                Game.scenes.activate(Game.boardName.get(0));
+                Game.boardName.clear();
+            } else {
+                Game.scenes.activate("Menu");
+            }
         });
         board.getChildren().add(goBack);
     }

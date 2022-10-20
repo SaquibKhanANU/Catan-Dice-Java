@@ -472,6 +472,7 @@ public class GameControls {
                         }
                     }
                     case "INSTRUCTIONS" -> {
+                        Game.boardName.add(catanPlayer.name);
                         Game.scenes.activate("INSTRUCTIONS");
                     }
                     default -> Game.scenes.activate(name);
