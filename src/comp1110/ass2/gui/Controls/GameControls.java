@@ -10,6 +10,7 @@ import comp1110.ass2.CatanStructure.Structure;
 import comp1110.ass2.gui.Game;
 import comp1110.ass2.gui.Scenes.GameBoard;
 import comp1110.ass2.gui.Scenes.Winner;
+import gittest.C;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -42,6 +43,7 @@ import static comp1110.ass2.CatanDice.rollDice;
 // Author: Saquib Khan
 public class GameControls {
     Group controls = new Group();
+    Group instructions = new Group();
     Group chooseBoard = new Group();
     Group sidePanel = new Group();
     Group scoreBoard = new Group();
@@ -54,7 +56,7 @@ public class GameControls {
     GridPane diceRollGridPane;
     Scene swapResourceScene = new Scene(swapResourcePane);
     public Stage swapResourceStage = new Stage();
-    public Group allControls = new Group(controls, chooseBoard, sidePanel, scoreBoard, diceRollGroup, warningTextGroup, resourceStateGroup, currentTurnTextGroup);
+    public Group allControls = new Group(controls, chooseBoard, sidePanel, scoreBoard, diceRollGroup, warningTextGroup, resourceStateGroup, currentTurnTextGroup, instructions);
     public CatanPlayer catanPlayer;
     public CatanBoard catanBoard;
 
@@ -96,6 +98,7 @@ public class GameControls {
         makeSidePanel();
         createChooseBoard();
         createGameButtons();
+        createInstructionsButton();
         makeScoreBoard();
         currentResourceState(catanPlayer.resource_state);
     }
@@ -467,6 +470,9 @@ public class GameControls {
                         } else {
                             new Warning("NOT YOUR TURN");
                         }
+                    }
+                    case "INSTRUCTIONS" -> {
+                        Game.scenes.activate("INSTRUCTIONS");
                     }
                     default -> Game.scenes.activate(name);
                 }
@@ -1072,6 +1078,15 @@ public class GameControls {
         vbox.setTranslateX(-3);
         vbox.setTranslateY(270);
         this.chooseBoard.getChildren().addAll(vbox);
+    }
+    public void createInstructionsButton() {
+        GameButtonsBoard insturctionsButton = new GameButtonsBoard("INSTRUCTIONS");
+        ChooseBoardBox vbox = new ChooseBoardBox(
+                insturctionsButton
+        );
+        vbox.setTranslateX(-3);
+        vbox.setTranslateY(630);
+        instructions.getChildren().add(vbox);
     }
     // Author: Saquib Khan, Heavily influenced by third party.
     private class ChooseBoardBox extends VBox {

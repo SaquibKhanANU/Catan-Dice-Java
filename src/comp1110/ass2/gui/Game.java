@@ -42,7 +42,6 @@ public class Game extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        scene.setFill(Color.NAVAJOWHITE);
         stage.setResizable(false);
 
         this.menu = new Menu();

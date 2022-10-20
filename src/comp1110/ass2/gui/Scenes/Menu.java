@@ -88,6 +88,7 @@ public class Menu {
 
     private class MenuItem extends StackPane {
         public MenuItem(String name) {
+            Game.instructions = new Instructions();
             LinearGradient gradient = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, new Stop(0, Color.TAN),
                     new Stop(0.1, Color.BLACK),
                     new Stop(0.9, Color.BLACK),
@@ -123,6 +124,7 @@ public class Menu {
                     Game.gameState = new GameState(1);
                     Game.oneBoard = new GameBoard(Game.playerOne);
                     Game.scenes.addScreen("PLAYER ONE", Game.oneBoard);
+                    Game.scenes.addScreen("INSTRUCTIONS", Game.instructions);
                     Game.scenes.activate("PLAYER ONE");
                 });
             }
@@ -133,6 +135,7 @@ public class Menu {
                     Game.twoBoard = new GameBoard(Game.playerTwo);
                     Game.scenes.addScreen("PLAYER ONE", Game.oneBoard);
                     Game.scenes.addScreen("PLAYER TWO", Game.twoBoard);
+                    Game.scenes.addScreen("INSTRUCTIONS", Game.instructions);
                     Game.scenes.activate("PLAYER ONE");
                 });
             }
@@ -145,6 +148,7 @@ public class Menu {
                     Game.scenes.addScreen("PLAYER ONE", Game.oneBoard);
                     Game.scenes.addScreen("PLAYER TWO", Game.twoBoard);
                     Game.scenes.addScreen("PLAYER THREE", Game.threeBoard);
+                    Game.scenes.addScreen("INSTRUCTIONS", Game.instructions);
                     Game.scenes.activate("PLAYER ONE");
                 });
             } if ("FOUR PLAYER".equals(name)) {
@@ -158,11 +162,11 @@ public class Menu {
                     Game.scenes.addScreen("PLAYER TWO", Game.twoBoard);
                     Game.scenes.addScreen("PLAYER THREE", Game.threeBoard);
                     Game.scenes.addScreen("PLAYER FOUR", Game.fourBoard);
+                    Game.scenes.addScreen("INSTRUCTIONS", Game.instructions);
                     Game.scenes.activate("PLAYER ONE");
                 });
             } if ("INSTRUCTIONS".equals(name)) {
                 setOnMousePressed(event -> {
-                    Game.instructions = new Instructions();
                     Game.scenes.addScreen("INSTRUCTIONS", Game.instructions);
                     Game.scenes.activate("INSTRUCTIONS");
                 });
