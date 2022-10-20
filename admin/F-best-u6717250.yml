@@ -38,12 +38,25 @@ code:
 # I wish to submit the following classes as entirely my own (remove this if
 # you want to just submit methods):
 class:
-   -
+  - GameTree
+  - https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/CatanStructure/GameTree.java
+  - BoardStateTree
+  - https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/CatanStructure/BoardStateTree.java
+
 
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):
 method:
-   -
+  - Task 14 buildPlan, along with requiredStructures, allActionSequences and toAction
+  - https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/CatanDice.java#L574-816
+  - Task 13, pathTo
+  - https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/CatanDice.java#L518-572
+  - Task 11, canDoActionSequence (the course forum was helpful)
+  - https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/CatanDice.java#L434-505
+  - Task 9, canDoAction
+  - https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/CatanDice.java#L390-432
+  - Task 12, checkResourcesWithTradesandSwap
+  - https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/CatanDice.java#L298-378
 
 # sign *your* name and uid here
 name: John Larkin
