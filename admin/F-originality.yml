@@ -66,14 +66,25 @@ assets:
     url: https://www.geeksforgeeks.org/conversion-of-array-to-arraylist-in-java/
     licence: filled
 
+  - comment: Images used for the hexagons for the board
+    url: https://boardgamegeek.com/image/665363/catan
+    licence: filled
+  
+  - comment: Image used for the hexagons on the board
+    url: https://www.unboxedtheboardgameblog.com/post/2017/06/12/the-caravans-of-catan
+    licence: filled
+
+  - comment: Image used for menu background
+    url: https://catanuniverse.com/en/media/
+    licence: filled
+
 
 
 # Sign *your* name and uids here. (Remove entries if you have fewer
 # than three members.)
 signatures:
+  - name: Saquib Khan
+    uid: u7108513
   - name:
     uid:
-  - name:
-    uid:
-  - name:
-    uid:
+
