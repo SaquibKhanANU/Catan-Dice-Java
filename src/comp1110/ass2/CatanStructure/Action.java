@@ -32,6 +32,11 @@ public class Action {
         }
     }
 
+    /**
+     * Creates a new action which can be set and changed to do catan actions
+     * @Author Saquib Khan
+     * @param actionType the type of action being made
+     */
     public Action(ActionType actionType) {
         this.actionType = actionType;
     }
