@@ -23,13 +23,13 @@ declaration: >-
 code: 
   - comment: code is used to create buttons and the design for the menu
     url: https://github.com/Siderim/video-game-menu
-    licence:
+    licence: Filled
   - comment: code is used to change between scenes in javafx
     url: https://stackoverflow.com/questions/37200845/how-to-switch-scenes-in-javafx
-    licence:
+    licence: Filled
   - comment: helped make the roll dice visuals.
     url: https://www.youtube.com/watch?v=sjOt0UFqX6c&ab_channel=LoganStrong
-    licence:
+    licence: Filled
 
 # I wish to submit the following classes as entirely my own (remove this if
 # you want to just submit methods):
