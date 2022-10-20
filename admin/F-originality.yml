@@ -117,7 +117,13 @@ assets:
     url: https://catanworldexplorers.fandom.com/wiki/Gold
     licence: filled
 
+  - comment: Reverting Merge
+    url: https://docs.gitlab.com/ee/user/project/merge_requests/revert_changes.html#:~:text=To%20do%20this%3A%201%20On%20the%20top%20bar%2C,changes%20into.%206%20Optional.%20...%207%20Select%20Revert.
+    licence: filled
 
+  - comment: Attempt to Revert Merge
+    url: https://docs.gitlab.com/ee/user/project/repository/branches/default.html#:~:text=To%20update%20the%20default%20branch%20name%20for%20an,uses%20a%20closing%20pattern.%205%20Select%20Save%20changes.
+    licence: filled
 
 # Sign *your* name and uids here. (Remove entries if you have fewer
 # than three members.)
