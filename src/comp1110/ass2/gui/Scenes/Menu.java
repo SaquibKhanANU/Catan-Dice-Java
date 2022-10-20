@@ -1,5 +1,6 @@
 package comp1110.ass2.gui.Scenes;
 
+import comp1110.ass2.CatanGame.CatanPlayer;
 import comp1110.ass2.CatanGame.GameState;
 import comp1110.ass2.gui.Game;
 import javafx.geometry.Pos;
@@ -121,6 +122,10 @@ public class Menu {
 
             if ("ONE PLAYER".equals(name)) {
                 setOnMousePressed(event -> {
+                    Game.playerOne = new CatanPlayer(1);
+                    Game.playerTwo = new CatanPlayer(2);
+                    Game.playerThree = new CatanPlayer(3);
+                    Game.playerFour = new CatanPlayer(4);
                     Game.gameState = new GameState(1);
                     Game.oneBoard = new GameBoard(Game.playerOne);
                     Game.scenes.addScreen("PLAYER ONE", Game.oneBoard);
@@ -130,6 +135,10 @@ public class Menu {
             }
             if ("TWO PLAYER".equals(name)) {
                 setOnMousePressed(event -> {
+                    Game.playerOne = new CatanPlayer(1);
+                    Game.playerTwo = new CatanPlayer(2);
+                    Game.playerThree = new CatanPlayer(3);
+                    Game.playerFour = new CatanPlayer(4);
                     Game.gameState = new GameState(2);
                     Game.oneBoard = new GameBoard(Game.playerOne);
                     Game.twoBoard = new GameBoard(Game.playerTwo);
@@ -141,6 +150,10 @@ public class Menu {
             }
             if ("THREE PLAYER".equals(name)) {
                 setOnMousePressed(event -> {
+                    Game.playerOne = new CatanPlayer(1);
+                    Game.playerTwo = new CatanPlayer(2);
+                    Game.playerThree = new CatanPlayer(3);
+                    Game.playerFour = new CatanPlayer(4);
                     Game.gameState = new GameState(3);
                     Game.oneBoard = new GameBoard(Game.playerOne);
                     Game.twoBoard = new GameBoard(Game.playerTwo);
@@ -153,6 +166,10 @@ public class Menu {
                 });
             } if ("FOUR PLAYER".equals(name)) {
                 setOnMousePressed(event -> {
+                    Game.playerOne = new CatanPlayer(1);
+                    Game.playerTwo = new CatanPlayer(2);
+                    Game.playerThree = new CatanPlayer(3);
+                    Game.playerFour = new CatanPlayer(4);
                     Game.gameState = new GameState(4);
                     Game.oneBoard = new GameBoard(Game.playerOne);
                     Game.twoBoard = new GameBoard(Game.playerTwo);

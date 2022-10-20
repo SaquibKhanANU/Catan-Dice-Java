@@ -29,10 +29,10 @@ public class Game extends Application {
     public static Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
     public static ScreenController scenes = new ScreenController(scene);
     Menu menu;
-    public static CatanPlayer playerOne = new CatanPlayer(1);
-    public static CatanPlayer playerTwo = new CatanPlayer(2);
-    public static CatanPlayer playerThree = new CatanPlayer(3);
-    public static CatanPlayer playerFour = new CatanPlayer(4);
+    public static CatanPlayer playerOne;
+    public static CatanPlayer playerTwo;
+    public static CatanPlayer playerThree;
+    public static CatanPlayer playerFour;
     public static GameBoard oneBoard;
     public static GameBoard twoBoard;
     public static GameBoard threeBoard;
