@@ -17,10 +17,42 @@ import javafx.scene.text.Text;
 
 // Author: John Larkin and Saquib Khan
 public class Instructions extends Pane {
-    static String dice_roll_instruction = "some, text this is a placeholder for the text \n this is a test to see if it works";
-    static String build_instruction = "build";
-    static String trade_instruction = "trade";
-    static String swap_instruction = "swap";
+    static String dice_roll_instruction =
+            "Roll dice to gain resources. \n" +
+            "You have six dice to roll on your turn. \n" +
+            "1. Select 'Roll Dice' in the top right to roll the dice.\n " +
+            "Your resources will appear in the resource bank. \n"+
+                    "2. Click the resources in the top row to re-roll those dice.\n " +
+           "Select roll dice to re-roll. \n" +
+            "3. Re-roll the dice up to two times.";
+
+    static String build_instruction = "Build Settlements, Cities and Knights on your turn \n" +
+            "1. Check the cost card for the cost of the item.\n " +
+            "You may only build something if you have \n " +
+            "sufficient resources. \n" +
+            "2. Click and drag the structure and place on the board \n"
+            + "to build.\n " +
+            "Right-click the item on the same turn to undo \n " +
+            "the build action \n" +
+            "3. Items must be built in ascending point order.\n" +
+            "Knights correspond to round circles.";
+
+    static String trade_instruction = "Trade gold for other resources.\n" +
+            "1. Select 'Trade' in the top right to trade.\n " +
+            "You may trade gold for any resource at a cost of 2:1\n"+
+            "2. A popup will appear. Click on the resource you want\n " +
+            "to trade for.\n " +
+            "The item will be added to your resource bank.\n" +
+            "3. You can continue to trade provided you have \n " +
+            "sufficient gold.";
+
+    static String swap_instruction = "Swap for other resources using the knight.\n" +
+            "You can use each knight exactly once per game.\n"+
+            "The knight must be built and unused.\n" +
+            "1. Select 'Swap' in the top right to swap.\n " +
+            "Usable knights are highlighted.\n" +
+            "2. Select the knight corresponding to the resource you want.\n" +
+            "3. Exchange one of your current dice for that resource.";
 
 
     Group board = new Group();

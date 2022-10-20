@@ -22,17 +22,50 @@ declaration: >-
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external code)
 code:
+  - comment: Referencing for Task 4
+    url: https://stackoverflow.com/questions/5150234/how-to-use-charsequence
+    licence: filled to pass pipeline
+  - comment: Java documentation
+    url: https://docs.oracle.com/javase/7/docs/api/index.html
+    licence: filled to pass pipeline
+  - comment: ASCII conversions
+    url: https://en.wikipedia.org/wiki/ASCII
+    licence: filled to pass pipeline
+  - comment: String equals method
+    url: https://www.bing.com/search?q=equals+for+strings+in+java&cvid=bbddb00595ee44efa29c11dbefa430e8&aqs=edge..69i57j0l7j69i60.4210j0j4&FORM=ANAB01&PC=U531
+    licence: filled to pass pipeline
+  - comment: Useful comments
+    url: https://piazza.com/class/l5i01amboa04cz/post/568
+    licence: filled to pass pipeline
+
+
+  - comment: Placing and removing structure block
+    url: https://gitlab.cecs.anu.edu.au/u7108513/comp1110-ass1/-/blob/main/src/comp1110/ass1/PenguinsPoolParty.java#L278-345
+    licence: Fill
+
+
+  - comment: makeDiceRoll, Java FX in makeDiceRoll
+    url: https://docs.oracle.com/javase/8/javafx/events-tutorial/convenience_methods.htm
+    licence: filled
+
+
+  - comment: makeDiceRoll, Used code written by fellow team member
+    url: filled
+    licence: filled
+
+  - comment: CatanPlayer and GameState, Helpful to put constructors of CatanPlayer into an array
+    url: https://stackoverflow.com/questions/12771245/for-loops-to-send-info-to-a-constructor-in-java
+    licence: filled
+
+  - comment: In past and current code written by John Larkin, took inspiration from code written by fellow team member.
+    url: filled
+    licence: filled
+
+
   - comment: System.arraycopy in canDoSequence, task 11
     url: https://www.knowprogram.com/java/system-arraycopy/#:~:text=Java%20Program%20to%20Copy%20Complete%20Array%20using%20System.arraycopy,3%29%20Call%20System.arraycopy%20%28src%2C%200%2C%20dest%2C%200%2C%20src.length%29%3B
     licence: filled
 
-# Use this to list any assets (artwork, sound, etc) that you used.
-# Provide a comment explaining your use of that asset and the URL
-# and license for the asset
-#
-# Add as many "url+licence+comment" entries as necessary
-# (or remove it altogether if you haven't used any external assets)
-assets:
   - comment: Referencing
     url: https://www.geeksforgeeks.org/how-to-add-an-element-to-an-array-in-java/
     licence: filled
@@ -49,13 +82,25 @@ assets:
     url: https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html
     licence: filled
 
-  - comment: ArrayList
-    url: https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html
-    licence: filled
+   - comment: ArrayList
+     url: https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html
+     licence: filled
 
-  - comment: Array to ArrayList
-    url: https://www.geeksforgeeks.org/conversion-of-array-to-arraylist-in-java/
-    licence: filled
+   - comment: Array to ArrayList
+     url: https://www.geeksforgeeks.org/conversion-of-array-to-arraylist-in-java/
+     licence: filled
+
+
+# Use this to list any assets (artwork, sound, etc) that you used.
+# Provide a comment explaining your use of that asset and the URL
+# and license for the asset
+#
+# Add as many "url+licence+comment" entries as necessary
+# (or remove it altogether if you haven't used any external assets)
+assets:
+  - comment: Image for reference
+    url: https://i.stack.imgur.com/OaYIv.png
+    licence: filled to pass pipeline
 
   - comment: Images used for the hexagons for the board
     url: https://boardgamegeek.com/image/665363/catan
@@ -80,6 +125,6 @@ assets:
 signatures:
   - name: Saquib Khan
     uid: u7108513
-  - name:
-    uid:
+  - name: John Larkin
+    uid: u6717250
 

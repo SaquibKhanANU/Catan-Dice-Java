@@ -259,8 +259,7 @@ public class CatanDice {
         // structure is a knight
         if (current_structure.type == 'K') {
             {
-                if (value == 1){return boardStateList.contains("J" + (value));}
-                else {return boardStateList.contains("J" + (value))&& boardStateList.contains("K" + (value-1));}
+                return boardStateList.contains("J" + (value)) || boardStateList.contains("K" + (value-1));
             }
         }
         return false; // Task #8
