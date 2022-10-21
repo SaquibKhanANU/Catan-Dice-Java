@@ -572,7 +572,7 @@ public class GameBoard extends Pane {
                             event.consume();
                         }
                     } else {
-                        new Warning("ROLL THE DICE");
+                        new Warning("ROLL DICE FIRST");
                     }
                 });
 
