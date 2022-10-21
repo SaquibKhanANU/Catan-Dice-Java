@@ -54,7 +54,16 @@ public class Instructions extends Pane {
             "1. Select 'Swap' in the top right to swap.\n " +
             "Usable knights are highlighted.\n" +
             "2. Select the knight corresponding to the resource you want.\n" +
-            "3. Exchange one of your current dice for that resource.";
+            "3. Exchange one of your current dice for that resource.\n" +
+            "\n" +
+            "Wildcard Knight (knight number 6)\n" +
+            "1. Select 'Swap' in the top right to swap.\n " +
+            "Usable knights are highlighted.\n" +
+            "2. Select knight number 6.\n" +
+            "3. Select one of your current dice in the top row \n " +
+            "to swap for any resource in the bottom row.\n" +
+            "4. The resource selected in the bottom row will be added \n " +
+            "to the resource bank.\n";
 
 
     Group board = new Group();
