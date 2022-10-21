@@ -104,7 +104,7 @@ public class Instructions extends Pane {
             Text title1 = new Text();
             title1.setText(title);
             title1.setX(x);
-            title1.setY(y-25);
+            title1.setY(y-30);
             title1.setFill(Color.SADDLEBROWN);
             title1.setFont(Font.font("times new roman", FontWeight.BOLD, FontPosture.REGULAR, 35));
 
