@@ -48,26 +48,6 @@ public class GameTree {
         return path;
     }
 
-    public static void main(String[] args) {
-        GameTree path = createCatanGameTree();
-
-        ArrayList<Object> res = new ArrayList<>();
-        System.out.println(path.fold(res));
-        System.out.println(path.canPrune("C30"));
-        ArrayList<Object> res4 = new ArrayList<>();
-        System.out.println(path.fold(res4));
-        GameTree res5 = new GameTree();
-        res5.node = "RI";
-        ArrayList<Object> res6 = new ArrayList<>();
-        System.out.println(path.removeNulls(res5).fold(res6));
-
-//        ArrayList<Object> res1 = new ArrayList<>();
-//        System.out.println(path.findPath("C30", res1));
-//
-//        ArrayList<Object> res2 = new ArrayList<>();
-//        path.add("RI", "null",null);
-//        System.out.println(path.fold(res2));
-    }
 
 // A fold on the GameTree into an ArrayList
     // The argument is an empty ArrayList which is modified to
@@ -108,10 +88,14 @@ public class GameTree {
         return false;
     }
 
-    // Given a GameTree a Object node, l and r extend the current GameTree by adding l and r to the
-    // branches of the tree where the node is located. If the node is not in the tree then it does nothing
-    // It will overwrite the current tree
-    // If nothing is to be added to that branch then use input null
+    /**
+     * Given a GameTree a Object node, l and r extend the current GameTree by adding l and r to the
+     * branches of the tree where the node is located. If the node is not in the tree then it does nothing.
+     * It will overwrite the current tree. If nothing is to be added to that branch then use input null
+     * @param node Node to add to.
+     * @param l Object to add to left branch.
+     * @param r Object to add to right branch.
+     */
     public void add(Object node, Object l, Object r){
         if (this.node.equals(node)){
             if (l != null && r != null){
