@@ -34,8 +34,8 @@ code:
 # I wish to submit the following classes as entirely my own (remove this if
 # you want to just submit methods):
 class:
-   - https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/gui/Controls/GameControls.java#L769-793
-   - https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/gui/Scenes/GameBoard.java#L431-624
+   - https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/gui/Controls/GameControls.java#L848-873
+   - https://gitlab.cecs.anu.edu.au/u6717250/comp1110-ass2/-/blob/main/src/comp1110/ass2/gui/Scenes/GameBoard.java#L448-641
 
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):
