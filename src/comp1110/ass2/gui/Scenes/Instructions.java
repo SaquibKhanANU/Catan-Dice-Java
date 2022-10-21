@@ -21,32 +21,27 @@ public class Instructions extends Pane {
     static String dice_roll_instruction =
             "Roll dice to gain resources. \n" +
                     "You have six dice to roll on your turn. \n" +
-                    "1. Select 'Roll Dice' in the top right to roll \n" +
-                    "the dice.\n " +
+                    "1. Select 'Roll Dice' in the top right to roll the dice.\n " +
                     "Your resources will appear in the resource bank. \n"+
-                    "2. Click the resources in the top row to \n" +
-                    "re-roll those dice.\n " +
+                    "2. Click the resources in the top row to re-roll those dice.\n " +
                     "Select roll dice to re-roll. \n" +
                     "3. Re-roll the dice up to two times.";
 
-    static String build_instruction = "Build Settlements, Cities and Knights on \n" +
-            "your turn \n" +
+    static String build_instruction = "Build Settlements, Cities and Knights on your turn \n" +
             "1. Check the cost card for the cost of the item.\n " +
             "You may only build something if you have \n " +
             "sufficient resources. \n" +
-            "2. Click and drag the structure and place \n" +
-            "on the board \n"
+            "2. Click and drag the structure and place on the board \n"
             + "to build.\n " +
             "Right-click the item on the same turn \n" +
             "to undo \n " +
             "the build action \n" +
-            "3. Items must be built in ascending point \n" +
-            "order.\n" +
+            "3. Items must be built in ascending point order.\n" +
             "Knights correspond to round circles.";
 
     static String trade_instruction = "Trade gold for other resources.\n" +
             "1. Select 'Trade' in the top right to trade.\n " +
-            "You may trade gold for any resource at a cost of 2:1\n"+
+            "You may trade gold for any resource at a cost of 2:1.\n"+
             "2. A popup will appear. Click on the resource you want\n " +
             "to trade for.\n " +
             "The item will be added to your resource bank.\n" +
@@ -109,7 +104,7 @@ public class Instructions extends Pane {
             setX(x+10);
             setY(y+10);
             setFill(Color.DARKGREEN);
-            setFont(Font.font("times new roman", FontWeight.BOLD, FontPosture.REGULAR, 20));
+            setFont(Font.font("times new roman", FontWeight.BOLD, FontPosture.REGULAR, 15));
 
 
             InstructionsBoard square = new InstructionsBoard(x-20, y-20);
