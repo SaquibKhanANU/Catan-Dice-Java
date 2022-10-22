@@ -14,27 +14,6 @@ declaration: >-
   and all stages before it is entirely our own work, with the following
   exceptions:
 
-# Use this to list names of people who you collaborated with, and a
-# comment about what you collaborated on.
-#
-# Add as many "name+comment" entries as necessary
-# (or remove it altogether if you haven't collaborated with anyone)
-collaboration:
-  - name:
-    comment: >-
-
-# Use this to list any code that you used that you did not write,
-# aside from code provided by the lecturer.  Provide a comment
-# explaining your use and the URL to that code and the licence for
-# that code
-#
-# Add as many "url+licence+comment" entries as necessary
-# (or remove it altogether if you haven't used any external code)
-code:
-  - comment:
-    url:
-    licence:
-
 # Use this to list any assets (artwork, sound, etc) that you used.
 # Provide a comment explaining your use of that asset and the URL
 # and license for the asset
@@ -42,9 +21,12 @@ code:
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external assets)
 assets:
-  - comment: 
-    url:
-    licence:
+  - comment: Recording
+    url: https://www.bing.com/search?q=obs+studio+record+entire+screen&cvid=5a6e98be6f13400582f842ae9e5f7502&aqs=edge..69i57.5043j0j1&pglt=41&FORM=ANSPA1&PC=U531
+    licence: filled
+  - comment: Recording 
+    url: https://democreator.wondershare.com/screen-recorder/full-screen-capture-obs.html
+    licence: filled
 
 
 # Sign *your* name and uids here. (Remove entries if you have fewer
@@ -52,5 +34,5 @@ assets:
 signatures:
   - name: Saquib Khan
     uid: u7108513
-  - name:
-    uid:
+  - name: John Larkin
+    uid: u6717250
