@@ -10,8 +10,8 @@ declaration: >-
 contributions:
   - uid: u7108513
     contribution: 50
-  - uid: 
-    contribution:
+  - uid: u6717250
+    contribution: 50
 
 
 # Sign *your* name and uids here. (Remove entries if you have fewer
@@ -19,5 +19,5 @@ contributions:
 signatures:
   - name: Saquib Khan
     uid: u7108513
-  - name:
-    uid:
+  - name: John Larkin
+    uid: u6717250
