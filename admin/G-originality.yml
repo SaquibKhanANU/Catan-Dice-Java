@@ -14,20 +14,6 @@ declaration: >-
   and all stages before it is entirely our own work, with the following
   exceptions:
 
-# Use this to list any assets (artwork, sound, etc) that you used.
-# Provide a comment explaining your use of that asset and the URL
-# and license for the asset
-#
-# Add as many "url+licence+comment" entries as necessary
-# (or remove it altogether if you haven't used any external assets)
-assets:
-  - comment: Recording
-    url: https://www.bing.com/search?q=obs+studio+record+entire+screen&cvid=5a6e98be6f13400582f842ae9e5f7502&aqs=edge..69i57.5043j0j1&pglt=41&FORM=ANSPA1&PC=U531
-    licence: filled
-  - comment: Recording 
-    url: https://democreator.wondershare.com/screen-recorder/full-screen-capture-obs.html
-    licence: filled
-
 
 # Sign *your* name and uids here. (Remove entries if you have fewer
 # than three members.)
